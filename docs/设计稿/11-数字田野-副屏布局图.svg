@@ -1,0 +1,452 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1200" font-family="'Microsoft YaHei','PingFang SC',sans-serif">
+  <defs>
+    <radialGradient id="bgS" cx="50%" cy="30%" r="80%">
+      <stop offset="0%" stop-color="#1e3a5f"/>
+      <stop offset="50%" stop-color="#142850"/>
+      <stop offset="100%" stop-color="#050b18"/>
+    </radialGradient>
+    <linearGradient id="cardS" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0f2340" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#0a1628" stop-opacity="0.9"/>
+    </linearGradient>
+    <filter id="glowS">
+      <feGaussianBlur stdDeviation="3" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <pattern id="riceS" x="0" y="0" width="140" height="140" patternUnits="userSpaceOnUse">
+      <g stroke="#eab308" stroke-width="0.7" fill="none" opacity="0.06">
+        <path d="M 25 120 Q 25 75 30 40"/>
+        <ellipse cx="22" cy="45" rx="3" ry="7"/><ellipse cx="33" cy="48" rx="3" ry="7"/>
+        <ellipse cx="22" cy="62" rx="3" ry="7"/><ellipse cx="33" cy="65" rx="3" ry="7"/>
+        <path d="M 100 130 Q 100 85 105 50"/>
+        <ellipse cx="97" cy="55" rx="3" ry="7"/><ellipse cx="108" cy="58" rx="3" ry="7"/>
+      </g>
+    </pattern>
+  </defs>
+
+  <rect width="1600" height="1200" fill="url(#bgS)"/>
+  <rect width="1600" height="1200" fill="url(#riceS)"/>
+
+  <text x="800" y="55" text-anchor="middle" fill="#22d3ee" font-size="30" font-weight="bold" filter="url(#glowS)" letter-spacing="3">「数字田野」5 副屏详细布局</text>
+  <text x="800" y="85" text-anchor="middle" fill="#a5f3fc" font-size="14" opacity="0.85">Sub-Screens · 1920×1080 each · 与主屏联动</text>
+  <line x1="600" y1="102" x2="1000" y2="102" stroke="#22d3ee" stroke-width="1.5" opacity="0.5"/>
+
+  <!-- ========== 副屏 1: 知识图谱 ========== -->
+  <g>
+    <rect x="40" y="130" width="750" height="480" rx="6" fill="url(#cardS)" stroke="#84cc16" stroke-width="2"/>
+    <rect x="40" y="130" width="750" height="35" rx="6" fill="#84cc16" fill-opacity="0.18"/>
+    <rect x="40" y="130" width="4" height="480" fill="#84cc16"/>
+    <text x="58" y="154" fill="#84cc16" font-size="15" font-weight="bold">副屏 1 · 文旅知识图谱探索屏</text>
+    <text x="775" y="154" text-anchor="end" fill="#a5f3fc" font-size="11" opacity="0.75">Neo4j + AntV G6</text>
+
+    <rect x="58" y="180" width="715" height="32" rx="16" fill="#142850" stroke="#22d3ee" stroke-width="0.8"/>
+    <text x="75" y="200" fill="#a5f3fc" font-size="11" opacity="0.8">🔍 搜索实体：景点 / 非遗 / 人物 / 特产 / 典故...</text>
+    <rect x="695" y="185" width="70" height="22" rx="11" fill="#22d3ee"/>
+    <text x="730" y="200" text-anchor="middle" fill="#0a1628" font-size="11" font-weight="bold">搜索</text>
+
+    <g transform="translate(400,400)">
+      <g opacity="0.7">
+        <circle cx="-235" cy="-135" r="10" fill="#eab308" fill-opacity="0.6"/>
+        <text x="-235" y="-150" text-anchor="middle" fill="#a5f3fc" font-size="9">马头墙</text>
+        <circle cx="-95" cy="-165" r="10" fill="#eab308" fill-opacity="0.6"/>
+        <text x="-95" y="-180" text-anchor="middle" fill="#a5f3fc" font-size="9">粉墙黛瓦</text>
+        <circle cx="235" cy="-135" r="10" fill="#eab308" fill-opacity="0.6"/>
+        <text x="235" y="-150" text-anchor="middle" fill="#a5f3fc" font-size="9">世遗 2000</text>
+        <circle cx="-255" cy="125" r="10" fill="#84cc16" fill-opacity="0.6"/>
+        <text x="-255" y="145" text-anchor="middle" fill="#a5f3fc" font-size="9">砖雕</text>
+        <circle cx="-255" cy="15" r="10" fill="#84cc16" fill-opacity="0.6"/>
+        <text x="-255" y="10" text-anchor="middle" fill="#a5f3fc" font-size="9">木雕</text>
+        <circle cx="255" cy="125" r="10" fill="#84cc16" fill-opacity="0.6"/>
+        <text x="255" y="145" text-anchor="middle" fill="#a5f3fc" font-size="9">石雕</text>
+      </g>
+
+      <circle cx="-150" cy="-85" r="19" fill="#eab308"/>
+      <text x="-150" y="-81" text-anchor="middle" fill="#0a1628" font-size="10" font-weight="bold">徽派建筑</text>
+      <circle cx="150" cy="-85" r="19" fill="#eab308"/>
+      <text x="150" y="-81" text-anchor="middle" fill="#0a1628" font-size="10" font-weight="bold">世界遗产</text>
+      <circle cx="-170" cy="65" r="19" fill="#84cc16"/>
+      <text x="-170" y="69" text-anchor="middle" fill="#0a1628" font-size="10" font-weight="bold">徽州三雕</text>
+      <circle cx="170" cy="65" r="19" fill="#84cc16"/>
+      <text x="170" y="69" text-anchor="middle" fill="#0a1628" font-size="10" font-weight="bold">汪氏宗祠</text>
+      <circle cx="-85" cy="145" r="17" fill="#f97316"/>
+      <text x="-85" y="149" text-anchor="middle" fill="#0a1628" font-size="10" font-weight="bold">月沼</text>
+      <circle cx="85" cy="145" r="17" fill="#f97316"/>
+      <text x="85" y="149" text-anchor="middle" fill="#0a1628" font-size="10" font-weight="bold">南湖</text>
+      <circle cx="0" cy="-155" r="17" fill="#22d3ee"/>
+      <text x="0" y="-151" text-anchor="middle" fill="#0a1628" font-size="10" font-weight="bold">写生基地</text>
+
+      <circle cx="0" cy="0" r="32" fill="#22d3ee" filter="url(#glowS)"/>
+      <circle cx="0" cy="0" r="26" fill="#22d3ee"/>
+      <text x="0" y="6" text-anchor="middle" fill="#0a1628" font-size="14" font-weight="bold">宏村</text>
+
+      <g stroke="#84cc16" stroke-width="1.4" opacity="0.75" fill="none">
+        <line x1="0" y1="0" x2="-150" y2="-85"/>
+        <line x1="0" y1="0" x2="150" y2="-85"/>
+        <line x1="0" y1="0" x2="-170" y2="65"/>
+        <line x1="0" y1="0" x2="170" y2="65"/>
+        <line x1="0" y1="0" x2="-85" y2="145"/>
+        <line x1="0" y1="0" x2="85" y2="145"/>
+        <line x1="0" y1="0" x2="0" y2="-155"/>
+      </g>
+      <g stroke="#a5f3fc" stroke-width="0.7" opacity="0.4" fill="none">
+        <line x1="-150" y1="-85" x2="-235" y2="-135"/>
+        <line x1="-150" y1="-85" x2="-95" y2="-165"/>
+        <line x1="150" y1="-85" x2="235" y2="-135"/>
+        <line x1="-170" y1="65" x2="-255" y2="125"/>
+        <line x1="-170" y1="65" x2="-255" y2="15"/>
+        <line x1="170" y1="65" x2="255" y2="125"/>
+      </g>
+    </g>
+
+    <rect x="620" y="230" width="155" height="360" rx="4" fill="#142850" stroke="#84cc16" stroke-width="0.8"/>
+    <text x="697" y="252" text-anchor="middle" fill="#84cc16" font-size="12" font-weight="bold">实体详情</text>
+    <g font-size="10" fill="#a5f3fc">
+      <text x="632" y="278" fill="#e6f1ff">名称: <tspan fill="#f5f0e8" font-weight="bold">宏村</tspan></text>
+      <text x="632" y="298">类型: 古村落</text>
+      <text x="632" y="316">等级: 5A</text>
+      <text x="632" y="334">坐标: 117.98°E</text>
+      <text x="632" y="350">      29.92°N</text>
+      <text x="632" y="378" fill="#84cc16" font-weight="bold">关联实体:</text>
+      <text x="632" y="396">• 徽州三雕</text>
+      <text x="632" y="412">• 汪氏宗祠</text>
+      <text x="632" y="428">• 徽派建筑</text>
+      <text x="632" y="444">• 世界遗产</text>
+      <text x="632" y="470" fill="#eab308" font-weight="bold">推荐指数:</text>
+      <text x="632" y="492" fill="#eab308" font-size="14" font-weight="bold">★★★★★</text>
+      <text x="632" y="518" fill="#22d3ee" font-weight="bold">今日客流:</text>
+      <text x="632" y="538" fill="#22d3ee" font-size="13" font-weight="bold">8,432 人</text>
+      <text x="632" y="562" fill="#f97316" font-weight="bold">典故:</text>
+      <text x="632" y="580">卧虎藏龙取景地</text>
+    </g>
+
+    <rect x="58" y="555" width="555" height="42" rx="4" fill="#142850" stroke="#84cc16" stroke-width="0.8"/>
+    <g font-size="11" fill="#a5f3fc">
+      <text x="72" y="580">实体总数: <tspan fill="#84cc16" font-weight="bold">58,426</tspan></text>
+      <text x="220" y="580">关系总数: <tspan fill="#84cc16" font-weight="bold">216,308</tspan></text>
+      <text x="380" y="580">今日新增: <tspan fill="#eab308" font-weight="bold">+128</tspan></text>
+      <text x="500" y="580">查询 QPS: <tspan fill="#22d3ee" font-weight="bold">256</tspan></text>
+    </g>
+  </g>
+
+  <!-- ========== 副屏 2: 推荐算法效果 ========== -->
+  <g>
+    <rect x="810" y="130" width="750" height="480" rx="6" fill="url(#cardS)" stroke="#22d3ee" stroke-width="2"/>
+    <rect x="810" y="130" width="750" height="35" rx="6" fill="#22d3ee" fill-opacity="0.18"/>
+    <rect x="810" y="130" width="4" height="480" fill="#22d3ee"/>
+    <text x="828" y="154" fill="#22d3ee" font-size="15" font-weight="bold">副屏 2 · 推荐算法效果监测屏</text>
+    <text x="1545" y="154" text-anchor="end" fill="#a5f3fc" font-size="11" opacity="0.75">A/B Testing · Real-time</text>
+
+    <g font-size="11">
+      <rect x="828" y="180" width="170" height="62" rx="4" fill="#142850" stroke="#22d3ee" stroke-width="0.8"/>
+      <rect x="828" y="180" width="3" height="62" fill="#22d3ee"/>
+      <text x="843" y="200" fill="#22d3ee" font-weight="bold">CTR</text>
+      <text x="843" y="230" fill="#f5f0e8" font-size="20" font-weight="bold" font-family="Arial">25.06%</text>
+
+      <rect x="1008" y="180" width="170" height="62" rx="4" fill="#142850" stroke="#22d3ee" stroke-width="0.8"/>
+      <rect x="1008" y="180" width="3" height="62" fill="#22d3ee"/>
+      <text x="1023" y="200" fill="#22d3ee" font-weight="bold">CVR</text>
+      <text x="1023" y="230" fill="#f5f0e8" font-size="20" font-weight="bold" font-family="Arial">8.42%</text>
+
+      <rect x="1188" y="180" width="170" height="62" rx="4" fill="#142850" stroke="#84cc16" stroke-width="0.8"/>
+      <rect x="1188" y="180" width="3" height="62" fill="#84cc16"/>
+      <text x="1203" y="200" fill="#84cc16" font-weight="bold">NDCG@10</text>
+      <text x="1203" y="230" fill="#f5f0e8" font-size="20" font-weight="bold" font-family="Arial">0.734</text>
+
+      <rect x="1368" y="180" width="177" height="62" rx="4" fill="#142850" stroke="#eab308" stroke-width="0.8"/>
+      <rect x="1368" y="180" width="3" height="62" fill="#eab308"/>
+      <text x="1383" y="200" fill="#eab308" font-weight="bold">Diversity</text>
+      <text x="1383" y="230" fill="#f5f0e8" font-size="20" font-weight="bold" font-family="Arial">0.682</text>
+    </g>
+
+    <!-- 漏斗 -->
+    <text x="905" y="270" text-anchor="middle" fill="#22d3ee" font-size="12" font-weight="bold">推荐转化漏斗</text>
+    <polygon points="835,285 975,285 955,315 855,315" fill="#22d3ee" fill-opacity="0.75"/>
+    <polygon points="855,320 955,320 940,350 870,350" fill="#22d3ee" fill-opacity="0.6"/>
+    <polygon points="870,355 940,355 930,385 880,385" fill="#84cc16" fill-opacity="0.5"/>
+    <polygon points="880,390 930,390 923,420 887,420" fill="#eab308" fill-opacity="0.65"/>
+    <g font-size="10" fill="#0a1628" text-anchor="middle" font-weight="bold">
+      <text x="905" y="305">曝光 128,450</text>
+      <text x="905" y="340">点击 32,180</text>
+      <text x="905" y="375">收藏 8,920</text>
+      <text x="905" y="410">转化 3,145</text>
+    </g>
+
+    <!-- A/B 曲线 -->
+    <rect x="995" y="270" width="290" height="180" rx="4" fill="#142850" stroke="#22d3ee" stroke-width="0.8"/>
+    <text x="1140" y="290" text-anchor="middle" fill="#22d3ee" font-size="12" font-weight="bold">算法版本 A/B 对比 (CTR)</text>
+    <g stroke="#a5f3fc" stroke-width="0.4" opacity="0.15">
+      <line x1="1010" y1="320" x2="1275" y2="320"/>
+      <line x1="1010" y1="360" x2="1275" y2="360"/>
+      <line x1="1010" y1="400" x2="1275" y2="400"/>
+    </g>
+    <polyline points="1010,420 1045,400 1080,405 1115,380 1150,360 1185,345 1220,325 1255,310"
+              stroke="#22d3ee" stroke-width="2.5" fill="none" filter="url(#glowS)"/>
+    <polyline points="1010,430 1045,420 1080,425 1115,415 1150,410 1185,400 1220,390 1255,383"
+              stroke="#84cc16" stroke-width="2" fill="none"/>
+    <polyline points="1010,437 1045,433 1080,435 1115,430 1150,432 1185,425 1220,423 1255,420"
+              stroke="#f97316" stroke-width="1.5" fill="none" stroke-dasharray="3,2"/>
+    <g font-size="9" fill="#a5f3fc">
+      <text x="1015" y="308" fill="#22d3ee">— v3.0 KGNN+RL (最新)</text>
+      <text x="1015" y="380" fill="#84cc16">— v2.0 KGNN</text>
+      <text x="1015" y="420" fill="#f97316">--- v1.0 CF (对照)</text>
+    </g>
+
+    <!-- 可解释性 -->
+    <rect x="1295" y="270" width="250" height="180" rx="4" fill="#142850" stroke="#84cc16" stroke-width="0.8"/>
+    <text x="1420" y="290" text-anchor="middle" fill="#84cc16" font-size="12" font-weight="bold">🔍 推荐可解释性 (SHAP)</text>
+    <g font-size="10" fill="#e6f1ff">
+      <text x="1310" y="312">用户: U_102580</text>
+      <text x="1310" y="330">推荐: <tspan fill="#eab308" font-weight="bold">查济古村</tspan></text>
+      <text x="1310" y="352" fill="#22d3ee" font-weight="bold">归因分析:</text>
+      <text x="1310" y="370">• 喜欢徽派建筑 <tspan fill="#84cc16">+0.32</tspan></text>
+      <text x="1310" y="386">• 浏览过宏村 <tspan fill="#84cc16">+0.28</tspan></text>
+      <text x="1310" y="402">• 摄影爱好 <tspan fill="#84cc16">+0.18</tspan></text>
+      <text x="1310" y="418">• 冷门扶持 <tspan fill="#eab308">+0.15</tspan></text>
+      <text x="1310" y="434">• 距离近 <tspan fill="#a5f3fc">+0.07</tspan></text>
+    </g>
+
+    <!-- 多目标雷达 -->
+    <g transform="translate(920,540)">
+      <text x="0" y="-70" text-anchor="middle" fill="#eab308" font-size="12" font-weight="bold">多目标优化雷达</text>
+      <polygon points="0,-55 48,-27 48,27 0,55 -48,27 -48,-27" fill="none" stroke="#22d3ee" stroke-width="0.5" opacity="0.4"/>
+      <polygon points="0,-40 35,-20 35,20 0,40 -35,20 -35,-20" fill="none" stroke="#22d3ee" stroke-width="0.5" opacity="0.4"/>
+      <polygon points="0,-25 22,-13 22,13 0,25 -22,13 -22,-13" fill="none" stroke="#22d3ee" stroke-width="0.5" opacity="0.4"/>
+      <polygon points="0,-50 42,-20 45,25 0,42 -38,22 -44,-24" fill="#84cc16" fill-opacity="0.4" stroke="#84cc16" stroke-width="1.8"/>
+      <g font-size="9" fill="#a5f3fc">
+        <text x="0" y="-62" text-anchor="middle">CTR</text>
+        <text x="60" y="-27">满意度</text>
+        <text x="60" y="35">多样性</text>
+        <text x="0" y="72" text-anchor="middle">覆盖率</text>
+        <text x="-60" y="35" text-anchor="end">新颖性</text>
+        <text x="-60" y="-27" text-anchor="end">带动力</text>
+      </g>
+    </g>
+
+    <!-- 冷启动 -->
+    <rect x="1020" y="465" width="525" height="140" rx="4" fill="#142850" stroke="#eab308" stroke-width="0.8"/>
+    <text x="1035" y="485" fill="#eab308" font-size="12" font-weight="bold">🌱 冷启动景点扶持效果 (乡村振兴指标)</text>
+    <g font-size="10" fill="#e6f1ff">
+      <text x="1035" y="510">冯村</text>
+      <rect x="1120" y="500" width="330" height="12" rx="2" fill="#0a1628"/>
+      <rect x="1120" y="500" width="198" height="12" rx="2" fill="#84cc16"/>
+      <text x="1530" y="510" text-anchor="end" fill="#84cc16" font-weight="bold">+60% 曝光</text>
+
+      <text x="1035" y="535">上庄</text>
+      <rect x="1120" y="525" width="330" height="12" rx="2" fill="#0a1628"/>
+      <rect x="1120" y="525" width="148" height="12" rx="2" fill="#84cc16"/>
+      <text x="1530" y="535" text-anchor="end" fill="#84cc16" font-weight="bold">+45% 曝光</text>
+
+      <text x="1035" y="560">障山大峡谷</text>
+      <rect x="1120" y="550" width="330" height="12" rx="2" fill="#0a1628"/>
+      <rect x="1120" y="550" width="99" height="12" rx="2" fill="#eab308"/>
+      <text x="1530" y="560" text-anchor="end" fill="#eab308" font-weight="bold">+30% 曝光</text>
+
+      <text x="1035" y="585">唐模水口</text>
+      <rect x="1120" y="575" width="330" height="12" rx="2" fill="#0a1628"/>
+      <rect x="1120" y="575" width="83" height="12" rx="2" fill="#eab308"/>
+      <text x="1530" y="585" text-anchor="end" fill="#eab308" font-weight="bold">+25% 曝光</text>
+    </g>
+  </g>
+
+  <!-- ========== 副屏 3: 舆情 ========== -->
+  <g>
+    <rect x="40" y="640" width="500" height="520" rx="6" fill="url(#cardS)" stroke="#f97316" stroke-width="2"/>
+    <rect x="40" y="640" width="500" height="35" rx="6" fill="#f97316" fill-opacity="0.18"/>
+    <rect x="40" y="640" width="4" height="520" fill="#f97316"/>
+    <text x="58" y="664" fill="#f97316" font-size="14" font-weight="bold">副屏 3 · 多模态舆情监测屏</text>
+
+    <rect x="58" y="688" width="465" height="72" rx="4" fill="#142850" stroke="#f97316" stroke-width="0.8"/>
+    <text x="72" y="708" fill="#f97316" font-size="11" font-weight="bold">📊 全网 24h 提及量</text>
+    <g font-size="10" fill="#a5f3fc">
+      <text x="72" y="732">小红书 <tspan fill="#eab308" font-weight="bold">12,856</tspan></text>
+      <text x="170" y="732">抖音 <tspan fill="#eab308" font-weight="bold">28,430</tspan></text>
+      <text x="255" y="732">微博 <tspan fill="#eab308" font-weight="bold">5,208</tspan></text>
+      <text x="340" y="732">马蜂窝 <tspan fill="#eab308" font-weight="bold">3,105</tspan></text>
+      <text x="72" y="752">B站 <tspan fill="#eab308" font-weight="bold">1,876</tspan></text>
+      <text x="170" y="752">携程 <tspan fill="#eab308" font-weight="bold">4,532</tspan></text>
+      <text x="255" y="752">点评 <tspan fill="#eab308" font-weight="bold">2,987</tspan></text>
+      <text x="340" y="752" fill="#84cc16" font-weight="bold">总计 59,000+</text>
+    </g>
+
+    <rect x="58" y="770" width="230" height="185" rx="4" fill="#142850" stroke="#f97316" stroke-width="0.8"/>
+    <text x="173" y="790" text-anchor="middle" fill="#f97316" font-size="11" font-weight="bold">🌩️ 热门关键词云</text>
+    <g font-weight="bold">
+      <text x="80" y="820" fill="#eab308" font-size="18">徽派建筑</text>
+      <text x="185" y="825" fill="#84cc16" font-size="14">非遗</text>
+      <text x="70" y="850" fill="#22d3ee" font-size="12">古村</text>
+      <text x="130" y="855" fill="#f97316" font-size="16">美食</text>
+      <text x="215" y="855" fill="#a5f3fc" font-size="13">民宿</text>
+      <text x="80" y="885" fill="#eab308" font-size="11">摄影</text>
+      <text x="150" y="890" fill="#84cc16" font-size="14">亲子</text>
+      <text x="225" y="890" fill="#22d3ee" font-size="10">徒步</text>
+      <text x="70" y="920" fill="#f97316" font-size="13">写生</text>
+      <text x="150" y="925" fill="#eab308" font-size="10">文创</text>
+      <text x="205" y="925" fill="#84cc16" font-size="12">慢生活</text>
+      <text x="100" y="945" fill="#22d3ee" font-size="11">研学</text>
+      <text x="180" y="945" fill="#a5f3fc" font-size="10">夜色</text>
+    </g>
+
+    <g transform="translate(410,860)">
+      <text x="0" y="-70" text-anchor="middle" fill="#f97316" font-size="11" font-weight="bold">情感分布</text>
+      <circle cx="0" cy="0" r="55" fill="none" stroke="#0a1628" stroke-width="22"/>
+      <circle cx="0" cy="0" r="55" fill="none" stroke="#84cc16" stroke-width="22" stroke-dasharray="264 346" transform="rotate(-90)"/>
+      <circle cx="0" cy="0" r="55" fill="none" stroke="#eab308" stroke-width="22" stroke-dasharray="55 346" stroke-dashoffset="-264" transform="rotate(-90)"/>
+      <circle cx="0" cy="0" r="55" fill="none" stroke="#dc2626" stroke-width="22" stroke-dasharray="27 346" stroke-dashoffset="-319" transform="rotate(-90)"/>
+      <text x="0" y="-3" text-anchor="middle" fill="#f5f0e8" font-size="18" font-weight="bold">76.3%</text>
+      <text x="0" y="15" text-anchor="middle" fill="#a5f3fc" font-size="10" opacity="0.8">正面</text>
+      <g font-size="9" fill="#a5f3fc">
+        <rect x="-45" y="72" width="8" height="8" fill="#84cc16"/><text x="-32" y="80">正面 76.3%</text>
+        <rect x="-45" y="86" width="8" height="8" fill="#eab308"/><text x="-32" y="94">中性 15.8%</text>
+        <rect x="15" y="72" width="8" height="8" fill="#dc2626"/><text x="28" y="80">负面 7.9%</text>
+      </g>
+    </g>
+
+    <rect x="58" y="965" width="465" height="185" rx="4" fill="#142850" stroke="#f97316" stroke-width="0.8"/>
+    <text x="72" y="985" fill="#f97316" font-size="11" font-weight="bold">💬 实时评论流 (最新 4 条)</text>
+    <g font-size="10" fill="#e6f1ff">
+      <text x="72" y="1010" fill="#84cc16">😊 @小红薯用户 · 小红书 · 2 分钟前</text>
+      <text x="72" y="1025" fill="#a5f3fc" opacity="0.85">"宏村的清晨太美了，雾气朦胧仿佛水墨画！"</text>
+
+      <text x="72" y="1048" fill="#84cc16">😊 @旅行日记 · 抖音 · 5 分钟前</text>
+      <text x="72" y="1063" fill="#a5f3fc" opacity="0.85">"查济古村人少景美，强烈推荐避开节假日"</text>
+
+      <text x="72" y="1086" fill="#eab308">😐 @背包客Leo · 马蜂窝 · 8 分钟前</text>
+      <text x="72" y="1101" fill="#a5f3fc" opacity="0.85">"民宿性价比一般，但风景没得说"</text>
+
+      <text x="72" y="1124" fill="#84cc16">😊 @摄影师阿明 · 微博 · 12 分钟前</text>
+      <text x="72" y="1139" fill="#a5f3fc" opacity="0.85">"西递的秋色绝了，出片率 100%！"</text>
+    </g>
+  </g>
+
+  <!-- ========== 副屏 4: LLM Agent ========== -->
+  <g>
+    <rect x="560" y="640" width="500" height="520" rx="6" fill="url(#cardS)" stroke="#eab308" stroke-width="2"/>
+    <rect x="560" y="640" width="500" height="35" rx="6" fill="#eab308" fill-opacity="0.18"/>
+    <rect x="560" y="640" width="4" height="520" fill="#eab308"/>
+    <text x="578" y="664" fill="#eab308" font-size="14" font-weight="bold">副屏 4 · LLM Agent 对话屏</text>
+
+    <g transform="translate(650,745)">
+      <circle cx="0" cy="0" r="48" fill="#eab308" fill-opacity="0.15" stroke="#eab308" stroke-width="2"/>
+      <circle cx="0" cy="0" r="38" fill="#eab308" fill-opacity="0.25"/>
+      <text x="0" y="12" text-anchor="middle" fill="#eab308" font-size="34">🤖</text>
+      <text x="0" y="70" text-anchor="middle" fill="#eab308" font-size="11" font-weight="bold">小徽 · AI 导游</text>
+      <text x="0" y="87" text-anchor="middle" fill="#a5f3fc" font-size="10" opacity="0.8">Qwen2.5-14B · vLLM</text>
+    </g>
+
+    <rect x="740" y="700" width="305" height="130" rx="4" fill="#142850" stroke="#eab308" stroke-width="0.8"/>
+    <text x="755" y="720" fill="#eab308" font-size="11" font-weight="bold">🧠 Agent 状态</text>
+    <g font-size="10" fill="#a5f3fc">
+      <text x="755" y="742">推理延迟: <tspan fill="#84cc16" font-weight="bold">128 ms</tspan></text>
+      <text x="755" y="760">Tokens/s: <tspan fill="#84cc16" font-weight="bold">86</tspan></text>
+      <text x="755" y="778">今日对话: <tspan fill="#eab308" font-weight="bold">2,856</tspan> 轮</text>
+      <text x="755" y="796">工具调用: <tspan fill="#eab308" font-weight="bold">15,432</tspan> 次</text>
+      <text x="755" y="814">用户满意度: <tspan fill="#84cc16" font-weight="bold">4.7 / 5.0</tspan></text>
+    </g>
+
+    <rect x="578" y="845" width="467" height="305" rx="4" fill="#142850" stroke="#eab308" stroke-width="0.8"/>
+    <text x="592" y="865" fill="#eab308" font-size="11" font-weight="bold">💬 实时对话日志 (ReAct 思考链)</text>
+
+    <rect x="592" y="875" width="440" height="35" rx="6" fill="#0a1628" stroke="#22d3ee" stroke-width="0.5"/>
+    <text x="602" y="890" fill="#22d3ee" font-size="10" font-weight="bold">👤 User</text>
+    <text x="602" y="905" fill="#e6f1ff" font-size="10">"帮我规划带父母的周末两日游，预算 1500"</text>
+
+    <rect x="592" y="918" width="440" height="82" rx="6" fill="#eab308" fill-opacity="0.08" stroke="#eab308" stroke-width="0.5"/>
+    <text x="602" y="933" fill="#eab308" font-size="10" font-weight="bold">🧠 Agent · ReAct</text>
+    <g font-size="9" fill="#a5f3fc">
+      <text x="602" y="949">Thought: 需要适老景点，预算有限，两日游</text>
+      <text x="602" y="964">Action: search_KG(tag=["适老","徽派","4A+"])</text>
+      <text x="602" y="979">Observation: [宏村, 西递, 唐模, 呈坎]</text>
+      <text x="602" y="994">Action: get_weather(date="2026-09-05~06")</text>
+    </g>
+
+    <rect x="592" y="1008" width="440" height="72" rx="6" fill="#84cc16" fill-opacity="0.1" stroke="#84cc16" stroke-width="0.5"/>
+    <text x="602" y="1023" fill="#84cc16" font-size="10" font-weight="bold">📋 生成行程</text>
+    <g font-size="9" fill="#e6f1ff">
+      <text x="602" y="1040">Day1: 09:00 出发 → 宏村 (2h) → 塔川午餐 → 民宿</text>
+      <text x="602" y="1055">Day2: 08:00 西递 → 桃花源 → 12:00 返程</text>
+      <text x="602" y="1072" fill="#eab308" font-weight="bold">💰 1,420 元 · 🚗 32km · ☀ 晴朗适宜出行</text>
+    </g>
+
+    <text x="592" y="1102" fill="#84cc16" font-size="10">✓ 已同步至主屏 3D 地图，路线已绘制</text>
+    <text x="592" y="1120" fill="#84cc16" font-size="10">✓ 已推送至用户小程序</text>
+    <text x="592" y="1138" fill="#22d3ee" font-size="10">🎯 预期带动消费: 1,420 元 · 振兴指数 +0.8</text>
+  </g>
+
+  <!-- ========== 副屏 5: 乡村振兴 ========== -->
+  <g>
+    <rect x="1080" y="640" width="480" height="520" rx="6" fill="url(#cardS)" stroke="#22d3ee" stroke-width="2"/>
+    <rect x="1080" y="640" width="480" height="35" rx="6" fill="#22d3ee" fill-opacity="0.18"/>
+    <rect x="1080" y="640" width="4" height="520" fill="#22d3ee"/>
+    <text x="1098" y="664" fill="#22d3ee" font-size="14" font-weight="bold">副屏 5 · 乡村振兴成效屏</text>
+
+    <g transform="translate(1320,775)">
+      <path d="M -95 0 A 95 95 0 0 1 95 0" fill="none" stroke="#0a1628" stroke-width="20"/>
+      <path d="M -95 0 A 95 95 0 0 1 74 -58" fill="none" stroke="#22d3ee" stroke-width="20" stroke-linecap="round" filter="url(#glowS)"/>
+      <text x="0" y="-8" text-anchor="middle" fill="#22d3ee" font-size="44" font-weight="bold" filter="url(#glowS)">87.5</text>
+      <text x="0" y="18" text-anchor="middle" fill="#a5f3fc" font-size="12" opacity="0.85">综合振兴指数</text>
+      <text x="0" y="40" text-anchor="middle" fill="#84cc16" font-size="11" font-weight="bold">↑ 较去年 +12.3</text>
+    </g>
+
+    <g font-size="10">
+      <rect x="1098" y="875" width="220" height="55" rx="4" fill="#142850" stroke="#22d3ee" stroke-width="0.8"/>
+      <rect x="1098" y="875" width="3" height="55" fill="#22d3ee"/>
+      <text x="1112" y="895" fill="#22d3ee" font-weight="bold">💼 带动就业</text>
+      <text x="1112" y="918" fill="#f5f0e8" font-size="16" font-weight="bold" font-family="Arial">2,856 人</text>
+      <text x="1252" y="918" fill="#84cc16" font-weight="bold">↑ 18%</text>
+
+      <rect x="1328" y="875" width="220" height="55" rx="4" fill="#142850" stroke="#eab308" stroke-width="0.8"/>
+      <rect x="1328" y="875" width="3" height="55" fill="#eab308"/>
+      <text x="1342" y="895" fill="#eab308" font-weight="bold">💰 村民增收</text>
+      <text x="1342" y="918" fill="#f5f0e8" font-size="16" font-weight="bold" font-family="Arial">¥ 8,432</text>
+      <text x="1482" y="918" fill="#84cc16" font-weight="bold">↑ 22%</text>
+
+      <rect x="1098" y="940" width="220" height="55" rx="4" fill="#142850" stroke="#84cc16" stroke-width="0.8"/>
+      <rect x="1098" y="940" width="3" height="55" fill="#84cc16"/>
+      <text x="1112" y="960" fill="#84cc16" font-weight="bold">🏛️ 非遗活化</text>
+      <text x="1112" y="983" fill="#f5f0e8" font-size="16" font-weight="bold" font-family="Arial">32 项</text>
+      <text x="1252" y="983" fill="#84cc16" font-weight="bold">↑ 6</text>
+
+      <rect x="1328" y="940" width="220" height="55" rx="4" fill="#142850" stroke="#f97316" stroke-width="0.8"/>
+      <rect x="1328" y="940" width="3" height="55" fill="#f97316"/>
+      <text x="1342" y="960" fill="#f97316" font-weight="bold">🌾 农产品销售</text>
+      <text x="1342" y="983" fill="#f5f0e8" font-size="16" font-weight="bold" font-family="Arial">¥ 156 万</text>
+      <text x="1487" y="983" fill="#84cc16" font-weight="bold">↑ 35%</text>
+    </g>
+
+    <g transform="translate(1200,1080)">
+      <text x="0" y="-70" text-anchor="middle" fill="#22d3ee" font-size="11" font-weight="bold">多维指标雷达</text>
+      <polygon points="0,-55 39,-39 55,0 39,39 0,55 -39,39 -55,0 -39,-39" fill="none" stroke="#22d3ee" stroke-width="0.5" opacity="0.4"/>
+      <polygon points="0,-40 28,-28 40,0 28,28 0,40 -28,28 -40,0 -28,-28" fill="none" stroke="#22d3ee" stroke-width="0.5" opacity="0.4"/>
+      <polygon points="0,-48 35,-30 50,5 32,32 0,45 -35,30 -48,-5 -30,-32" fill="#84cc16" fill-opacity="0.4" stroke="#84cc16" stroke-width="1.8"/>
+      <g font-size="8" fill="#a5f3fc">
+        <text x="0" y="-62" text-anchor="middle">产业</text>
+        <text x="48" y="-42">人才</text>
+        <text x="66" y="3">文化</text>
+        <text x="48" y="50">生态</text>
+        <text x="0" y="70" text-anchor="middle">组织</text>
+        <text x="-48" y="50" text-anchor="end">民生</text>
+        <text x="-66" y="3" text-anchor="end">治理</text>
+        <text x="-48" y="-42" text-anchor="end">创新</text>
+      </g>
+    </g>
+
+    <rect x="1300" y="1015" width="248" height="140" rx="4" fill="#142850" stroke="#eab308" stroke-width="0.8"/>
+    <text x="1315" y="1035" fill="#eab308" font-size="11" font-weight="bold">🏆 村落 TOPSIS 排名</text>
+    <g font-size="10" fill="#e6f1ff">
+      <text x="1315" y="1057">1. 宏村</text><text x="1535" y="1057" text-anchor="end" fill="#eab308" font-weight="bold">0.923</text>
+      <text x="1315" y="1075">2. 西递</text><text x="1535" y="1075" text-anchor="end" fill="#eab308" font-weight="bold">0.887</text>
+      <text x="1315" y="1093">3. 查济古村</text><text x="1535" y="1093" text-anchor="end" fill="#a5f3fc" font-weight="bold">0.842</text>
+      <text x="1315" y="1111">4. 呈坎</text><text x="1535" y="1111" text-anchor="end" fill="#a5f3fc">0.798</text>
+      <text x="1315" y="1129">5. 唐模</text><text x="1535" y="1129" text-anchor="end" fill="#a5f3fc" opacity="0.75">0.756</text>
+      <text x="1315" y="1147">6. 江村</text><text x="1535" y="1147" text-anchor="end" fill="#a5f3fc" opacity="0.75">0.712</text>
+    </g>
+  </g>
+
+  <g stroke="#22d3ee" stroke-width="2" fill="none" opacity="0.6">
+    <path d="M 20 20 L 20 55 M 20 20 L 55 20"/>
+    <path d="M 1580 20 L 1580 55 M 1580 20 L 1545 20"/>
+    <path d="M 20 1180 L 20 1145 M 20 1180 L 55 1180"/>
+    <path d="M 1580 1180 L 1580 1145 M 1580 1180 L 1545 1180"/>
+  </g>
+</svg>

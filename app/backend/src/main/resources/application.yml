@@ -1,0 +1,53 @@
+server:
+  # 与 D 盘副本(D:\workbuddy_rural, 8090)错开, 本副本用 8091
+  port: 8091
+
+spring:
+  application:
+    name: rural-travel
+  datasource:
+    url: jdbc:mysql://localhost:3307/rural_travel?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true&useSSL=false
+    username: ${DB_USER:root}
+    # C 盘(OneDrive)副本的 MySQL root 密码是 root123456(见 tools/mysql-init.sql),
+    # 与 D 盘副本(root123456)不同,勿混用; start-backend.bat 里也用同名环境变量覆盖
+    password: ${DB_PASS:root123456}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  sql:
+    init:
+      mode: always
+      # 存量结构 + 方案三(多模态导览)独立建表脚本,互不干扰
+      schema-locations: classpath:schema.sql,classpath:schema-guide.sql
+      continue-on-error: true
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Shanghai
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+  global-config:
+    banner: false
+    db-config:
+      id-type: auto
+
+rural:
+  jwt:
+    secret: ${JWT_SECRET:rural-travel-jwt-secret-key-2026-do-not-leak}
+    expire-hours: 12
+  site:
+    # 站点地址:库中图片存相对路径时,识景服务拼接此前缀抓取图片计算 pHash
+    base-url: ${SITE_BASE_URL:http://localhost:5174}
+  ai:
+    # 用户自有密钥模式:各用户在个人中心配置自己的 Key,未配置则降级本地引擎
+    crypto-secret: ${AI_CRYPTO_SECRET:rural-travel-ai-crypto-2026}
+    # 以下为全局兜底配置,留空表示不提供公共密钥(推荐)
+    api-key: ${AI_API_KEY:}
+    base-url: ${AI_BASE_URL:https://api.deepseek.com/v1}
+    chat-model: ${AI_CHAT_MODEL:deepseek-chat}
+    vision-model: ${AI_VISION_MODEL:}
+    timeout-seconds: 20
+    max-knowledge-context: 5

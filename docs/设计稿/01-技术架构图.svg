@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1200" font-family="'Microsoft YaHei','PingFang SC',sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0a0e27"/>
+      <stop offset="100%" stop-color="#1a1f3a"/>
+    </linearGradient>
+    <linearGradient id="l1" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#00d4ff" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#00d4ff" stop-opacity="0.05"/>
+    </linearGradient>
+    <linearGradient id="l2" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#7c4dff" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#7c4dff" stop-opacity="0.05"/>
+    </linearGradient>
+    <linearGradient id="l3" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#00ff9d" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#00ff9d" stop-opacity="0.05"/>
+    </linearGradient>
+    <linearGradient id="l4" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#ff6b9d" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#ff6b9d" stop-opacity="0.05"/>
+    </linearGradient>
+    <linearGradient id="l5" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#ffd93d" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#ffd93d" stop-opacity="0.05"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#00d4ff"/>
+    </marker>
+  </defs>
+
+  <rect width="1600" height="1200" fill="url(#bg)"/>
+
+  <!-- 标题 -->
+  <text x="800" y="50" text-anchor="middle" fill="#00d4ff" font-size="30" font-weight="bold" filter="url(#glow)">「乡智文旅」系统技术架构图</text>
+  <text x="800" y="80" text-anchor="middle" fill="#8892b0" font-size="16">Rural Cultural Tourism Intelligent Recommendation Platform · Five-Layer Architecture</text>
+  <line x1="600" y1="95" x2="1000" y2="95" stroke="#00d4ff" stroke-width="2" opacity="0.6"/>
+
+  <!-- ========== 第 5 层：展示层 ========== -->
+  <rect x="60" y="120" width="1200" height="170" rx="8" fill="url(#l5)" stroke="#ffd93d" stroke-width="1.5"/>
+  <rect x="60" y="120" width="180" height="170" rx="8" fill="#ffd93d" fill-opacity="0.15"/>
+  <text x="150" y="180" text-anchor="middle" fill="#ffd93d" font-size="22" font-weight="bold">展示层</text>
+  <text x="150" y="210" text-anchor="middle" fill="#ffd93d" font-size="14" opacity="0.8">Presentation</text>
+  <text x="150" y="240" text-anchor="middle" fill="#8892b0" font-size="12">多端联动</text>
+
+  <!-- 展示层组件 -->
+  <g font-size="13" fill="#e6f1ff">
+    <rect x="270" y="140" width="220" height="60" rx="4" fill="#1a1f3a" stroke="#ffd93d" stroke-width="1"/>
+    <text x="380" y="163" text-anchor="middle" font-weight="bold" fill="#ffd93d">3D 数字孪生大屏</text>
+    <text x="380" y="185" text-anchor="middle" font-size="11" fill="#8892b0">Cesium + WebGL + DataV</text>
+
+    <rect x="510" y="140" width="220" height="60" rx="4" fill="#1a1f3a" stroke="#ffd93d" stroke-width="1"/>
+    <text x="620" y="163" text-anchor="middle" font-weight="bold" fill="#ffd93d">Web 管理后台</text>
+    <text x="620" y="185" text-anchor="middle" font-size="11" fill="#8892b0">Vue3 + TS + Ant Design Pro</text>
+
+    <rect x="750" y="140" width="220" height="60" rx="4" fill="#1a1f3a" stroke="#ffd93d" stroke-width="1"/>
+    <text x="860" y="163" text-anchor="middle" font-weight="bold" fill="#ffd93d">微信小程序 / Uniapp</text>
+    <text x="860" y="185" text-anchor="middle" font-size="11" fill="#8892b0">用户端推荐 + 行程规划</text>
+
+    <rect x="990" y="140" width="250" height="60" rx="4" fill="#1a1f3a" stroke="#ffd93d" stroke-width="1"/>
+    <text x="1115" y="163" text-anchor="middle" font-weight="bold" fill="#ffd93d">AR 实景导览</text>
+    <text x="1115" y="185" text-anchor="middle" font-size="11" fill="#8892b0">AR.js / 8th Wall + 图像识别</text>
+
+    <rect x="270" y="215" width="460" height="60" rx="4" fill="#1a1f3a" stroke="#ffd93d" stroke-width="1" stroke-dasharray="4,2"/>
+    <text x="500" y="238" text-anchor="middle" font-weight="bold" fill="#ffd93d">可视化图表组件库</text>
+    <text x="500" y="260" text-anchor="middle" font-size="11" fill="#8892b0">ECharts · AntV L7/G6 · Three.js · D3.js · DataV 边框装饰</text>
+
+    <rect x="750" y="215" width="490" height="60" rx="4" fill="#1a1f3a" stroke="#ffd93d" stroke-width="1" stroke-dasharray="4,2"/>
+    <text x="995" y="238" text-anchor="middle" font-weight="bold" fill="#ffd93d">多屏联动 &amp; 实时通信</text>
+    <text x="995" y="260" text-anchor="middle" font-size="11" fill="#8892b0">WebSocket · MQTT · SSE 流式推送 · 大屏轮播调度器</text>
+  </g>
+
+  <!-- ========== 第 4 层：服务层 ========== -->
+  <rect x="60" y="310" width="1200" height="150" rx="8" fill="url(#l4)" stroke="#ff6b9d" stroke-width="1.5"/>
+  <rect x="60" y="310" width="180" height="150" rx="8" fill="#ff6b9d" fill-opacity="0.15"/>
+  <text x="150" y="365" text-anchor="middle" fill="#ff6b9d" font-size="22" font-weight="bold">服务层</text>
+  <text x="150" y="395" text-anchor="middle" fill="#ff6b9d" font-size="14" opacity="0.8">Service</text>
+  <text x="150" y="425" text-anchor="middle" fill="#8892b0" font-size="12">微服务 · 网关 · 鉴权</text>
+
+  <g font-size="13" fill="#e6f1ff">
+    <rect x="270" y="330" width="180" height="50" rx="4" fill="#1a1f3a" stroke="#ff6b9d"/>
+    <text x="360" y="352" text-anchor="middle" font-weight="bold" fill="#ff6b9d">API Gateway</text>
+    <text x="360" y="370" text-anchor="middle" font-size="11" fill="#8892b0">Spring Cloud Gateway</text>
+
+    <rect x="470" y="330" width="180" height="50" rx="4" fill="#1a1f3a" stroke="#ff6b9d"/>
+    <text x="560" y="352" text-anchor="middle" font-weight="bold" fill="#ff6b9d">注册中心</text>
+    <text x="560" y="370" text-anchor="middle" font-size="11" fill="#8892b0">Nacos / Consul</text>
+
+    <rect x="670" y="330" width="180" height="50" rx="4" fill="#1a1f3a" stroke="#ff6b9d"/>
+    <text x="760" y="352" text-anchor="middle" font-weight="bold" fill="#ff6b9d">业务微服务</text>
+    <text x="760" y="370" text-anchor="middle" font-size="11" fill="#8892b0">FastAPI / Spring Boot</text>
+
+    <rect x="870" y="330" width="180" height="50" rx="4" fill="#1a1f3a" stroke="#ff6b9d"/>
+    <text x="960" y="352" text-anchor="middle" font-weight="bold" fill="#ff6b9d">鉴权中心</text>
+    <text x="960" y="370" text-anchor="middle" font-size="11" fill="#8892b0">JWT + OAuth2 + RBAC</text>
+
+    <rect x="1070" y="330" width="170" height="50" rx="4" fill="#1a1f3a" stroke="#ff6b9d"/>
+    <text x="1155" y="352" text-anchor="middle" font-weight="bold" fill="#ff6b9d">缓存 &amp; 限流</text>
+    <text x="1155" y="370" text-anchor="middle" font-size="11" fill="#8892b0">Redis + Sentinel</text>
+
+    <rect x="270" y="395" width="470" height="50" rx="4" fill="#1a1f3a" stroke="#ff6b9d" stroke-dasharray="4,2"/>
+    <text x="505" y="417" text-anchor="middle" font-weight="bold" fill="#ff6b9d">推荐服务 · 图谱服务 · Agent 服务 · 大屏数据服务</text>
+    <text x="505" y="435" text-anchor="middle" font-size="11" fill="#8892b0">领域驱动设计 DDD · REST + gRPC 双协议</text>
+
+    <rect x="760" y="395" width="480" height="50" rx="4" fill="#1a1f3a" stroke="#ff6b9d" stroke-dasharray="4,2"/>
+    <text x="1000" y="417" text-anchor="middle" font-weight="bold" fill="#ff6b9d">链路追踪 · 日志 · 监控</text>
+    <text x="1000" y="435" text-anchor="middle" font-size="11" fill="#8892b0">SkyWalking + ELK + Prometheus + Grafana</text>
+  </g>
+
+  <!-- ========== 第 3 层：算法层 ========== -->
+  <rect x="60" y="480" width="1200" height="180" rx="8" fill="url(#l3)" stroke="#00ff9d" stroke-width="1.5"/>
+  <rect x="60" y="480" width="180" height="180" rx="8" fill="#00ff9d" fill-opacity="0.15"/>
+  <text x="150" y="545" text-anchor="middle" fill="#00ff9d" font-size="22" font-weight="bold">算法层</text>
+  <text x="150" y="575" text-anchor="middle" fill="#00ff9d" font-size="14" opacity="0.8">Algorithm</text>
+  <text x="150" y="605" text-anchor="middle" fill="#8892b0" font-size="12">KG · GNN · LLM · RL</text>
+  <text x="150" y="625" text-anchor="middle" fill="#8892b0" font-size="12">核心创新引擎</text>
+
+  <g font-size="13" fill="#e6f1ff">
+    <rect x="270" y="500" width="230" height="70" rx="4" fill="#1a1f3a" stroke="#00ff9d"/>
+    <text x="385" y="522" text-anchor="middle" font-weight="bold" fill="#00ff9d">知识图谱构建</text>
+    <text x="385" y="542" text-anchor="middle" font-size="11" fill="#8892b0">实体识别 + 关系抽取</text>
+    <text x="385" y="558" text-anchor="middle" font-size="11" fill="#8892b0">Neo4j + LLM 自动化</text>
+
+    <rect x="515" y="500" width="230" height="70" rx="4" fill="#1a1f3a" stroke="#00ff9d"/>
+    <text x="630" y="522" text-anchor="middle" font-weight="bold" fill="#00ff9d">图神经网络推荐</text>
+    <text x="630" y="542" text-anchor="middle" font-size="11" fill="#8892b0">KGAT / RippleNet</text>
+    <text x="630" y="558" text-anchor="middle" font-size="11" fill="#8892b0">GraphSAGE 召回</text>
+
+    <rect x="760" y="500" width="230" height="70" rx="4" fill="#1a1f3a" stroke="#00ff9d"/>
+    <text x="875" y="522" text-anchor="middle" font-weight="bold" fill="#00ff9d">强化学习排序</text>
+    <text x="875" y="542" text-anchor="middle" font-size="11" fill="#8892b0">DQN / PPO 多目标</text>
+    <text x="875" y="558" text-anchor="middle" font-size="11" fill="#8892b0">CTR + 满意度 + 带动力</text>
+
+    <rect x="1005" y="500" width="235" height="70" rx="4" fill="#1a1f3a" stroke="#00ff9d"/>
+    <text x="1122" y="522" text-anchor="middle" font-weight="bold" fill="#00ff9d">LLM Agent 引擎</text>
+    <text x="1122" y="542" text-anchor="middle" font-size="11" fill="#8892b0">Qwen2.5 / GLM-4 + vLLM</text>
+    <text x="1122" y="558" text-anchor="middle" font-size="11" fill="#8892b0">LangChain Function Calling</text>
+
+    <rect x="270" y="585" width="230" height="60" rx="4" fill="#1a1f3a" stroke="#00ff9d"/>
+    <text x="385" y="607" text-anchor="middle" font-weight="bold" fill="#00ff9d">多模态内容理解</text>
+    <text x="385" y="627" text-anchor="middle" font-size="11" fill="#8892b0">CLIP + Whisper + BERT</text>
+
+    <rect x="515" y="585" width="230" height="60" rx="4" fill="#1a1f3a" stroke="#00ff9d"/>
+    <text x="630" y="607" text-anchor="middle" font-weight="bold" fill="#00ff9d">联邦学习</text>
+    <text x="630" y="627" text-anchor="middle" font-size="11" fill="#8892b0">Flower · FedAvg · 隐私保护</text>
+
+    <rect x="760" y="585" width="230" height="60" rx="4" fill="#1a1f3a" stroke="#00ff9d"/>
+    <text x="875" y="607" text-anchor="middle" font-weight="bold" fill="#00ff9d">乡村振兴评估模型</text>
+    <text x="875" y="627" text-anchor="middle" font-size="11" fill="#8892b0">AHP + 熵权法 + TOPSIS</text>
+
+    <rect x="1005" y="585" width="235" height="60" rx="4" fill="#1a1f3a" stroke="#00ff9d"/>
+    <text x="1122" y="607" text-anchor="middle" font-weight="bold" fill="#00ff9d">时间序列预测</text>
+    <text x="1122" y="627" text-anchor="middle" font-size="11" fill="#8892b0">LSTM / Transformer 客流预测</text>
+  </g>
+
+  <!-- ========== 第 2 层：数据治理层 ========== -->
+  <rect x="60" y="680" width="1200" height="170" rx="8" fill="url(#l2)" stroke="#7c4dff" stroke-width="1.5"/>
+  <rect x="60" y="680" width="180" height="170" rx="8" fill="#7c4dff" fill-opacity="0.15"/>
+  <text x="150" y="740" text-anchor="middle" fill="#7c4dff" font-size="22" font-weight="bold">数据治理层</text>
+  <text x="150" y="770" text-anchor="middle" fill="#7c4dff" font-size="14" opacity="0.8">Data Governance</text>
+  <text x="150" y="800" text-anchor="middle" fill="#8892b0" font-size="12">多模存储 · 流批一体</text>
+
+  <g font-size="12" fill="#e6f1ff">
+    <rect x="270" y="700" width="150" height="60" rx="4" fill="#1a1f3a" stroke="#7c4dff"/>
+    <text x="345" y="722" text-anchor="middle" font-weight="bold" fill="#7c4dff">图数据库</text>
+    <text x="345" y="742" text-anchor="middle" font-size="11" fill="#8892b0">Neo4j</text>
+
+    <rect x="435" y="700" width="150" height="60" rx="4" fill="#1a1f3a" stroke="#7c4dff"/>
+    <text x="510" y="722" text-anchor="middle" font-weight="bold" fill="#7c4dff">向量数据库</text>
+    <text x="510" y="742" text-anchor="middle" font-size="11" fill="#8892b0">Milvus / Qdrant</text>
+
+    <rect x="600" y="700" width="150" height="60" rx="4" fill="#1a1f3a" stroke="#7c4dff"/>
+    <text x="675" y="722" text-anchor="middle" font-weight="bold" fill="#7c4dff">OLAP 分析库</text>
+    <text x="675" y="742" text-anchor="middle" font-size="11" fill="#8892b0">ClickHouse / Doris</text>
+
+    <rect x="765" y="700" width="150" height="60" rx="4" fill="#1a1f3a" stroke="#7c4dff"/>
+    <text x="840" y="722" text-anchor="middle" font-weight="bold" fill="#7c4dff">时序数据库</text>
+    <text x="840" y="742" text-anchor="middle" font-size="11" fill="#8892b0">TDengine</text>
+
+    <rect x="930" y="700" width="150" height="60" rx="4" fill="#1a1f3a" stroke="#7c4dff"/>
+    <text x="1005" y="722" text-anchor="middle" font-weight="bold" fill="#7c4dff">关系数据库</text>
+    <text x="1005" y="742" text-anchor="middle" font-size="11" fill="#8892b0">MySQL / PG</text>
+
+    <rect x="1095" y="700" width="145" height="60" rx="4" fill="#1a1f3a" stroke="#7c4dff"/>
+    <text x="1167" y="722" text-anchor="middle" font-weight="bold" fill="#7c4dff">对象存储</text>
+    <text x="1167" y="742" text-anchor="middle" font-size="11" fill="#8892b0">MinIO · 3D 模型</text>
+
+    <rect x="270" y="775" width="470" height="60" rx="4" fill="#1a1f3a" stroke="#7c4dff" stroke-dasharray="4,2"/>
+    <text x="505" y="797" text-anchor="middle" font-weight="bold" fill="#7c4dff">实时流处理管道</text>
+    <text x="505" y="817" text-anchor="middle" font-size="11" fill="#8892b0">Kafka 消息队列 + Apache Flink 流批一体计算</text>
+
+    <rect x="760" y="775" width="480" height="60" rx="4" fill="#1a1f3a" stroke="#7c4dff" stroke-dasharray="4,2"/>
+    <text x="1000" y="797" text-anchor="middle" font-weight="bold" fill="#7c4dff">数据治理 &amp; 质量</text>
+    <text x="1000" y="817" text-anchor="middle" font-size="11" fill="#8892b0">DataX 同步 · 元数据管理 · 数据血缘 · 脱敏加密</text>
+  </g>
+
+  <!-- ========== 第 1 层：数据采集层 ========== -->
+  <rect x="60" y="870" width="1200" height="170" rx="8" fill="url(#l1)" stroke="#00d4ff" stroke-width="1.5"/>
+  <rect x="60" y="870" width="180" height="170" rx="8" fill="#00d4ff" fill-opacity="0.15"/>
+  <text x="150" y="930" text-anchor="middle" fill="#00d4ff" font-size="22" font-weight="bold">数据采集层</text>
+  <text x="150" y="960" text-anchor="middle" fill="#00d4ff" font-size="14" opacity="0.8">Data Acquisition</text>
+  <text x="150" y="990" text-anchor="middle" fill="#8892b0" font-size="12">多源异构融合</text>
+
+  <g font-size="12" fill="#e6f1ff">
+    <rect x="270" y="890" width="150" height="65" rx="4" fill="#1a1f3a" stroke="#00d4ff"/>
+    <text x="345" y="912" text-anchor="middle" font-weight="bold" fill="#00d4ff">卫星遥感</text>
+    <text x="345" y="932" text-anchor="middle" font-size="10" fill="#8892b0">Sentinel-2 影像</text>
+    <text x="345" y="946" text-anchor="middle" font-size="10" fill="#8892b0">NDVI 植被指数</text>
+
+    <rect x="435" y="890" width="150" height="65" rx="4" fill="#1a1f3a" stroke="#00d4ff"/>
+    <text x="510" y="912" text-anchor="middle" font-weight="bold" fill="#00d4ff">无人机倾斜摄影</text>
+    <text x="510" y="932" text-anchor="middle" font-size="10" fill="#8892b0">3D 建模</text>
+    <text x="510" y="946" text-anchor="middle" font-size="10" fill="#8892b0">OSM 建筑白模</text>
+
+    <rect x="600" y="890" width="150" height="65" rx="4" fill="#1a1f3a" stroke="#00d4ff"/>
+    <text x="675" y="912" text-anchor="middle" font-weight="bold" fill="#00d4ff">UGC 爬虫</text>
+    <text x="675" y="932" text-anchor="middle" font-size="10" fill="#8892b0">小红书 · 抖音</text>
+    <text x="675" y="946" text-anchor="middle" font-size="10" fill="#8892b0">马蜂窝 · 携程</text>
+
+    <rect x="765" y="890" width="150" height="65" rx="4" fill="#1a1f3a" stroke="#00d4ff"/>
+    <text x="840" y="912" text-anchor="middle" font-weight="bold" fill="#00d4ff">IoT 传感器</text>
+    <text x="840" y="932" text-anchor="middle" font-size="10" fill="#8892b0">客流闸机 · 摄像头</text>
+    <text x="840" y="946" text-anchor="middle" font-size="10" fill="#8892b0">环境监测</text>
+
+    <rect x="930" y="890" width="150" height="65" rx="4" fill="#1a1f3a" stroke="#00d4ff"/>
+    <text x="1005" y="912" text-anchor="middle" font-weight="bold" fill="#00d4ff">政务开放数据</text>
+    <text x="1005" y="932" text-anchor="middle" font-size="10" fill="#8892b0">文旅局 · 统计局</text>
+    <text x="1005" y="946" text-anchor="middle" font-size="10" fill="#8892b0">非遗名录</text>
+
+    <rect x="1095" y="890" width="145" height="65" rx="4" fill="#1a1f3a" stroke="#00d4ff"/>
+    <text x="1167" y="912" text-anchor="middle" font-weight="bold" fill="#00d4ff">运营商信令</text>
+    <text x="1167" y="932" text-anchor="middle" font-size="10" fill="#8892b0">脱敏 OD 数据</text>
+    <text x="1167" y="946" text-anchor="middle" font-size="10" fill="#8892b0">人口流动</text>
+
+    <rect x="270" y="970" width="970" height="55" rx="4" fill="#1a1f3a" stroke="#00d4ff" stroke-dasharray="4,2"/>
+    <text x="755" y="992" text-anchor="middle" font-weight="bold" fill="#00d4ff">数据接入 &amp; 边缘计算</text>
+    <text x="755" y="1012" text-anchor="middle" font-size="11" fill="#8892b0">Flume · Logstash · MQTT Broker · 边缘网关（数据预处理、去重、脱敏、格式化）</text>
+  </g>
+
+  <!-- 右侧箭头：数据自下而上流动 -->
+  <g stroke="#00d4ff" stroke-width="2" fill="none" marker-end="url(#arrow)" opacity="0.7">
+    <line x1="1310" y1="870" x2="1310" y2="855"/>
+    <line x1="1310" y1="680" x2="1310" y2="665"/>
+    <line x1="1310" y1="480" x2="1310" y2="465"/>
+    <line x1="1310" y1="310" x2="1310" y2="295"/>
+  </g>
+  <text x="1330" y="600" fill="#00d4ff" font-size="14" font-weight="bold" transform="rotate(-90,1330,600)">数据流 · Data Flow</text>
+
+  <!-- 右侧竖线装饰 -->
+  <line x1="1310" y1="130" x2="1310" y2="1030" stroke="#00d4ff" stroke-width="1" opacity="0.3" stroke-dasharray="4,4"/>
+
+  <!-- 底部说明 -->
+  <text x="800" y="1080" text-anchor="middle" fill="#8892b0" font-size="14">技术栈全景：开源为主 · 云原生 · 微服务化 · 支持横向扩展</text>
+  <text x="800" y="1105" text-anchor="middle" fill="#64ffda" font-size="13">部署方案：Docker + Kubernetes（可选）· 支持本地 GPU 服务器 / 阿里云 / 华为云弹性部署</text>
+
+  <!-- 装饰角标 -->
+  <g stroke="#00d4ff" stroke-width="2" fill="none" opacity="0.6">
+    <path d="M 30 30 L 30 60 M 30 30 L 60 30"/>
+    <path d="M 1570 30 L 1570 60 M 1570 30 L 1540 30"/>
+    <path d="M 30 1170 L 30 1140 M 30 1170 L 60 1170"/>
+    <path d="M 1570 1170 L 1570 1140 M 1570 1170 L 1540 1170"/>
+  </g>
+</svg>

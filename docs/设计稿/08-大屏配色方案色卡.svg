@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 2200" font-family="'Microsoft YaHei','PingFang SC',sans-serif">
+  <defs>
+    <linearGradient id="bgP" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0a0e27"/>
+      <stop offset="100%" stop-color="#1a1f3a"/>
+    </linearGradient>
+    <filter id="glowP">
+      <feGaussianBlur stdDeviation="3" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+
+    <!-- 方案 1: 深空科技蓝 -->
+    <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0a0e27"/>
+      <stop offset="100%" stop-color="#001a3a"/>
+    </linearGradient>
+    <!-- 方案 2: 徽州水墨 -->
+    <linearGradient id="g2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1a1a1a"/>
+      <stop offset="100%" stop-color="#2d2a26"/>
+    </linearGradient>
+    <!-- 方案 3: 竹青山水 -->
+    <linearGradient id="g3" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0d2818"/>
+      <stop offset="100%" stop-color="#1a4028"/>
+    </linearGradient>
+    <!-- 方案 4: 稻浪金辉 -->
+    <linearGradient id="g4" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1a1207"/>
+      <stop offset="100%" stop-color="#2d1f0f"/>
+    </linearGradient>
+    <!-- 方案 5: 靛蓝青花 -->
+    <linearGradient id="g5" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0a1929"/>
+      <stop offset="100%" stop-color="#12294a"/>
+    </linearGradient>
+    <!-- 方案 6: 落日田园 -->
+    <linearGradient id="g6" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1e1b4b"/>
+      <stop offset="50%" stop-color="#4c1d95"/>
+      <stop offset="100%" stop-color="#7c2d12"/>
+    </linearGradient>
+    <!-- 方案 7: 只此青绿 -->
+    <linearGradient id="g7" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f1e1a"/>
+      <stop offset="100%" stop-color="#1a3a2f"/>
+    </linearGradient>
+    <!-- 方案 8: 数字田野 -->
+    <linearGradient id="g8" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0a1628"/>
+      <stop offset="100%" stop-color="#142850"/>
+    </linearGradient>
+    <!-- 方案 9: 星空夜色 -->
+    <linearGradient id="g9" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#030712"/>
+      <stop offset="50%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+    <!-- 方案 10: 江南烟雨（浅色） -->
+    <linearGradient id="g10" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f0f4f8"/>
+      <stop offset="100%" stop-color="#e2e8f0"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1600" height="2200" fill="url(#bgP)"/>
+
+  <!-- 标题 -->
+  <text x="800" y="60" text-anchor="middle" fill="#00d4ff" font-size="34" font-weight="bold" filter="url(#glowP)">乡村文旅可视化大屏 · 10 套背景配色方案</text>
+  <text x="800" y="95" text-anchor="middle" fill="#8892b0" font-size="16">Rural Cultural Tourism Dashboard · Color Palette Guide</text>
+  <line x1="500" y1="115" x2="1100" y2="115" stroke="#00d4ff" stroke-width="2" opacity="0.6"/>
+  <text x="800" y="145" text-anchor="middle" fill="#ffd93d" font-size="14">💡 60-30-10 配色法则：背景 60% · 主色 30% · 强调色 10%</text>
+
+  <!-- ============================================================ -->
+  <!-- 方案 1: 深空科技蓝 -->
+  <!-- ============================================================ -->
+  <g transform="translate(60,180)">
+    <rect x="0" y="0" width="1480" height="180" rx="8" fill="url(#g1)" stroke="#00d4ff" stroke-width="2"/>
+    <text x="20" y="35" fill="#00d4ff" font-size="20" font-weight="bold">① 深空科技蓝 · Deep Space Tech Blue</text>
+    <text x="20" y="58" fill="#8892b0" font-size="12">🎯 适用: 政府汇报 / 指挥中心 / 大创答辩首选  ⭐⭐⭐⭐⭐</text>
+    <text x="20" y="78" fill="#8892b0" font-size="12">气质: 冷峻 · 高端 · 强科技感 · 数据密度高</text>
+
+    <!-- 色卡 -->
+    <g transform="translate(20,100)">
+      <rect x="0" y="0" width="140" height="60" rx="4" fill="#0a0e27" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="70" y="78" text-anchor="middle" fill="#8892b0" font-size="10">深空底 #0a0e27</text>
+      <rect x="150" y="0" width="140" height="60" rx="4" fill="#001a3a" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="220" y="78" text-anchor="middle" fill="#8892b0" font-size="10">午夜蓝 #001a3a</text>
+      <rect x="300" y="0" width="140" height="60" rx="4" fill="#00d4ff" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="370" y="78" text-anchor="middle" fill="#8892b0" font-size="10">科技青 #00d4ff</text>
+      <rect x="450" y="0" width="140" height="60" rx="4" fill="#7c4dff" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="520" y="78" text-anchor="middle" fill="#8892b0" font-size="10">智慧紫 #7c4dff</text>
+      <rect x="600" y="0" width="140" height="60" rx="4" fill="#00ff9d" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="670" y="78" text-anchor="middle" fill="#8892b0" font-size="10">生态绿 #00ff9d</text>
+      <rect x="750" y="0" width="140" height="60" rx="4" fill="#ffd93d" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="820" y="78" text-anchor="middle" fill="#8892b0" font-size="10">数据金 #ffd93d</text>
+      <rect x="900" y="0" width="140" height="60" rx="4" fill="#ff6b9d" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="970" y="78" text-anchor="middle" fill="#8892b0" font-size="10">警示粉 #ff6b9d</text>
+      <rect x="1050" y="0" width="140" height="60" rx="4" fill="#e6f1ff" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="1120" y="78" text-anchor="middle" fill="#8892b0" font-size="10">主文字 #e6f1ff</text>
+      <rect x="1200" y="0" width="140" height="60" rx="4" fill="#8892b0" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="1270" y="78" text-anchor="middle" fill="#8892b0" font-size="10">辅文字 #8892b0</text>
+    </g>
+    <text x="1460" y="35" text-anchor="end" fill="#ffd93d" font-size="12" font-weight="bold">✅ 强烈推荐</text>
+  </g>
+
+  <!-- ============================================================ -->
+  <!-- 方案 2: 徽州水墨 -->
+  <!-- ============================================================ -->
+  <g transform="translate(60,380)">
+    <rect x="0" y="0" width="1480" height="180" rx="8" fill="url(#g2)" stroke="#c1272d" stroke-width="2"/>
+    <text x="20" y="35" fill="#f5f0e8" font-size="20" font-weight="bold">② 徽州水墨 · Hui-style Ink Wash</text>
+    <text x="20" y="58" fill="#a8a29e" font-size="12">🎯 适用: 徽派古村 / 非遗主题 / 文化展厅  ⭐⭐⭐⭐⭐</text>
+    <text x="20" y="78" fill="#a8a29e" font-size="12">气质: 东方 · 高级 · 文人雅韵 · 有故事感</text>
+
+    <g transform="translate(20,100)">
+      <rect x="0" y="0" width="140" height="60" rx="4" fill="#1a1a1a" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="70" y="78" text-anchor="middle" fill="#a8a29e" font-size="10">墨黑 #1a1a1a</text>
+      <rect x="150" y="0" width="140" height="60" rx="4" fill="#2d2a26" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="220" y="78" text-anchor="middle" fill="#a8a29e" font-size="10">古铜 #2d2a26</text>
+      <rect x="300" y="0" width="140" height="60" rx="4" fill="#f5f0e8" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="370" y="78" text-anchor="middle" fill="#a8a29e" font-size="10">宣纸白 #f5f0e8</text>
+      <rect x="450" y="0" width="140" height="60" rx="4" fill="#8b7355" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="520" y="78" text-anchor="middle" fill="#a8a29e" font-size="10">赭石 #8b7355</text>
+      <rect x="600" y="0" width="140" height="60" rx="4" fill="#c1272d" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="670" y="78" text-anchor="middle" fill="#a8a29e" font-size="10">朱砂红 #c1272d</text>
+      <rect x="750" y="0" width="140" height="60" rx="4" fill="#4a7c59" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="820" y="78" text-anchor="middle" fill="#a8a29e" font-size="10">青瓷绿 #4a7c59</text>
+      <rect x="900" y="0" width="140" height="60" rx="4" fill="#d4af37" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="970" y="78" text-anchor="middle" fill="#a8a29e" font-size="10">鎏金 #d4af37</text>
+      <rect x="1050" y="0" width="140" height="60" rx="4" fill="#e8dcc4" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="1120" y="78" text-anchor="middle" fill="#a8a29e" font-size="10">米黄 #e8dcc4</text>
+      <rect x="1200" y="0" width="140" height="60" rx="4" fill="#6b5d4f" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="1270" y="78" text-anchor="middle" fill="#a8a29e" font-size="10">木褐 #6b5d4f</text>
+    </g>
+    <text x="1460" y="35" text-anchor="end" fill="#d4af37" font-size="12" font-weight="bold">🏆 最契合主题</text>
+  </g>
+
+  <!-- ============================================================ -->
+  <!-- 方案 3: 竹青山水 -->
+  <!-- ============================================================ -->
+  <g transform="translate(60,580)">
+    <rect x="0" y="0" width="1480" height="180" rx="8" fill="url(#g3)" stroke="#4ade80" stroke-width="2"/>
+    <text x="20" y="35" fill="#4ade80" font-size="20" font-weight="bold">③ 竹青山水 · Bamboo Forest</text>
+    <text x="20" y="58" fill="#86efac" font-size="12">🎯 适用: 生态乡村 / 茶园竹海 / 康养主题  ⭐⭐⭐⭐</text>
+    <text x="20" y="78" fill="#86efac" font-size="12">气质: 自然 · 清新 · 治愈 · 强调可持续</text>
+
+    <g transform="translate(20,100)">
+      <rect x="0" y="0" width="140" height="60" rx="4" fill="#0d2818" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="70" y="78" text-anchor="middle" fill="#86efac" font-size="10">深竹底 #0d2818</text>
+      <rect x="150" y="0" width="140" height="60" rx="4" fill="#1a4028" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="220" y="78" text-anchor="middle" fill="#86efac" font-size="10">山林绿 #1a4028</text>
+      <rect x="300" y="0" width="140" height="60" rx="4" fill="#14532d" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="370" y="78" text-anchor="middle" fill="#86efac" font-size="10">墨绿 #14532d</text>
+      <rect x="450" y="0" width="140" height="60" rx="4" fill="#4ade80" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="520" y="78" text-anchor="middle" fill="#86efac" font-size="10">竹青 #4ade80</text>
+      <rect x="600" y="0" width="140" height="60" rx="4" fill="#86efac" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="670" y="78" text-anchor="middle" fill="#86efac" font-size="10">嫩芽 #86efac</text>
+      <rect x="750" y="0" width="140" height="60" rx="4" fill="#fbbf24" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="820" y="78" text-anchor="middle" fill="#86efac" font-size="10">麦黄 #fbbf24</text>
+      <rect x="900" y="0" width="140" height="60" rx="4" fill="#a7f3d0" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="970" y="78" text-anchor="middle" fill="#86efac" font-size="10">淡翠 #a7f3d0</text>
+      <rect x="1050" y="0" width="140" height="60" rx="4" fill="#f0fdf4" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="1120" y="78" text-anchor="middle" fill="#86efac" font-size="10">雾白 #f0fdf4</text>
+      <rect x="1200" y="0" width="140" height="60" rx="4" fill="#dc2626" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="1270" y="78" text-anchor="middle" fill="#86efac" font-size="10">点缀红 #dc2626</text>
+    </g>
+    <text x="1460" y="35" text-anchor="end" fill="#fbbf24" font-size="12" font-weight="bold">🌿 生态主题</text>
+  </g>
+
+  <!-- ============================================================ -->
+  <!-- 方案 4: 稻浪金辉 -->
+  <!-- ============================================================ -->
+  <g transform="translate(60,780)">
+    <rect x="0" y="0" width="1480" height="180" rx="8" fill="url(#g4)" stroke="#f59e0b" stroke-width="2"/>
+    <text x="20" y="35" fill="#fbbf24" font-size="20" font-weight="bold">④ 稻浪金辉 · Golden Harvest</text>
+    <text x="20" y="58" fill="#fde68a" font-size="12">🎯 适用: 丰收节庆 / 农产品直播 / 秋游主题  ⭐⭐⭐⭐</text>
+    <text x="20" y="78" fill="#fde68a" font-size="12">气质: 温暖 · 富饶 · 丰收喜悦 · 烟火气</text>
+
+    <g transform="translate(20,100)">
+      <rect x="0" y="0" width="140" height="60" rx="4" fill="#1a1207" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="70" y="78" text-anchor="middle" fill="#fde68a" font-size="10">焦土底 #1a1207</text>
+      <rect x="150" y="0" width="140" height="60" rx="4" fill="#2d1f0f" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="220" y="78" text-anchor="middle" fill="#fde68a" font-size="10">深棕 #2d1f0f</text>
+      <rect x="300" y="0" width="140" height="60" rx="4" fill="#78350f" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="370" y="78" text-anchor="middle" fill="#fde68a" font-size="10">咖啡 #78350f</text>
+      <rect x="450" y="0" width="140" height="60" rx="4" fill="#f59e0b" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="520" y="78" text-anchor="middle" fill="#fde68a" font-size="10">琥珀 #f59e0b</text>
+      <rect x="600" y="0" width="140" height="60" rx="4" fill="#fbbf24" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="670" y="78" text-anchor="middle" fill="#fde68a" font-size="10">金黄 #fbbf24</text>
+      <rect x="750" y="0" width="140" height="60" rx="4" fill="#fde047" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="820" y="78" text-anchor="middle" fill="#fde68a" font-size="10">亮黄 #fde047</text>
+      <rect x="900" y="0" width="140" height="60" rx="4" fill="#dc2626" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="970" y="78" text-anchor="middle" fill="#fde68a" font-size="10">辣椒红 #dc2626</text>
+      <rect x="1050" y="0" width="140" height="60" rx="4" fill="#fef3c7" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="1120" y="78" text-anchor="middle" fill="#fde68a" font-size="10">麦白 #fef3c7</text>
+      <rect x="1200" y="0" width="140" height="60" rx="4" fill="#84cc16" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="1270" y="78" text-anchor="middle" fill="#fde68a" font-size="10">禾苗绿 #84cc16</text>
+    </g>
+    <text x="1460" y="35" text-anchor="end" fill="#fbbf24" font-size="12" font-weight="bold">🌾 丰收主题</text>
+  </g>
+
+  <!-- ============================================================ -->
+  <!-- 方案 5: 靛蓝青花 -->
+  <!-- ============================================================ -->
+  <g transform="translate(60,980)">
+    <rect x="0" y="0" width="1480" height="180" rx="8" fill="url(#g5)" stroke="#3b82f6" stroke-width="2"/>
+    <text x="20" y="35" fill="#93c5fd" font-size="20" font-weight="bold">⑤ 靛蓝青花 · Indigo Porcelain</text>
+    <text x="20" y="58" fill="#bfdbfe" font-size="12">🎯 适用: 非遗手工 / 陶瓷之乡 / 江南水乡  ⭐⭐⭐⭐</text>
+    <text x="20" y="78" fill="#bfdbfe" font-size="12">气质: 典雅 · 沉静 · 工匠精神 · 传统工艺</text>
+
+    <g transform="translate(20,100)">
+      <rect x="0" y="0" width="140" height="60" rx="4" fill="#0a1929" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="70" y="78" text-anchor="middle" fill="#bfdbfe" font-size="10">深夜蓝 #0a1929</text>
+      <rect x="150" y="0" width="140" height="60" rx="4" fill="#12294a" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="220" y="78" text-anchor="middle" fill="#bfdbfe" font-size="10">靛青 #12294a</text>
+      <rect x="300" y="0" width="140" height="60" rx="4" fill="#1e40af" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="370" y="78" text-anchor="middle" fill="#bfdbfe" font-size="10">宝石蓝 #1e40af</text>
+      <rect x="450" y="0" width="140" height="60" rx="4" fill="#3b82f6" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="520" y="78" text-anchor="middle" fill="#bfdbfe" font-size="10">青花蓝 #3b82f6</text>
+      <rect x="600" y="0" width="140" height="60" rx="4" fill="#93c5fd" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="670" y="78" text-anchor="middle" fill="#bfdbfe" font-size="10">浅青花 #93c5fd</text>
+      <rect x="750" y="0" width="140" height="60" rx="4" fill="#f8fafc" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="820" y="78" text-anchor="middle" fill="#bfdbfe" font-size="10">瓷白 #f8fafc</text>
+      <rect x="900" y="0" width="140" height="60" rx="4" fill="#d97706" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="970" y="78" text-anchor="middle" fill="#bfdbfe" font-size="10">赭黄 #d97706</text>
+      <rect x="1050" y="0" width="140" height="60" rx="4" fill="#e0e7ff" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="1120" y="78" text-anchor="middle" fill="#bfdbfe" font-size="10">月白 #e0e7ff</text>
+      <rect x="1200" y="0" width="140" height="60" rx="4" fill="#c7d2fe" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="1270" y="78" text-anchor="middle" fill="#bfdbfe" font-size="10">淡靛 #c7d2fe</text>
+    </g>
+    <text x="1460" y="35" text-anchor="end" fill="#93c5fd" font-size="12" font-weight="bold">🏺 非遗主题</text>
+  </g>
+
+  <!-- ============================================================ -->
+  <!-- 方案 6: 落日田园 -->
+  <!-- ============================================================ -->
+  <g transform="translate(60,1180)">
+    <rect x="0" y="0" width="1480" height="180" rx="8" fill="url(#g6)" stroke="#fb923c" stroke-width="2"/>
+    <text x="20" y="35" fill="#fde047" font-size="20" font-weight="bold">⑥ 落日田园 · Sunset Pastoral</text>
+    <text x="20" y="58" fill="#fed7aa" font-size="12">🎯 适用: 民宿主题 / 慢生活 / 网红打卡  ⭐⭐⭐⭐</text>
+    <text x="20" y="78" fill="#fed7aa" font-size="12">气质: 浪漫 · 治愈 · 温暖 · 年轻用户喜爱</text>
+
+    <g transform="translate(20,100)">
+      <rect x="0" y="0" width="140" height="60" rx="4" fill="#1e1b4b" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="70" y="78" text-anchor="middle" fill="#fed7aa" font-size="10">夜空紫 #1e1b4b</text>
+      <rect x="150" y="0" width="140" height="60" rx="4" fill="#4c1d95" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="220" y="78" text-anchor="middle" fill="#fed7aa" font-size="10">暮紫 #4c1d95</text>
+      <rect x="300" y="0" width="140" height="60" rx="4" fill="#7c2d12" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="370" y="78" text-anchor="middle" fill="#fed7aa" font-size="10">焦橙 #7c2d12</text>
+      <rect x="450" y="0" width="140" height="60" rx="4" fill="#fb923c" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="520" y="78" text-anchor="middle" fill="#fed7aa" font-size="10">落日橙 #fb923c</text>
+      <rect x="600" y="0" width="140" height="60" rx="4" fill="#f472b6" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="670" y="78" text-anchor="middle" fill="#fed7aa" font-size="10">霞粉 #f472b6</text>
+      <rect x="750" y="0" width="140" height="60" rx="4" fill="#fde047" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="820" y="78" text-anchor="middle" fill="#fed7aa" font-size="10">夕阳黄 #fde047</text>
+      <rect x="900" y="0" width="140" height="60" rx="4" fill="#fef3c7" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="970" y="78" text-anchor="middle" fill="#fed7aa" font-size="10">米白 #fef3c7</text>
+      <rect x="1050" y="0" width="140" height="60" rx="4" fill="#312e81" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="1120" y="78" text-anchor="middle" fill="#fed7aa" font-size="10">深靛 #312e81</text>
+      <rect x="1200" y="0" width="140" height="60" rx="4" fill="#fbbf24" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="1270" y="78" text-anchor="middle" fill="#fed7aa" font-size="10">金橙 #fbbf24</text>
+    </g>
+    <text x="1460" y="35" text-anchor="end" fill="#fb923c" font-size="12" font-weight="bold">🌅 网红民宿</text>
+  </g>
+
+  <!-- ============================================================ -->
+  <!-- 方案 7: 只此青绿 -->
+  <!-- ============================================================ -->
+  <g transform="translate(60,1380)">
+    <rect x="0" y="0" width="1480" height="180" rx="8" fill="url(#g7)" stroke="#2dd4bf" stroke-width="2"/>
+    <text x="20" y="35" fill="#a7f3d0" font-size="20" font-weight="bold">⑦ 只此青绿 · Blue-Green Landscape (国风高级)</text>
+    <text x="20" y="58" fill="#5eead4" font-size="12">🎯 适用: 千里江山图灵感 / 高端展厅 / 精品文旅  ⭐⭐⭐⭐⭐</text>
+    <text x="20" y="78" fill="#5eead4" font-size="12">气质: 国风 · 高级 · 山水意境 · 有 IP 记忆点</text>
+
+    <g transform="translate(20,100)">
+      <rect x="0" y="0" width="140" height="60" rx="4" fill="#0f1e1a" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="70" y="78" text-anchor="middle" fill="#5eead4" font-size="10">远山底 #0f1e1a</text>
+      <rect x="150" y="0" width="140" height="60" rx="4" fill="#1a3a2f" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="220" y="78" text-anchor="middle" fill="#5eead4" font-size="10">黛山 #1a3a2f</text>
+      <rect x="300" y="0" width="140" height="60" rx="4" fill="#134e4a" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="370" y="78" text-anchor="middle" fill="#5eead4" font-size="10">石青 #134e4a</text>
+      <rect x="450" y="0" width="140" height="60" rx="4" fill="#0d9488" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="520" y="78" text-anchor="middle" fill="#5eead4" font-size="10">孔雀石 #0d9488</text>
+      <rect x="600" y="0" width="140" height="60" rx="4" fill="#2dd4bf" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="670" y="78" text-anchor="middle" fill="#5eead4" font-size="10">青绿 #2dd4bf</text>
+      <rect x="750" y="0" width="140" height="60" rx="4" fill="#a7f3d0" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="820" y="78" text-anchor="middle" fill="#5eead4" font-size="10">远山青 #a7f3d0</text>
+      <rect x="900" y="0" width="140" height="60" rx="4" fill="#fbbf24" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="970" y="78" text-anchor="middle" fill="#5eead4" font-size="10">绢本黄 #fbbf24</text>
+      <rect x="1050" y="0" width="140" height="60" rx="4" fill="#f0fdfa" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="1120" y="78" text-anchor="middle" fill="#5eead4" font-size="10">云白 #f0fdfa</text>
+      <rect x="1200" y="0" width="140" height="60" rx="4" fill="#7c2d12" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="1270" y="78" text-anchor="middle" fill="#5eead4" font-size="10">印章红 #7c2d12</text>
+    </g>
+    <text x="1460" y="35" text-anchor="end" fill="#fbbf24" font-size="12" font-weight="bold">🎨 高端国风</text>
+  </g>
+
+  <!-- ============================================================ -->
+  <!-- 方案 8: 数字田野 -->
+  <!-- ============================================================ -->
+  <g transform="translate(60,1580)">
+    <rect x="0" y="0" width="1480" height="180" rx="8" fill="url(#g8)" stroke="#22d3ee" stroke-width="2"/>
+    <text x="20" y="35" fill="#22d3ee" font-size="20" font-weight="bold">⑧ 数字田野 · Digital Fields (智慧农业+文旅)</text>
+    <text x="20" y="58" fill="#a5f3fc" font-size="12">🎯 适用: 智慧乡村 / 数字农业 / 产学研融合  ⭐⭐⭐⭐</text>
+    <text x="20" y="78" fill="#a5f3fc" font-size="12">气质: 科技 + 田园 · 大创评委最爱 · 展现"数字乡村"战略</text>
+
+    <g transform="translate(20,100)">
+      <rect x="0" y="0" width="140" height="60" rx="4" fill="#0a1628" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="70" y="78" text-anchor="middle" fill="#a5f3fc" font-size="10">深蓝底 #0a1628</text>
+      <rect x="150" y="0" width="140" height="60" rx="4" fill="#142850" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="220" y="78" text-anchor="middle" fill="#a5f3fc" font-size="10">靛蓝 #142850</text>
+      <rect x="300" y="0" width="140" height="60" rx="4" fill="#0c4a6e" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="370" y="78" text-anchor="middle" fill="#a5f3fc" font-size="10">深海蓝 #0c4a6e</text>
+      <rect x="450" y="0" width="140" height="60" rx="4" fill="#22d3ee" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="520" y="78" text-anchor="middle" fill="#a5f3fc" font-size="10">数字青 #22d3ee</text>
+      <rect x="600" y="0" width="140" height="60" rx="4" fill="#84cc16" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="670" y="78" text-anchor="middle" fill="#a5f3fc" font-size="10">禾苗绿 #84cc16</text>
+      <rect x="750" y="0" width="140" height="60" rx="4" fill="#eab308" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="820" y="78" text-anchor="middle" fill="#a5f3fc" font-size="10">麦田黄 #eab308</text>
+      <rect x="900" y="0" width="140" height="60" rx="4" fill="#f0fdfa" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="970" y="78" text-anchor="middle" fill="#a5f3fc" font-size="10">云雾白 #f0fdfa</text>
+      <rect x="1050" y="0" width="140" height="60" rx="4" fill="#f97316" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="1120" y="78" text-anchor="middle" fill="#a5f3fc" font-size="10">暖阳橙 #f97316</text>
+      <rect x="1200" y="0" width="140" height="60" rx="4" fill="#a3e635" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="1270" y="78" text-anchor="middle" fill="#a5f3fc" font-size="10">嫩叶绿 #a3e635</text>
+    </g>
+    <text x="1460" y="35" text-anchor="end" fill="#84cc16" font-size="12" font-weight="bold">🌱 大创加分</text>
+  </g>
+
+  <!-- ============================================================ -->
+  <!-- 方案 9: 星空夜色 -->
+  <!-- ============================================================ -->
+  <g transform="translate(60,1780)">
+    <rect x="0" y="0" width="1480" height="180" rx="8" fill="url(#g9)" stroke="#7dd3fc" stroke-width="2"/>
+    <text x="20" y="35" fill="#e0f2fe" font-size="20" font-weight="bold">⑨ 星空夜色 · Starry Night (夜游主题)</text>
+    <text x="20" y="58" fill="#bae6fd" font-size="12">🎯 适用: 夜游乡村 / 星空民宿 / 灯光节  ⭐⭐⭐</text>
+    <text x="20" y="78" fill="#bae6fd" font-size="12">气质: 静谧 · 神秘 · 浪漫 · 适合夜间展示</text>
+
+    <g transform="translate(20,100)">
+      <rect x="0" y="0" width="140" height="60" rx="4" fill="#030712" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="70" y="78" text-anchor="middle" fill="#bae6fd" font-size="10">宇宙黑 #030712</text>
+      <rect x="150" y="0" width="140" height="60" rx="4" fill="#0f172a" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="220" y="78" text-anchor="middle" fill="#bae6fd" font-size="10">夜蓝 #0f172a</text>
+      <rect x="300" y="0" width="140" height="60" rx="4" fill="#1e293b" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="370" y="78" text-anchor="middle" fill="#bae6fd" font-size="10">石板 #1e293b</text>
+      <rect x="450" y="0" width="140" height="60" rx="4" fill="#1e40af" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="520" y="78" text-anchor="middle" fill="#bae6fd" font-size="10">深靛 #1e40af</text>
+      <rect x="600" y="0" width="140" height="60" rx="4" fill="#7dd3fc" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="670" y="78" text-anchor="middle" fill="#bae6fd" font-size="10">星辰蓝 #7dd3fc</text>
+      <rect x="750" y="0" width="140" height="60" rx="4" fill="#e0f2fe" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="820" y="78" text-anchor="middle" fill="#bae6fd" font-size="10">月光白 #e0f2fe</text>
+      <rect x="900" y="0" width="140" height="60" rx="4" fill="#fbbf24" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="970" y="78" text-anchor="middle" fill="#bae6fd" font-size="10">灯火黄 #fbbf24</text>
+      <rect x="1050" y="0" width="140" height="60" rx="4" fill="#a78bfa" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="1120" y="78" text-anchor="middle" fill="#bae6fd" font-size="10">星云紫 #a78bfa</text>
+      <rect x="1200" y="0" width="140" height="60" rx="4" fill="#f472b6" stroke="#fff" stroke-opacity="0.2"/>
+      <text x="1270" y="78" text-anchor="middle" fill="#bae6fd" font-size="10">霞粉 #f472b6</text>
+    </g>
+    <text x="1460" y="35" text-anchor="end" fill="#7dd3fc" font-size="12" font-weight="bold">✨ 夜游主题</text>
+  </g>
+
+  <!-- ============================================================ -->
+  <!-- 方案 10: 江南烟雨（浅色） -->
+  <!-- ============================================================ -->
+  <g transform="translate(60,1980)">
+    <rect x="0" y="0" width="1480" height="180" rx="8" fill="url(#g10)" stroke="#0891b2" stroke-width="2"/>
+    <text x="20" y="35" fill="#0f172a" font-size="20" font-weight="bold">⑩ 江南烟雨 · Jiangnan Misty Rain (浅色方案)</text>
+    <text x="20" y="58" fill="#475569" font-size="12">🎯 适用: 白天展示 / 明亮办公环境 / 打印友好  ⭐⭐⭐</text>
+    <text x="20" y="78" fill="#475569" font-size="12">气质: 淡雅 · 素净 · 江南水墨 · 白天环境不刺眼</text>
+
+    <g transform="translate(20,100)">
+      <rect x="0" y="0" width="140" height="60" rx="4" fill="#f0f4f8" stroke="#000" stroke-opacity="0.2"/>
+      <text x="70" y="78" text-anchor="middle" fill="#475569" font-size="10">雨雾白 #f0f4f8</text>
+      <rect x="150" y="0" width="140" height="60" rx="4" fill="#e2e8f0" stroke="#000" stroke-opacity="0.2"/>
+      <text x="220" y="78" text-anchor="middle" fill="#475569" font-size="10">淡灰 #e2e8f0</text>
+      <rect x="300" y="0" width="140" height="60" rx="4" fill="#94a3b8" stroke="#000" stroke-opacity="0.2"/>
+      <text x="370" y="78" text-anchor="middle" fill="#475569" font-size="10">雨雾灰 #94a3b8</text>
+      <rect x="450" y="0" width="140" height="60" rx="4" fill="#475569" stroke="#000" stroke-opacity="0.2"/>
+      <text x="520" y="78" text-anchor="middle" fill="#475569" font-size="10">烟墨 #475569</text>
+      <rect x="600" y="0" width="140" height="60" rx="4" fill="#0891b2" stroke="#000" stroke-opacity="0.2"/>
+      <text x="670" y="78" text-anchor="middle" fill="#475569" font-size="10">青瓷 #0891b2</text>
+      <rect x="750" y="0" width="140" height="60" rx="4" fill="#0e7490" stroke="#000" stroke-opacity="0.2"/>
+      <text x="820" y="78" text-anchor="middle" fill="#475569" font-size="10">深青 #0e7490</text>
+      <rect x="900" y="0" width="140" height="60" rx="4" fill="#be123c" stroke="#000" stroke-opacity="0.2"/>
+      <text x="970" y="78" text-anchor="middle" fill="#475569" font-size="10">胭脂红 #be123c</text>
+      <rect x="1050" y="0" width="140" height="60" rx="4" fill="#a16207" stroke="#000" stroke-opacity="0.2"/>
+      <text x="1120" y="78" text-anchor="middle" fill="#475569" font-size="10">茶褐 #a16207</text>
+      <rect x="1200" y="0" width="140" height="60" rx="4" fill="#0f172a" stroke="#000" stroke-opacity="0.2"/>
+      <text x="1270" y="78" text-anchor="middle" fill="#475569" font-size="10">主文字 #0f172a</text>
+    </g>
+    <text x="1460" y="35" text-anchor="end" fill="#0891b2" font-size="12" font-weight="bold">☀ 浅色模式</text>
+  </g>
+
+  <!-- 底部：装饰角 -->
+  <g stroke="#00d4ff" stroke-width="2" fill="none" opacity="0.6">
+    <path d="M 30 30 L 30 60 M 30 30 L 60 30"/>
+    <path d="M 1570 30 L 1570 60 M 1570 30 L 1540 30"/>
+    <path d="M 30 2170 L 30 2140 M 30 2170 L 60 2170"/>
+    <path d="M 1570 2170 L 1570 2140 M 1570 2170 L 1540 2170"/>
+  </g>
+</svg>

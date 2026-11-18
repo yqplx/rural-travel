@@ -1,0 +1,151 @@
+:root {
+  --rt-bg: #FAF8F2;
+  --rt-bg2: #F1EDE2;
+  --rt-ink: #26302A;
+  --rt-muted: #67715F;
+  --rt-rule: #E2DCCB;
+  --rt-green: #3E7C4F;
+  --rt-green-dark: #2F6B3D;
+  --rt-green-light: #E4EFE2;
+  --rt-orange: #C2662B;
+  --rt-orange-light: #F6E7D8;
+  /* Element Plus 主色替换为田园绿 */
+  --el-color-primary: #3E7C4F;
+  --el-color-primary-light-3: #6FA07E;
+  --el-color-primary-light-5: #9BBFA5;
+  --el-color-primary-light-7: #C4D9C9;
+  --el-color-primary-light-8: #D8E6DB;
+  --el-color-primary-light-9: #E4EFE2;
+  --el-color-primary-dark-2: #2F6B3D;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: var(--rt-bg);
+  color: var(--rt-ink);
+  font-family: "Noto Sans SC", "Source Han Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+.rt-serif { font-family: "Noto Serif SC", "Source Han Serif SC", "Songti SC", "SimSun", serif; }
+
+/* 通用容器与卡片 */
+.rt-page { max-width: 1200px; margin: 0 auto; padding: 24px 20px 60px; }
+.rt-card {
+  background: #fff; border: 1px solid var(--rt-rule); border-radius: 14px;
+  padding: 20px; transition: box-shadow .25s, transform .25s;
+}
+.rt-card:hover { box-shadow: 0 8px 24px rgba(62, 124, 79, .12); }
+.rt-section-title {
+  font-family: "Noto Serif SC", "Songti SC", serif;
+  font-size: 1.45rem; font-weight: 700; margin: 36px 0 18px;
+  display: flex; align-items: center; gap: 10px;
+}
+.rt-section-title::before {
+  content: ""; width: 5px; height: 22px; border-radius: 3px;
+  background: linear-gradient(180deg, var(--rt-green), var(--rt-orange));
+}
+.rt-muted { color: var(--rt-muted); }
+.rt-tag {
+  display: inline-block; font-size: .75rem; border-radius: 20px; padding: 2px 10px;
+  background: var(--rt-green-light); color: var(--rt-green-dark); margin: 2px 4px 2px 0;
+}
+.rt-reason {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: .75rem; color: var(--rt-orange); background: var(--rt-orange-light);
+  border-radius: 20px; padding: 2px 10px;
+}
+.rt-price { color: var(--rt-orange); font-weight: 700; font-size: 1.05rem; }
+.rt-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 18px; }
+
+/* 景区卡片 */
+.scenic-card { overflow: hidden; padding: 0; cursor: pointer; }
+.scenic-card .cover { width: 100%; height: 170px; object-fit: cover; display: block; background: var(--rt-bg2); }
+.scenic-card .body { padding: 14px 16px 16px; }
+.scenic-card .name { font-weight: 700; font-size: 1.02rem; margin-bottom: 6px; }
+.scenic-card .meta { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
+
+/* 顶部导航 */
+.rt-nav {
+  position: sticky; top: 0; z-index: 100; background: rgba(250, 248, 242, .92);
+  backdrop-filter: blur(8px); border-bottom: 1px solid var(--rt-rule);
+}
+.rt-nav-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; height: 60px; padding: 0 20px; gap: 28px; }
+.rt-logo { font-family: "Noto Serif SC", serif; font-weight: 700; font-size: 1.25rem; color: var(--rt-green-dark); cursor: pointer; white-space: nowrap; }
+.rt-logo span { color: var(--rt-orange); }
+.rt-nav-links { display: flex; gap: 4px; flex: 1; }
+.rt-nav-links a {
+  padding: 6px 14px; border-radius: 20px; color: var(--rt-ink); text-decoration: none; font-size: .95rem;
+}
+.rt-nav-links a:hover { background: var(--rt-green-light); }
+.rt-nav-links a.active { background: var(--rt-green); color: #fff; }
+
+/* 页脚 */
+.rt-footer { border-top: 1px solid var(--rt-rule); margin-top: 60px; padding: 28px 20px; text-align: center; color: var(--rt-muted); font-size: .85rem; }
+
+/* 管理端 */
+.admin-shell { display: flex; min-height: 100vh; }
+.admin-aside { width: 220px; background: #2E3A30; color: #D7E3D5; flex-shrink: 0; }
+.admin-aside .brand { padding: 20px; font-family: "Noto Serif SC", serif; font-weight: 700; font-size: 1.1rem; color: #fff; border-bottom: 1px solid rgba(255,255,255,.08); }
+.admin-aside .el-menu { border-right: none; background: transparent; }
+.admin-aside .el-menu-item { color: #B9C9B5; }
+.admin-aside .el-menu-item.is-active { background: var(--rt-green); color: #fff; border-radius: 8px; margin: 0 8px; }
+.admin-aside .el-menu-item:hover { background: rgba(255,255,255,.08); border-radius: 8px; margin: 0 8px; }
+.admin-main { flex: 1; padding: 24px 28px; background: var(--rt-bg); min-width: 0; }
+.admin-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.admin-head h2 { font-family: "Noto Serif SC", serif; font-size: 1.3rem; }
+
+/* 分析看板 */
+.heat-grid { display: grid; grid-template-columns: repeat(10, 1fr); gap: 6px; }
+.heat-cell { aspect-ratio: 1; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: .68rem; color: var(--rt-muted); }
+.heat-l0 { background: var(--rt-bg2); }
+.heat-l1 { background: #DCE9D8; }
+.heat-l2 { background: #B4D3AE; }
+.heat-l3 { background: #7FB37B; color: #fff; }
+.heat-l4 { background: #3E7C4F; color: #fff; }
+.bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; font-size: .85rem; }
+.bar-row .bar-label { width: 70px; text-align: right; color: var(--rt-muted); flex-shrink: 0; }
+.bar-row .bar-track { flex: 1; background: var(--rt-bg2); border-radius: 6px; height: 18px; overflow: hidden; }
+.bar-row .bar-fill { height: 100%; background: linear-gradient(90deg, #6FA07E, var(--rt-green)); border-radius: 6px; }
+.bar-row .bar-val { width: 40px; color: var(--rt-ink); }
+
+/* AI 助手悬浮窗 */
+.ai-fab {
+  position: fixed; right: 26px; bottom: 26px; z-index: 999;
+  width: 56px; height: 56px; border-radius: 50%; border: none; cursor: pointer;
+  background: linear-gradient(135deg, var(--rt-green), #5B9468); color: #fff; font-size: 1.5rem;
+  box-shadow: 0 6px 20px rgba(62, 124, 79, .35); transition: transform .2s;
+}
+.ai-fab:hover { transform: scale(1.08); }
+.ai-panel {
+  position: fixed; right: 26px; bottom: 94px; z-index: 999;
+  width: 360px; max-width: calc(100vw - 40px); height: 500px; max-height: 70vh;
+  background: #fff; border: 1px solid var(--rt-rule); border-radius: 16px;
+  display: flex; flex-direction: column; overflow: hidden;
+  box-shadow: 0 16px 48px rgba(38, 48, 42, .18);
+}
+.ai-panel .head { background: var(--rt-green); color: #fff; padding: 12px 16px; font-weight: 700; display: flex; justify-content: space-between; align-items: center; }
+.ai-panel .msgs { flex: 1; overflow-y: auto; padding: 14px; background: var(--rt-bg); }
+.ai-msg { margin-bottom: 12px; display: flex; }
+.ai-msg.user { justify-content: flex-end; }
+.ai-msg .bubble { max-width: 82%; padding: 9px 13px; border-radius: 12px; font-size: .88rem; line-height: 1.6; white-space: pre-wrap; }
+.ai-msg.bot .bubble { background: #fff; border: 1px solid var(--rt-rule); border-top-left-radius: 2px; }
+.ai-msg.user .bubble { background: var(--rt-green); color: #fff; border-top-right-radius: 2px; }
+.ai-chips { display: flex; flex-wrap: wrap; gap: 6px; padding: 0 14px 8px; background: var(--rt-bg); }
+.ai-chips .chip { font-size: .76rem; border: 1px solid var(--rt-green); color: var(--rt-green-dark); border-radius: 16px; padding: 3px 10px; cursor: pointer; background: #fff; }
+.ai-chips .chip:hover { background: var(--rt-green-light); }
+.ai-input { display: flex; gap: 8px; padding: 10px 12px; border-top: 1px solid var(--rt-rule); background: #fff; }
+
+/* 登录/注册 */
+.auth-wrap { min-height: 100vh; display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(160deg, #EDF3E7 0%, #FAF8F2 45%, #F6E7D8 100%); }
+.auth-card { width: 400px; max-width: 92vw; padding: 36px 36px 28px; }
+.auth-title { text-align: center; font-size: 1.5rem; margin-bottom: 4px; }
+.auth-sub { text-align: center; color: var(--rt-muted); font-size: .88rem; margin-bottom: 26px; }
+.auth-link { text-align: center; margin-top: 16px; font-size: .88rem; color: var(--rt-muted); }
+.auth-link a { color: var(--rt-green); text-decoration: none; font-weight: 600; }
+
+@media (max-width: 768px) {
+  .rt-nav-inner { gap: 12px; }
+  .heat-grid { grid-template-columns: repeat(5, 1fr); }
+  .admin-aside { width: 64px; }
+  .admin-aside .brand span, .admin-aside .el-menu-item span { display: none; }
+}

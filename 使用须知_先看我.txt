@@ -1,0 +1,36 @@
+乡野智游 · 组员配置须知（补充）
+
+1. 解压位置
+   必须解压到纯英文、无空格的路径，例如 D:\rural-travel\
+   不要放在桌面、中文用户名目录、OneDrive 同步目录里。
+   原因：MySQL 和 esbuild 在中文路径下会启动失败。
+
+2. 唯一启动入口
+   只双击 start.bat，看到 ALL READY 再打开浏览器。
+   游客端：http://localhost:5174
+   大屏：  http://localhost:5174/bigscreen
+   接口：  http://localhost:8091/api
+
+3. 不要单独双击这些文件
+   start-mysql.bat / start-backend.bat / start-frontend.bat
+   它们是 start.bat 内部调用的脚本，单独运行会因为依赖服务没起来而报错：
+   - 只开后端 → Communications link failure / Connection refused（MySQL 没启动）
+   - 只开前端 → 页面请求接口失败（后端没启动）
+   _env.bat、_mysqlini.bat 同样是内部脚本，不用手动运行。
+
+4. 日常操作
+   启动：start.bat
+   停止：stop.bat
+   查状态：status.bat
+   改端口：config.bat（改完重新运行 start.bat）
+
+5. 关于 @antv/g6 报错与 Vite 缓存
+   根因是 node_modules 副本不完整（@antv/g6 的 es/index.js 缺失、
+   lodash 的 _Symbol.js 缺失等），旧 .vite 缓存只是把问题掩盖住了。
+   本包的 app/frontend/node_modules 已按 package-lock.json 完整重装，
+   禁止从源项目或其他目录复制 node_modules 覆盖。
+   start-frontend.bat 每次启动前会自动清理 .vite，
+   所以换目录后也不会因为旧缓存报 @antv/g6 依赖扫描失败。
+
+6. 需要改数据库密码或端口
+   运行 config.bat，按提示修改；改完必须重新运行 start.bat 才会生效。

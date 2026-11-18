@@ -1,0 +1,74 @@
+%% 「乡智文旅」系统技术架构图 - Mermaid 源码版本
+%% 可在 https://mermaid.live 在线编辑，或用 VSCode Mermaid 插件预览
+%% 导出 PNG/SVG 后可直接插入 PPT
+
+flowchart TB
+    classDef layer1 fill:#00d4ff22,stroke:#00d4ff,stroke-width:2px,color:#e6f1ff
+    classDef layer2 fill:#7c4dff22,stroke:#7c4dff,stroke-width:2px,color:#e6f1ff
+    classDef layer3 fill:#00ff9d22,stroke:#00ff9d,stroke-width:2px,color:#e6f1ff
+    classDef layer4 fill:#ff6b9d22,stroke:#ff6b9d,stroke-width:2px,color:#e6f1ff
+    classDef layer5 fill:#ffd93d22,stroke:#ffd93d,stroke-width:2px,color:#e6f1ff
+    classDef title fill:#0a0e27,stroke:#00d4ff,stroke-width:3px,color:#00d4ff,font-size:20px
+
+    TITLE["🌾 乡智文旅 · 系统技术架构<br/>Rural Cultural Tourism Intelligent Recommendation Platform"]:::title
+
+    subgraph L5["🖥️ 展示层 Presentation Layer"]
+        direction LR
+        A1["3D 数字孪生大屏<br/>Cesium + WebGL + DataV"]:::layer5
+        A2["Web 管理后台<br/>Vue3 + TS + Ant Design Pro"]:::layer5
+        A3["微信小程序 / Uniapp<br/>用户端推荐 + 行程规划"]:::layer5
+        A4["AR 实景导览<br/>AR.js + 图像识别"]:::layer5
+        A5["可视化图表组件库<br/>ECharts · AntV L7/G6 · Three.js"]:::layer5
+        A6["多屏联动实时通信<br/>WebSocket · MQTT · SSE"]:::layer5
+    end
+
+    subgraph L4["⚙️ 服务层 Service Layer"]
+        direction LR
+        B1["API Gateway<br/>Spring Cloud Gateway"]:::layer4
+        B2["注册中心<br/>Nacos / Consul"]:::layer4
+        B3["业务微服务<br/>FastAPI / Spring Boot"]:::layer4
+        B4["鉴权中心<br/>JWT + OAuth2 + RBAC"]:::layer4
+        B5["缓存限流<br/>Redis + Sentinel"]:::layer4
+        B6["监控告警<br/>SkyWalking + Prometheus + Grafana"]:::layer4
+    end
+
+    subgraph L3["🧠 算法层 Algorithm Layer - 核心创新引擎"]
+        direction LR
+        C1["知识图谱构建<br/>Neo4j + LLM 自动抽取"]:::layer3
+        C2["图神经网络推荐<br/>KGAT / RippleNet / GraphSAGE"]:::layer3
+        C3["强化学习排序<br/>DQN / PPO 多目标优化"]:::layer3
+        C4["LLM Agent 引擎<br/>Qwen2.5 / GLM-4 + LangChain"]:::layer3
+        C5["多模态内容理解<br/>CLIP + Whisper + BERT"]:::layer3
+        C6["联邦学习<br/>Flower · FedAvg"]:::layer3
+        C7["乡村振兴评估<br/>AHP + 熵权法 + TOPSIS"]:::layer3
+        C8["时序客流预测<br/>LSTM / Transformer"]:::layer3
+    end
+
+    subgraph L2["🗄️ 数据治理层 Data Governance Layer"]
+        direction LR
+        D1["图数据库<br/>Neo4j"]:::layer2
+        D2["向量数据库<br/>Milvus / Qdrant"]:::layer2
+        D3["OLAP 分析库<br/>ClickHouse / Doris"]:::layer2
+        D4["时序数据库<br/>TDengine"]:::layer2
+        D5["关系数据库<br/>MySQL / PostgreSQL"]:::layer2
+        D6["对象存储<br/>MinIO · 3D 模型"]:::layer2
+        D7["流处理管道<br/>Kafka + Flink"]:::layer2
+        D8["数据治理<br/>DataX · 血缘 · 脱敏"]:::layer2
+    end
+
+    subgraph L1["📡 数据采集层 Data Acquisition Layer"]
+        direction LR
+        E1["卫星遥感<br/>Sentinel-2"]:::layer1
+        E2["无人机倾斜摄影<br/>3D 建模"]:::layer1
+        E3["UGC 爬虫<br/>小红书 · 抖音 · 马蜂窝"]:::layer1
+        E4["IoT 传感器<br/>客流 · 环境 · 视频"]:::layer1
+        E5["政务开放数据<br/>文旅局 · 非遗名录"]:::layer1
+        E6["运营商信令<br/>脱敏 OD 数据"]:::layer1
+        E7["边缘计算网关<br/>Flume · MQTT Broker"]:::layer1
+    end
+
+    TITLE --> L5
+    L5 <--> L4
+    L4 <--> L3
+    L3 <--> L2
+    L2 <--> L1

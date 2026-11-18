@@ -1,0 +1,15 @@
+@echo off
+setlocal
+cd /d "%~dp0"
+set "ROOT=%~dp0"
+set "RUNTIME=%ROOT%runtime"
+set "JAVAX=%RUNTIME%\jdk17\bin\java.exe"
+set "MYSQLX=%RUNTIME%\mysql\bin\mysqld.exe"
+set "NODE=%RUNTIME%\node\node.exe"
+set "ESBUILD=%RUNTIME%\esbuild.exe"
+set "JAR=%ROOT%app\backend\rural-travel-backend.jar"
+set "FRONTEND=%ROOT%app\frontend"
+set "DATADIR=%ROOT%data\mysql-data"
+set "TMPDIRX=%ROOT%data\mysql-tmp"
+if not exist "%TMPDIRX%" mkdir "%TMPDIRX%"
+endlocal & set "ROOT=%ROOT%" & set "RUNTIME=%RUNTIME%" & set "JAVAX=%JAVAX%" & set "MYSQLX=%MYSQLX%" & set "NODE=%NODE%" & set "ESBUILD=%ESBUILD%" & set "JAR=%JAR%" & set "FRONTEND=%FRONTEND%" & set "DATADIR=%DATADIR%" & set "TMPDIRX=%TMPDIRX%"

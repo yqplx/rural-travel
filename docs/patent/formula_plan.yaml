@@ -1,0 +1,89 @@
+# 公式计划（方案三：县域文旅 AI 多模态数字内容生成与智能导览）
+# origin: source = 材料已有式转录；origin: agent = 材料未给出、由本计划起草
+case: 一种面向县域文旅的AI多模态数字内容生成与智能导览方法及系统
+latex_delimiters: { inline: "\\(...)", block: "\\[...\\]" }
+
+equations:
+  - id: eq_route_score
+    origin: agent
+    paradigm_id: weighted_sum_unit
+    title: 景点入选分（偏好、热度、拥挤度、内容完备度加权）
+    latex: 's_{u,i} = \alpha p_{u,i} + \beta h_{i} - \gamma c_{i} + \delta g_{i}'
+    numeric_example:
+      alpha: 0.40
+      beta: 0.25
+      gamma: 0.20
+      delta: 0.15
+      p_u_i: 0.82
+      h_i: 0.70
+      c_i: 0.35
+      g_i: 1.00
+      expected: 0.583
+    note: 四项权重非负且和为 1；拥挤度取负号体现"避堵"。
+    calc_check: 0.40×0.82 + 0.25×0.70 − 0.20×0.35 + 0.15×1.00 = 0.328 + 0.175 − 0.070 + 0.150 = 0.583
+    errata: 初稿 expected 曾误写为 0.638，与上式四个输入值不自洽，已按实际算式更正为 0.583。
+
+  - id: eq_route_time
+    origin: agent
+    paradigm_id: dual_threshold
+    title: 路线时长可行性约束
+    latex: '\sum_{i \in R} w_{i} + \sum_{(i,j) \in R} t_{i,j} \leq T_{u}'
+    numeric_example:
+      w: [40, 30, 25, 35]
+      t: [8, 6, 10]
+      T_u: 240
+      expected: true
+    note: 左式为游览时长与步行接驳时长之和，右式为游客计划游览时长。
+
+  - id: eq_guide_depth
+    origin: agent
+    paradigm_id: dual_threshold
+    title: 讲解深度档位判定
+    latex: 'd_{u} = \left\lfloor \theta_{1} k_{u} + \theta_{2} r_{u} + \theta_{3} q_{u} + 1 \right\rfloor,\quad d_{u} \leq 3'
+    cap_note: 上限截断写在公式外（"且 d_{u} \leq 3"），避免普通括号包住下标
+    symbol_semantics:
+      k_u: 知识背景水平，[0,3]，来自游客画像
+      r_u: 互动参与度，[0,3]，由相对停留时长与追问次数合成
+      q_u: 同行人员构成因子，[0,3]，亲子最低、独行最高
+    numeric_example:
+      theta_1: 0.30
+      theta_2: 0.25
+      theta_3: 0.20
+      k_u: 2.0
+      r_u: 1.5
+      q_u: 1.0
+      expected: 2
+    note: 档位取 1 简约、2 标准、3 深度；取整后上限截断为 3。
+    calc_check: 0.30×2.0 + 0.25×1.5 + 0.20×1.0 + 1 = 0.60 + 0.375 + 0.20 + 1 = 2.175，向下取整 = 2
+    errata: >-
+      初稿实现曾把 r_u 实现为"停留时长/30"、q_u 实现为"提问频次"，与交底书 3.4 符号表
+      （r_u 为互动参与度、q_u 为同行人员构成因子）不符，已按符号表更正实现与本节语义说明。
+
+  - id: eq_feedback_update
+    origin: agent
+    paradigm_id: ema_smooth
+    title: 反馈驱动的景点热度更新
+    latex: 'h_{i}^{(t+1)} = (1 - \eta) h_{i}^{(t)} + \eta f_{i}^{(t)}'
+    numeric_example:
+      eta: 0.20
+      h_i_t: 0.70
+      f_i_t: 0.90
+      expected: 0.74
+    note: 指数平滑形式；\eta 越大反馈影响越快。
+
+# 阈值类参数（非公式，但参与式(2) 的可行性判定，需与实现保持同值）
+thresholds:
+  - id: crowd_tau
+    symbol: '\tau'
+    title: 拥挤度上限阈值
+    value: 0.75
+    range: 0.60 ~ 0.85
+    usage: 式(2) 的附加约束，c_i > \tau 的景点不纳入路线（避堵）
+    errata: 实现初版取 0.70，与交底书 3.5 实施例取值的 0.75 不一致，已更正为 0.75。
+
+  - id: depth_input_max
+    symbol: 'k_u, r_u, q_u'
+    title: 式(3) 自变量上界
+    value: 3.0
+    range: '[0,3]'
+    usage: 三个自变量统一按 [0,3] 截断，保证 d_u 不超过 3

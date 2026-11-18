@@ -1,0 +1,44 @@
+# ---------- 运行时（便携 JDK17 / MySQL / Node / esbuild，约 1.3G）----------
+runtime/
+
+# ---------- 数据库真实数据（勿传）----------
+data/mysql-data/
+data/mysql-tmp/
+*.err
+data/*.log
+
+# ---------- 依赖 ----------
+node_modules/
+
+# ---------- 构建产物 ----------
+target/
+dist/
+build/
+app/backend/*.jar
+*.class
+*.war
+.vite/
+
+# ---------- 日志与临时文件 ----------
+*.log
+logs/
+nohup.out
+.vite-cache/
+
+# ---------- 系统与编辑器 ----------
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
+*.iml
+*.swp
+*~
+
+# ---------- 敏感信息 ----------
+.env
+.env.local
+.env.*.local
+*.key
+*.pem
+*.p12

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>「乡智文旅」大创项目 · 架构图与大屏布局预览</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;
+    background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+    color: #e6f1ff;
+    min-height: 100vh;
+    padding: 40px 20px;
+  }
+  .container { max-width: 1700px; margin: 0 auto; }
+  header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding: 30px;
+    background: rgba(0, 212, 255, 0.05);
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    border-radius: 12px;
+  }
+  h1 {
+    color: #00d4ff;
+    font-size: 36px;
+    margin-bottom: 12px;
+    text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+    letter-spacing: 4px;
+  }
+  .subtitle { color: #8892b0; font-size: 16px; margin-bottom: 20px; }
+  .badges { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+  .badge {
+    padding: 6px 16px;
+    background: rgba(124, 77, 255, 0.15);
+    border: 1px solid #7c4dff;
+    border-radius: 20px;
+    font-size: 13px;
+    color: #7c4dff;
+  }
+  .section {
+    margin-bottom: 50px;
+    background: rgba(10, 14, 39, 0.6);
+    border: 1px solid rgba(0, 212, 255, 0.2);
+    border-radius: 12px;
+    padding: 30px;
+  }
+  .section-title {
+    font-size: 24px;
+    color: #00d4ff;
+    margin-bottom: 8px;
+    padding-left: 16px;
+    border-left: 4px solid #00d4ff;
+  }
+  .section-desc {
+    color: #8892b0;
+    font-size: 14px;
+    margin-bottom: 24px;
+    padding-left: 20px;
+  }
+  .diagram-container {
+    background: #000814;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0, 212, 255, 0.15);
+  }
+  .diagram-container img, .diagram-container object {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  .download-hint {
+    margin-top: 12px;
+    padding: 10px 16px;
+    background: rgba(255, 217, 61, 0.08);
+    border-left: 3px solid #ffd93d;
+    border-radius: 4px;
+    font-size: 13px;
+    color: #ffd93d;
+  }
+  footer {
+    text-align: center;
+    padding: 30px;
+    color: #8892b0;
+    font-size: 13px;
+    border-top: 1px solid rgba(0, 212, 255, 0.2);
+    margin-top: 40px;
+  }
+  .tag-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px; }
+  .tag {
+    padding: 4px 12px;
+    background: rgba(0, 255, 157, 0.1);
+    border: 1px solid rgba(0, 255, 157, 0.4);
+    border-radius: 12px;
+    font-size: 12px;
+    color: #00ff9d;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <h1>🌾 乡 智 文 旅</h1>
+    <div class="subtitle">基于知识图谱与数字孪生的乡村文旅智能推荐决策平台</div>
+    <div class="subtitle" style="font-size:13px;">Rural Cultural Tourism Intelligent Recommendation Platform · 大创项目可视化设计</div>
+    <div class="badges">
+      <span class="badge">🎓 大学生创新创业训练计划</span>
+      <span class="badge">🧠 知识图谱 + GNN</span>
+      <span class="badge">🤖 LLM Agent</span>
+      <span class="badge">🗺️ 数字孪生</span>
+      <span class="badge">📊 可视化大屏</span>
+    </div>
+  </header>
+
+  <div class="section">
+    <div class="section-title">📐 图 1 · 系统五层技术架构</div>
+    <div class="section-desc">展示层 → 服务层 → 算法层 → 数据治理层 → 数据采集层，涵盖从数据接入到多端呈现的完整技术栈</div>
+    <div class="diagram-container">
+      <object data="01-技术架构图.svg" type="image/svg+xml"></object>
+    </div>
+    <div class="download-hint">💡 PPT 使用提示：SVG 可直接拖入 PowerPoint 2019+ / WPS，或右键"另存为图片"导出 PNG。矢量格式放大不失真。</div>
+    <div class="tag-row">
+      <span class="tag">Cesium</span><span class="tag">Vue3</span><span class="tag">Neo4j</span>
+      <span class="tag">Flink</span><span class="tag">Kafka</span><span class="tag">Qwen2.5</span>
+      <span class="tag">LangChain</span><span class="tag">ClickHouse</span>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">🖥️ 图 2 · 多屏联动布局总览</div>
+    <div class="section-desc">1 主屏（3840×1080 拼接）+ 5 副屏（1920×1080），指挥中心 / 展厅 / 政府汇报适用</div>
+    <div class="diagram-container">
+      <object data="03-大屏总览布局图.svg" type="image/svg+xml"></object>
+    </div>
+    <div class="download-hint">💡 联动机制：主屏 POI 点击 → 副屏数据自动聚焦；Agent 生成行程 → 主屏地图绘制路线；负面舆情 → 主屏告警闪烁</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">🗺️ 图 3 · 主屏详细布局（1920×1080 真实比例）</div>
+    <div class="section-desc">顶部 KPI + 中央 Cesium 3D 孪生地图 + 左侧客流画像 + 右侧 KG/Agent/舆情</div>
+    <div class="diagram-container">
+      <object data="04-主屏详细布局图.svg" type="image/svg+xml"></object>
+    </div>
+    <div class="tag-row">
+      <span class="tag">3D 数字孪生</span><span class="tag">客流粒子流</span><span class="tag">飞线动画</span>
+      <span class="tag">POI 光柱</span><span class="tag">时间轴回放</span><span class="tag">图层控制</span>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">🧠 图 4 · 推荐算法数据流管道</div>
+    <div class="section-desc">6 大阶段：多源输入 → 特征/KG → 多路召回 → RL 精排 → LLM Agent → 输出 &amp; 反馈闭环</div>
+    <div class="diagram-container">
+      <object data="05-推荐算法数据流图.svg" type="image/svg+xml"></object>
+    </div>
+    <div class="download-hint">💡 创新亮点：多目标强化学习（CTR + 满意度 + 乡村带动力），冷门景点强制曝光配额避免马太效应</div>
+    <div class="tag-row">
+      <span class="tag">KGAT</span><span class="tag">RippleNet</span><span class="tag">GraphSAGE</span>
+      <span class="tag">DeepFM</span><span class="tag">MMoE</span><span class="tag">PPO</span>
+      <span class="tag">ReAct</span><span class="tag">RAG</span><span class="tag">Function Calling</span>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">📊 图 5 · 5 个副屏详细布局</div>
+    <div class="section-desc">知识图谱探索 · 推荐算法效果 · 多模态舆情 · LLM Agent 对话 · 乡村振兴成效</div>
+    <div class="diagram-container">
+      <object data="06-副屏详细布局图.svg" type="image/svg+xml"></object>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">📝 附录 · 使用建议</div>
+    <div style="padding: 20px; line-height: 2; color: #e6f1ff; font-size: 14px;">
+      <p><strong style="color:#ffd93d;">▸ PPT 插入方式：</strong>SVG 可直接拖入 PowerPoint（2019 及以上版本原生支持），或先右键浏览器中的图 → 另存为 PNG（推荐 2x 分辨率）</p>
+      <p><strong style="color:#ffd93d;">▸ 论文/申报书使用：</strong>技术架构图（图1）放在"系统架构"章节；数据流图（图4）放在"算法设计"章节；布局图（图2/3/5）放在"可视化设计"章节</p>
+      <p><strong style="color:#ffd93d;">▸ 答辩展示顺序：</strong>项目背景 → 图1 技术架构 → 图4 算法创新 → 图2 大屏总览 → 图3 主屏 Demo → 图5 副屏细节 → 落地成效</p>
+      <p><strong style="color:#ffd93d;">▸ 二次编辑：</strong>SVG 是文本格式，可用 VSCode / Adobe Illustrator / Inkscape（免费）直接修改文字和颜色；Mermaid 源码（02-技术架构图.mermaid）可在 <code style="color:#00d4ff;">mermaid.live</code> 在线编辑</p>
+      <p><strong style="color:#ffd93d;">▸ 配色规范：</strong>科技蓝 #00d4ff · 智慧紫 #7c4dff · 生态绿 #00ff9d · 活力粉 #ff6b9d · 警示黄 #ffd93d · 深空底 #0a0e27</p>
+    </div>
+  </div>
+
+  <footer>
+    <p>© 2026 「乡智文旅」大创项目组 · 面向乡村振兴的文旅多模态智能推荐与孪生可视化系统</p>
+    <p style="margin-top:8px;color:#64ffda;">Design with ❤ for 挑战杯 / 互联网+ / 大创年会</p>
+  </footer>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,67 @@
+%% 推荐算法数据流管道 - Mermaid 源码
+%% 展示 KG + GNN + RL + LLM Agent 融合架构
+
+flowchart LR
+    classDef stage1 fill:#00d4ff22,stroke:#00d4ff,color:#e6f1ff
+    classDef stage2 fill:#7c4dff22,stroke:#7c4dff,color:#e6f1ff
+    classDef stage3 fill:#00ff9d22,stroke:#00ff9d,color:#e6f1ff
+    classDef stage4 fill:#ff6b9d22,stroke:#ff6b9d,color:#e6f1ff
+    classDef stage5 fill:#ffd93d22,stroke:#ffd93d,color:#e6f1ff
+    classDef stage6 fill:#00d4ff22,stroke:#00d4ff,color:#e6f1ff
+
+    subgraph S1["① 多源数据输入"]
+        A1[景点静态数据]:::stage1
+        A2[文化资源数据]:::stage1
+        A3[用户行为数据]:::stage1
+        A4[UGC 图文视频]:::stage1
+        A5[IoT 环境数据]:::stage1
+        A6[消费交易数据]:::stage1
+        A7[地理空间数据]:::stage1
+        A8[政务开放数据]:::stage1
+    end
+
+    subgraph S2["② 特征工程 & 知识图谱"]
+        B1[数据清洗与融合]:::stage2
+        B2[Embedding 向量化<br/>BERT / CLIP / Whisper]:::stage2
+        B3[知识图谱构建<br/>Neo4j + LLM 抽取]:::stage2
+        B4[用户画像]:::stage2
+        B5[景点标签体系]:::stage2
+    end
+
+    subgraph S3["③ 多路召回"]
+        C1[KG 图召回<br/>RippleNet]:::stage3
+        C2[GNN 召回<br/>GraphSAGE/LightGCN]:::stage3
+        C3[向量语义召回<br/>Milvus ANN]:::stage3
+        C4[热度/冷启动召回]:::stage3
+        C5[LBS 地理召回]:::stage3
+        C6[协同过滤 CF]:::stage3
+    end
+
+    subgraph S4["④ 强化学习精排"]
+        D1[特征交叉<br/>DeepFM/DCN-V2]:::stage4
+        D2[多任务学习<br/>MMoE/PLE]:::stage4
+        D3[RL 重排<br/>DQN/PPO]:::stage4
+        D4[多样性控制<br/>MMR/DPP]:::stage4
+        D5[可解释性<br/>SHAP]:::stage4
+    end
+
+    subgraph S5["⑤ LLM Agent 编排"]
+        E1[Qwen2.5/GLM-4<br/>vLLM 推理]:::stage5
+        E2[Function Calling<br/>search_KG / get_weather]:::stage5
+        E3[ReAct 推理循环]:::stage5
+        E4[行程规划器<br/>TSP + 约束求解]:::stage5
+        E5[RAG 智能问答]:::stage5
+    end
+
+    subgraph S6["⑥ 输出与反馈"]
+        F1[小程序个性化推荐]:::stage6
+        F2[大屏态势可视化]:::stage6
+        F3[Agent 对话行程]:::stage6
+        F4[报表与预警]:::stage6
+        F5[对外 API]:::stage6
+    end
+
+    S1 --> S2 --> S3 --> S4 --> S5 --> S6
+    S6 -.用户反馈.-> S2
+
+    class S1,S2,S3,S4,S5,S6 fill:#0a0e27,stroke:#00d4ff,color:#00d4ff

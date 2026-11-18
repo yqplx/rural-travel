@@ -1,0 +1,10 @@
+@echo off
+cd /d "%~dp0"
+call "%~dp0_env.bat"
+call "%~dp0config.bat"
+if exist "%FRONTEND%\node_modules\.vite" rmdir /s /q "%FRONTEND%\node_modules\.vite"
+cd /d "%FRONTEND%"
+set "ESBUILD_BINARY_PATH=%ESBUILD%"
+set "VITE_PORT=%FRONTEND_PORT%"
+set "VITE_API_TARGET=http://127.0.0.1:%BACKEND_PORT%"
+start "Frontend-%FRONTEND_PORT%" cmd /k ""%NODE%" node_modules/vite/bin/vite.js --host 0.0.0.0 --port %FRONTEND_PORT%"

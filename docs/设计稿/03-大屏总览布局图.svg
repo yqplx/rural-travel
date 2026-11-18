@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1100" font-family="'Microsoft YaHei','PingFang SC',sans-serif">
+  <defs>
+    <linearGradient id="bg2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0a0e27"/>
+      <stop offset="100%" stop-color="#1a1f3a"/>
+    </linearGradient>
+    <linearGradient id="mainScreen" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#001a3a"/>
+      <stop offset="100%" stop-color="#003366"/>
+    </linearGradient>
+    <linearGradient id="subScreen" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1a1f3a"/>
+      <stop offset="100%" stop-color="#2a2f4a"/>
+    </linearGradient>
+    <filter id="glow2">
+      <feGaussianBlur stdDeviation="4" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="shadow">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#00d4ff" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+
+  <rect width="1600" height="1100" fill="url(#bg2)"/>
+
+  <!-- 标题 -->
+  <text x="800" y="50" text-anchor="middle" fill="#00d4ff" font-size="30" font-weight="bold" filter="url(#glow2)">「乡智文旅」多屏联动大屏布局总览</text>
+  <text x="800" y="80" text-anchor="middle" fill="#8892b0" font-size="15">1 主屏（3840×1080 拼接屏）+ 5 副屏（1920×1080）· 指挥中心 / 展厅 / 政府汇报适用</text>
+  <line x1="550" y1="95" x2="1050" y2="95" stroke="#00d4ff" stroke-width="2" opacity="0.6"/>
+
+  <!-- ========== 主屏 ========== -->
+  <g filter="url(#shadow)">
+    <rect x="200" y="130" width="1200" height="380" rx="6" fill="url(#mainScreen)" stroke="#00d4ff" stroke-width="2.5"/>
+    <!-- 主屏顶部标题栏 -->
+    <rect x="200" y="130" width="1200" height="40" rx="6" fill="#00d4ff" fill-opacity="0.2"/>
+    <text x="800" y="157" text-anchor="middle" fill="#00d4ff" font-size="18" font-weight="bold">🌾 主屏 · 3D 数字孪生态势大屏（Cesium 3D County Twin）</text>
+
+    <!-- 主屏顶部 KPI -->
+    <g font-size="11" fill="#8892b0">
+      <rect x="220" y="185" width="180" height="55" rx="3" fill="#001a3a" stroke="#ffd93d" stroke-width="1"/>
+      <text x="310" y="205" text-anchor="middle" fill="#ffd93d" font-size="12" font-weight="bold">今日游客数</text>
+      <text x="310" y="228" text-anchor="middle" fill="#fff" font-size="16" font-weight="bold">12,580</text>
+
+      <rect x="410" y="185" width="180" height="55" rx="3" fill="#001a3a" stroke="#ffd93d" stroke-width="1"/>
+      <text x="500" y="205" text-anchor="middle" fill="#ffd93d" font-size="12" font-weight="bold">今日营收 (元)</text>
+      <text x="500" y="228" text-anchor="middle" fill="#fff" font-size="16" font-weight="bold">856,320</text>
+
+      <rect x="600" y="185" width="180" height="55" rx="3" fill="#001a3a" stroke="#ffd93d" stroke-width="1"/>
+      <text x="690" y="205" text-anchor="middle" fill="#ffd93d" font-size="12" font-weight="bold">推荐转化率</text>
+      <text x="690" y="228" text-anchor="middle" fill="#fff" font-size="16" font-weight="bold">18.6%</text>
+
+      <rect x="790" y="185" width="180" height="55" rx="3" fill="#001a3a" stroke="#ffd93d" stroke-width="1"/>
+      <text x="880" y="205" text-anchor="middle" fill="#ffd93d" font-size="12" font-weight="bold">在园人数</text>
+      <text x="880" y="228" text-anchor="middle" fill="#fff" font-size="16" font-weight="bold">3,247</text>
+
+      <rect x="980" y="185" width="180" height="55" rx="3" fill="#001a3a" stroke="#ffd93d" stroke-width="1"/>
+      <text x="1070" y="205" text-anchor="middle" fill="#ffd93d" font-size="12" font-weight="bold">告警事件</text>
+      <text x="1070" y="228" text-anchor="middle" fill="#ff6b9d" font-size="16" font-weight="bold">3</text>
+
+      <rect x="1170" y="185" width="215" height="55" rx="3" fill="#001a3a" stroke="#ffd93d" stroke-width="1"/>
+      <text x="1277" y="205" text-anchor="middle" fill="#ffd93d" font-size="12" font-weight="bold">在线设备 / 数据源</text>
+      <text x="1277" y="228" text-anchor="middle" fill="#fff" font-size="16" font-weight="bold">256 / 12</text>
+    </g>
+
+    <!-- 主屏中央 3D 地图 -->
+    <rect x="450" y="255" width="700" height="240" rx="4" fill="#000814" stroke="#00d4ff" stroke-width="1" stroke-dasharray="4,2"/>
+    <text x="800" y="380" text-anchor="middle" fill="#00d4ff" font-size="60" opacity="0.5">🗺️</text>
+    <text x="800" y="425" text-anchor="middle" fill="#00d4ff" font-size="14" font-weight="bold">Cesium 3D 数字孪生县域地图</text>
+    <text x="800" y="445" text-anchor="middle" fill="#8892b0" font-size="11">倾斜摄影 · POI 光柱 · 客流粒子流 · 飞线动画 · 时间轴回放</text>
+    <text x="800" y="465" text-anchor="middle" fill="#8892b0" font-size="11">GPU 加速渲染 · LOD 分级加载 · 支持第一人称漫游</text>
+
+    <!-- 主屏左侧图层控制 -->
+    <rect x="220" y="255" width="215" height="240" rx="4" fill="#001a3a" stroke="#00ff9d" stroke-width="1"/>
+    <text x="327" y="278" text-anchor="middle" fill="#00ff9d" font-size="13" font-weight="bold">图层控制</text>
+    <g font-size="11" fill="#8892b0">
+      <text x="235" y="305">☑ 景点 POI 分布</text>
+      <text x="235" y="325">☑ 客流热力图</text>
+      <text x="235" y="345">☑ 游客来源飞线</text>
+      <text x="235" y="365">☑ 推荐路线</text>
+      <text x="235" y="385">☑ 交通路网</text>
+      <text x="235" y="405">☑ 停车场余位</text>
+      <text x="235" y="425">☐ 天气叠加</text>
+      <text x="235" y="445">☐ AQI 空气层</text>
+      <text x="235" y="465">☐ 视频监控点</text>
+      <text x="235" y="485">☐ 非遗分布</text>
+    </g>
+
+    <!-- 主屏右侧实时榜单 -->
+    <rect x="1165" y="255" width="220" height="240" rx="4" fill="#001a3a" stroke="#ff6b9d" stroke-width="1"/>
+    <text x="1275" y="278" text-anchor="middle" fill="#ff6b9d" font-size="13" font-weight="bold">🔥 实时热门景点 TOP</text>
+    <g font-size="11" fill="#e6f1ff">
+      <text x="1180" y="305">1. 查济古村</text><text x="1370" y="305" text-anchor="end" fill="#ffd93d">9,856</text>
+      <text x="1180" y="325">2. 宏村</text><text x="1370" y="325" text-anchor="end" fill="#ffd93d">8,432</text>
+      <text x="1180" y="345">3. 西递</text><text x="1370" y="345" text-anchor="end" fill="#ffd93d">7,215</text>
+      <text x="1180" y="365">4. 呈坎八卦村</text><text x="1370" y="365" text-anchor="end">6,109</text>
+      <text x="1180" y="385">5. 唐模水口</text><text x="1370" y="385" text-anchor="end">5,876</text>
+      <text x="1180" y="405">6. 江村</text><text x="1370" y="405" text-anchor="end">4,532</text>
+      <text x="1180" y="425">7. 龙川景区</text><text x="1370" y="425" text-anchor="end">4,208</text>
+      <text x="1180" y="445">8. 上庄</text><text x="1370" y="445" text-anchor="end">3,987</text>
+      <text x="1180" y="465">9. 障山大峡谷</text><text x="1370" y="465" text-anchor="end">3,654</text>
+      <text x="1180" y="485">10. 冯村</text><text x="1370" y="485" text-anchor="end">3,201</text>
+    </g>
+
+    <!-- 主屏底部滚动条 -->
+    <rect x="220" y="475" width="1165" height="0" fill="none"/>
+  </g>
+
+  <!-- ========== 5 个副屏 ========== -->
+  <!-- 副屏 1：知识图谱 -->
+  <g filter="url(#shadow)">
+    <rect x="60" y="560" width="290" height="200" rx="6" fill="url(#subScreen)" stroke="#00ff9d" stroke-width="2"/>
+    <rect x="60" y="560" width="290" height="30" rx="6" fill="#00ff9d" fill-opacity="0.2"/>
+    <text x="205" y="580" text-anchor="middle" fill="#00ff9d" font-size="13" font-weight="bold">副屏 1 · 知识图谱探索</text>
+    <circle cx="205" cy="680" r="8" fill="#00ff9d"/>
+    <circle cx="140" cy="640" r="5" fill="#ffd93d"/>
+    <circle cx="270" cy="640" r="5" fill="#ffd93d"/>
+    <circle cx="110" cy="700" r="5" fill="#ff6b9d"/>
+    <circle cx="300" cy="700" r="5" fill="#ff6b9d"/>
+    <circle cx="170" cy="730" r="4" fill="#00d4ff"/>
+    <circle cx="240" cy="730" r="4" fill="#00d4ff"/>
+    <g stroke="#00ff9d" stroke-width="0.8" opacity="0.6">
+      <line x1="205" y1="680" x2="140" y2="640"/>
+      <line x1="205" y1="680" x2="270" y2="640"/>
+      <line x1="205" y1="680" x2="110" y2="700"/>
+      <line x1="205" y1="680" x2="300" y2="700"/>
+      <line x1="205" y1="680" x2="170" y2="730"/>
+      <line x1="205" y1="680" x2="240" y2="730"/>
+      <line x1="140" y1="640" x2="110" y2="700"/>
+      <line x1="270" y1="640" x2="300" y2="700"/>
+    </g>
+    <text x="205" y="750" text-anchor="middle" fill="#8892b0" font-size="10">AntV G6 力导向图 · 可交互下钻</text>
+  </g>
+
+  <!-- 副屏 2：推荐算法 -->
+  <g filter="url(#shadow)">
+    <rect x="370" y="560" width="290" height="200" rx="6" fill="url(#subScreen)" stroke="#7c4dff" stroke-width="2"/>
+    <rect x="370" y="560" width="290" height="30" rx="6" fill="#7c4dff" fill-opacity="0.2"/>
+    <text x="515" y="580" text-anchor="middle" fill="#7c4dff" font-size="13" font-weight="bold">副屏 2 · 推荐算法效果</text>
+    <!-- 漏斗图 -->
+    <polygon points="410,610 620,610 590,635 440,635" fill="#7c4dff" fill-opacity="0.6"/>
+    <polygon points="440,640 590,640 570,665 460,665" fill="#7c4dff" fill-opacity="0.5"/>
+    <polygon points="460,670 570,670 555,695 475,695" fill="#7c4dff" fill-opacity="0.4"/>
+    <polygon points="475,700 555,700 545,725 485,725" fill="#7c4dff" fill-opacity="0.3"/>
+    <text x="515" y="628" text-anchor="middle" fill="#fff" font-size="10">曝光 128,450</text>
+    <text x="515" y="658" text-anchor="middle" fill="#fff" font-size="10">点击 32,180</text>
+    <text x="515" y="688" text-anchor="middle" fill="#fff" font-size="10">收藏 8,920</text>
+    <text x="515" y="718" text-anchor="middle" fill="#fff" font-size="10">转化 3,145</text>
+    <text x="515" y="750" text-anchor="middle" fill="#8892b0" font-size="10">CTR · CVR · NDCG · A/B 实时对比</text>
+  </g>
+
+  <!-- 副屏 3：舆情 -->
+  <g filter="url(#shadow)">
+    <rect x="680" y="560" width="290" height="200" rx="6" fill="url(#subScreen)" stroke="#ff6b9d" stroke-width="2"/>
+    <rect x="680" y="560" width="290" height="30" rx="6" fill="#ff6b9d" fill-opacity="0.2"/>
+    <text x="825" y="580" text-anchor="middle" fill="#ff6b9d" font-size="13" font-weight="bold">副屏 3 · 多模态舆情</text>
+    <!-- 词云 -->
+    <g font-weight="bold">
+      <text x="720" y="625" fill="#ffd93d" font-size="20">徽派建筑</text>
+      <text x="830" y="640" fill="#00ff9d" font-size="16">非遗</text>
+      <text x="700" y="660" fill="#00d4ff" font-size="14">古村落</text>
+      <text x="880" y="620" fill="#ff6b9d" font-size="18">美食</text>
+      <text x="780" y="675" fill="#7c4dff" font-size="22">民宿</text>
+      <text x="700" y="700" fill="#ffd93d" font-size="13">摄影</text>
+      <text x="870" y="700" fill="#00ff9d" font-size="15">亲子</text>
+      <text x="760" y="720" fill="#ff6b9d" font-size="12">徒步</text>
+      <text x="880" y="725" fill="#00d4ff" font-size="14">文创</text>
+    </g>
+    <text x="825" y="750" text-anchor="middle" fill="#8892b0" font-size="10">CLIP + Whisper 情感分析 · 全网 UGC</text>
+  </g>
+
+  <!-- 副屏 4：LLM Agent -->
+  <g filter="url(#shadow)">
+    <rect x="990" y="560" width="290" height="200" rx="6" fill="url(#subScreen)" stroke="#ffd93d" stroke-width="2"/>
+    <rect x="990" y="560" width="290" height="30" rx="6" fill="#ffd93d" fill-opacity="0.2"/>
+    <text x="1135" y="580" text-anchor="middle" fill="#ffd93d" font-size="13" font-weight="bold">副屏 4 · LLM Agent 对话</text>
+    <!-- 数字人 -->
+    <circle cx="1050" cy="650" r="25" fill="#ffd93d" fill-opacity="0.3" stroke="#ffd93d"/>
+    <text x="1050" y="658" text-anchor="middle" fill="#ffd93d" font-size="20">🤖</text>
+    <!-- 对话气泡 -->
+    <rect x="1090" y="615" width="180" height="30" rx="10" fill="#1a1f3a" stroke="#ffd93d" stroke-width="0.8"/>
+    <text x="1180" y="634" text-anchor="middle" fill="#e6f1ff" font-size="10">用户：推荐周末两日游</text>
+    <rect x="1090" y="655" width="180" height="45" rx="10" fill="#ffd93d" fill-opacity="0.15" stroke="#ffd93d" stroke-width="0.8"/>
+    <text x="1180" y="672" text-anchor="middle" fill="#ffd93d" font-size="10">Agent：正在调用工具...</text>
+    <text x="1180" y="688" text-anchor="middle" fill="#8892b0" font-size="9">🔧 search_KG · get_weather</text>
+    <!-- 思考链 -->
+    <text x="1135" y="725" text-anchor="middle" fill="#00ff9d" font-size="10">ReAct 思考链流式输出</text>
+    <text x="1135" y="750" text-anchor="middle" fill="#8892b0" font-size="10">Qwen2.5 + LangChain Function Calling</text>
+  </g>
+
+  <!-- 副屏 5：乡村振兴 -->
+  <g filter="url(#shadow)">
+    <rect x="1300" y="560" width="240" height="200" rx="6" fill="url(#subScreen)" stroke="#00d4ff" stroke-width="2"/>
+    <rect x="1300" y="560" width="240" height="30" rx="6" fill="#00d4ff" fill-opacity="0.2"/>
+    <text x="1420" y="580" text-anchor="middle" fill="#00d4ff" font-size="13" font-weight="bold">副屏 5 · 乡村振兴成效</text>
+    <!-- 仪表盘 -->
+    <path d="M 1360 700 A 60 60 0 0 1 1480 700" fill="none" stroke="#1a1f3a" stroke-width="12"/>
+    <path d="M 1360 700 A 60 60 0 0 1 1465 660" fill="none" stroke="#00d4ff" stroke-width="12" stroke-linecap="round"/>
+    <text x="1420" y="695" text-anchor="middle" fill="#00d4ff" font-size="28" font-weight="bold">87.5</text>
+    <text x="1420" y="715" text-anchor="middle" fill="#8892b0" font-size="11">综合评分</text>
+    <text x="1420" y="745" text-anchor="middle" fill="#8892b0" font-size="10">AHP + 熵权法 + TOPSIS</text>
+  </g>
+
+  <!-- 底部说明栏 -->
+  <rect x="60" y="790" width="1480" height="90" rx="6" fill="#001a3a" stroke="#00d4ff" stroke-width="1" stroke-dasharray="6,3"/>
+  <text x="800" y="815" text-anchor="middle" fill="#00d4ff" font-size="15" font-weight="bold">📊 底部实时滚动信息栏（Marquee）</text>
+  <text x="80" y="840" fill="#e6f1ff" font-size="12">▸ 15:23  查济古村入园人数突破 5000，触发客流预警   ▸ 15:25  非遗"徽州三雕"传承人直播中，在线观看 2.3 万</text>
+  <text x="80" y="862" fill="#e6f1ff" font-size="12">▸ 15:28  小红书新增游记 156 篇，正面情感占比 92.4%   ▸ 15:30  推荐系统 A/B 实验 v2.3 CTR 提升 12.7%</text>
+
+  <!-- 联动关系说明 -->
+  <text x="800" y="920" text-anchor="middle" fill="#ffd93d" font-size="14" font-weight="bold">🔗 多屏联动机制</text>
+  <g font-size="12" fill="#8892b0">
+    <text x="200" y="950">• 主屏点击景点 POI → 副屏 1 图谱自动聚焦该实体，副屏 2 展示该景点推荐效果</text>
+    <text x="200" y="975">• 副屏 4 Agent 生成行程 → 主屏 3D 地图自动绘制推荐路线，副屏 5 更新预期带动效益</text>
+    <text x="200" y="1000">• 副屏 3 检测到负面舆情 → 主屏对应区域闪烁告警，触发工单流程</text>
+    <text x="200" y="1025">• 时间轴联动：任意屏拖动时间 → 所有屏数据同步回放（历史 30 天）</text>
+  </g>
+
+  <!-- 装饰角 -->
+  <g stroke="#00d4ff" stroke-width="2" fill="none" opacity="0.6">
+    <path d="M 30 30 L 30 60 M 30 30 L 60 30"/>
+    <path d="M 1570 30 L 1570 60 M 1570 30 L 1540 30"/>
+    <path d="M 30 1070 L 30 1040 M 30 1070 L 60 1070"/>
+    <path d="M 1570 1070 L 1570 1040 M 1570 1070 L 1540 1070"/>
+  </g>
+
+  <!-- 连接线：主屏 → 副屏 -->
+  <g stroke="#00d4ff" stroke-width="1" opacity="0.4" stroke-dasharray="3,3">
+    <line x1="800" y1="510" x2="205" y2="560"/>
+    <line x1="800" y1="510" x2="515" y2="560"/>
+    <line x1="800" y1="510" x2="825" y2="560"/>
+    <line x1="800" y1="510" x2="1135" y2="560"/>
+    <line x1="800" y1="510" x2="1420" y2="560"/>
+  </g>
+</svg>

@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page-node-id="TGWOo5fAVbngzmlbGZi33A">
+<head data-page-node-id="bt97GqYgiFRDLCV8bSNeCD">
+<meta charset="UTF-8" data-page-node-id="h8eO0Pl90dPKpJXcojmcJO">
+<title>「数字田野」配色预览与调参台 · 乡智文旅大屏</title>
+<style>
+:root{
+  /* ===== 可调核心变量（调参台直接改这里） ===== */
+  --bg-deep:#0a1628;   /* 深田野 · 主背景 60% */
+  --bg-mid:#142850;    /* 靛蓝 · 卡片底 */
+  --bg-light:#1e3a5f;  /* 暮蓝 · 渐变中心 */
+  --bg-edge:#050b18;   /* 深夜 · 渐变边缘 */
+  --cyan:#22d3ee;      /* 数字青 · 主色 30% */
+  --green:#84cc16;     /* 禾苗绿 · 乡村 30% */
+  --yellow:#eab308;    /* 麦田黄 · 强调 10% */
+  --orange:#f97316;    /* 暖阳橙 · 提示 */
+  --red:#dc2626;       /* 告警红 */
+  --grow:#00ff9d;      /* 增长绿 */
+  --text-1:#f5f0e8;    /* 微暖白 · KPI 数字 */
+  --text-2:#e6f1ff;    /* 冷白 · 正文 */
+  --text-3:#a5f3fc;    /* 云雾白 · 辅助 */
+  --pat-op:0.08;       /* 底纹总透明度 0.05~0.10 */
+  --bg-mode:radial;    /* radial | linear | split */
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Microsoft YaHei','PingFang SC',sans-serif;background:#03060d;color:var(--text-2);min-height:100vh}
+
+/* ========== 调参台 ========== */
+.tuner{position:sticky;top:0;z-index:99;background:rgba(3,6,13,.92);backdrop-filter:blur(8px);
+  border-bottom:1px solid rgba(34,211,238,.25);padding:10px 18px;display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+.tuner .brand{color:var(--cyan);font-weight:bold;letter-spacing:3px;font-size:15px;margin-right:6px}
+.tuner label{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-3)}
+.tuner input[type=color]{width:26px;height:22px;border:none;background:none;cursor:pointer;padding:0}
+.tuner input[type=range]{width:90px;accent-color:var(--cyan)}
+.tuner select{background:var(--bg-mid);color:var(--text-2);border:1px solid var(--cyan);border-radius:4px;font-size:12px;padding:2px 6px}
+.tuner button{background:var(--cyan);color:#0a1628;border:none;border-radius:5px;padding:5px 14px;font-size:12px;font-weight:bold;cursor:pointer}
+.tuner button.ghost{background:transparent;color:var(--cyan);border:1px solid var(--cyan)}
+.tuner .sep{width:1px;height:20px;background:rgba(165,243,252,.25)}
+
+.wrap{max-width:1760px;margin:0 auto;padding:26px 20px 60px}
+h2.sec{color:var(--cyan);font-size:20px;margin:34px 0 6px;padding-left:14px;border-left:4px solid var(--cyan);letter-spacing:2px}
+p.sec-desc{color:var(--text-3);font-size:13px;margin:0 0 16px 18px;opacity:.85}
+
+/* ========== 舞台缩放 ========== */
+.viewport{width:100%;overflow:hidden;border-radius:10px;box-shadow:0 10px 40px rgba(34,211,238,.18);position:relative}
+.stage{width:1920px;height:1080px;transform-origin:0 0;position:relative;overflow:hidden;
+  background:var(--bg-deep);font-size:14px}
+/* 三种背景渐变模式 */
+.stage.bg-radial{background:radial-gradient(ellipse 75% 75% at 50% 45%,var(--bg-light) 0%,var(--bg-mid) 45%,var(--bg-edge) 100%)}
+.stage.bg-linear{background:linear-gradient(135deg,var(--bg-deep) 0%,var(--bg-mid) 50%,#0c4a6e 100%)}
+.stage.bg-split{background:linear-gradient(180deg,#0c4a6e 0%,var(--bg-mid) 40%,#1a3a12 100%)}
+.bg-layer{position:absolute;inset:0;pointer-events:none}
+.grid-lines{position:absolute;inset:0;pointer-events:none;opacity:var(--pat-op);
+  background-image:linear-gradient(rgba(34,211,238,.5) 1px,transparent 1px),linear-gradient(90deg,rgba(34,211,238,.5) 1px,transparent 1px);
+  background-size:240px 180px}
+
+/* ========== 通用组件 ========== */
+.panel{position:absolute;background:linear-gradient(180deg,rgba(15,35,64,.88),rgba(10,22,40,.88));
+  border:1px solid var(--cyan);border-radius:4px}
+.panel .p-head{height:32px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;
+  font-size:13px;font-weight:bold;border-radius:4px 4px 0 0}
+.kpi{position:absolute;height:85px;background:linear-gradient(180deg,rgba(15,35,64,.88),rgba(10,22,40,.88));
+  border:1.2px solid var(--cyan);border-radius:4px;padding:10px 14px}
+.kpi::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--cyan)}
+.kpi .k-label{font-size:12px;font-weight:bold;letter-spacing:1px}
+.kpi .k-num{font-size:30px;font-weight:bold;color:var(--text-1);font-family:Arial;margin-top:4px;display:inline-block}
+.kpi .k-sub{font-size:12px;margin-left:10px}
+.glow{text-shadow:0 0 12px currentColor}
+.corner{position:absolute;width:36px;height:36px;border:2px solid var(--cyan);opacity:.7;pointer-events:none}
+
+/* 副屏缩略图 */
+.thumb-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(560px,1fr));gap:22px}
+.thumb{cursor:pointer;transition:transform .2s}
+.thumb:hover{transform:translateY(-4px)}
+.thumb .t-title{text-align:center;margin-top:10px;font-size:14px;color:var(--text-3);letter-spacing:1px}
+.thumb .t-title b{color:var(--text-2)}
+/* 放大模态 */
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:200;overflow:auto;padding:30px}
+.modal.open{display:block}
+.modal .viewport{margin:0 auto}
+.modal-close{position:fixed;top:14px;right:22px;z-index:201;background:var(--red);color:#fff;border:none;border-radius:6px;
+  padding:8px 18px;font-size:14px;cursor:pointer;display:none}
+.modal.open ~ .modal-close{display:block}
+.toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%);background:var(--green);color:#0a1628;
+  padding:10px 26px;border-radius:8px;font-weight:bold;font-size:14px;display:none;z-index:300}
+.note{margin-top:14px;padding:12px 18px;background:rgba(234,179,8,.08);border-left:3px solid var(--yellow);
+  border-radius:4px;font-size:13px;color:var(--yellow);line-height:1.9}
+.note code{color:var(--text-1);background:rgba(34,211,238,.12);padding:1px 6px;border-radius:3px}
+</style>
+</head>
+<body data-page-node-id="06uYrveMVISG5HOIPRdunf">
+
+<!-- ============ 调参台 ============ -->
+<div class="tuner" data-page-node-id="b2igjVWmAX2lryRnFUAfAX">
+  <span class="brand" data-page-node-id="INSgME25fYcxAznaYbjmLr">🌾 数字田野 · 调参台</span>
+  <label data-page-node-id="cwmmjG1tTTN3UJyQFh9CdT">深田野<input type="color" data-var="--bg-deep" value="#0a1628" data-page-node-id="B48lpWIlS6aBfc5UHXYs0l"></label>
+  <label data-page-node-id="9YLYFppwkGcLnOalCBzqjg">卡片底<input type="color" data-var="--bg-mid" value="#142850" data-page-node-id="l8xqfpvDqDEl3G78VzjOZY"></label>
+  <label data-page-node-id="jI4V4L5rGKuc3KtvDCtDMT">渐变心<input type="color" data-var="--bg-light" value="#1e3a5f" data-page-node-id="KCAGrt6urAqtEAlpzGiHVG"></label>
+  <div class="sep" data-page-node-id="Iw0LTxGUNJyDonBdedw26t"></div>
+  <label data-page-node-id="iaFNXaPpyo0G7EY4VowZYM">数字青<input type="color" data-var="--cyan" value="#22d3ee" data-page-node-id="ml9UE0dWmnmytGBEuAaJlu"></label>
+  <label data-page-node-id="3IMRPY6gIsJOXGATa9OvSB">禾苗绿<input type="color" data-var="--green" value="#84cc16" data-page-node-id="HNaE0tBR3JQkU4pxFGDHdB"></label>
+  <label data-page-node-id="Uxt0YQmP5YusjX6z8ZVDA2">麦田黄<input type="color" data-var="--yellow" value="#eab308" data-page-node-id="jEdscc0xZBegbmgrQtMD6g"></label>
+  <label data-page-node-id="2YZiGWU7H89zeQ3yQXB8v3">暖阳橙<input type="color" data-var="--orange" value="#f97316" data-page-node-id="E0EX2FDKrPmGLWVtbstUVy"></label>
+  <div class="sep" data-page-node-id="38L30LZBSewf8IwRICBLtH"></div>
+  <label data-page-node-id="ODXWJSIreOLyNQSAkxfe8b">主文字<input type="color" data-var="--text-1" value="#f5f0e8" data-page-node-id="EzNcmwxteAIZwtoTakKhRs"></label>
+  <label data-page-node-id="6ErBajEQNhqYCjZPVlT3x9">正文<input type="color" data-var="--text-2" value="#e6f1ff" data-page-node-id="BJwUZfh7nWuXW9gGbt9QE7"></label>
+  <label data-page-node-id="RO8ehbiUiB22pGBtPJ20ys">底纹透明度<input type="range" id="patOp" min="0" max="15" value="8" data-page-node-id="SLMI3RVGBHndvl51SD45Uv"><span id="patOpVal" data-page-node-id="41r66ANfDczkNC5fy5rfCi">8%</span></label>
+  <label data-page-node-id="2q9dYGgQ3NE4jO7xzWIiJq">背景模式
+    <select id="bgMode" data-page-node-id="21hqC7JsOKgJ0TTWfvxUq6">
+      <option value="radial" selected data-page-node-id="moYC5BWw9KIo0JD5luKEE1">径向渐变（中心亮）</option>
+      <option value="linear" data-page-node-id="twGhj0h27YEwKBEwkGtssP">线性渐变（左上→右下）</option>
+      <option value="split" data-page-node-id="MKiF4G7b8FPhBKcpvbKvJj">上下分区（科技蓝→田野绿）</option>
+    </select>
+  </label>
+  <div class="sep" data-page-node-id="0cwhr0xwzEMUx277K9QKA8"></div>
+  <button onclick="copyVars()" data-page-node-id="nvQXjNyPloOZFAABYaFDuF">📋 复制 CSS 变量</button>
+  <button class="ghost" onclick="resetTheme()" data-page-node-id="cokTMGqn0MF73sw6e5q8Vb">↺ 重置默认</button>
+</div>
+
+<div class="wrap" data-page-node-id="HmpMsj2dJr7uarQSBVKyLX">
+
+<h2 class="sec" data-page-node-id="5EoLS9eC1vLZoIEfEWzIiG">🗺️ 主屏 · 县域数字孪生态势（1920×1080）</h2>
+<p class="sec-desc" data-page-node-id="3TMcd7T7BiyIXIqGDv60iQ">径向渐变 + 稻穗/云纹底纹 + 网格线 + 远山剪影 + 两侧马头墙 · 6 KPI + 左中右三栏 · 点击副屏缩略图可放大</p>
+
+<!-- ================= 主屏 ================= -->
+<div class="viewport" data-stage data-page-node-id="ffKiCMWZCKQVM6ZSyaDCm1">
+<div class="stage bg-radial" id="mainStage" data-page-node-id="fSuL6kIgDYAZF3atdLVaCR">
+
+  <!-- 底纹层：稻穗 + 云纹 + 远山 + 马头墙 -->
+  <svg class="bg-layer" width="1920" height="1080" viewBox="0 0 1920 1080" data-page-node-id="MxiiHB7Y6U4E0iqvPLMAtX">
+    <defs data-page-node-id="mncg4Ko162gRbCVOKY8Y29">
+      <pattern id="rice" x="0" y="0" width="120" height="120" patternUnits="userSpaceOnUse" data-page-node-id="L4zuF6MgFMNpkqUwRCWBlY">
+        <g stroke="var(--yellow)" stroke-width="0.8" fill="none" data-page-node-id="51rquvQFBnkivVIJLXaEHH">
+          <path d="M 20 100 Q 20 60 25 30" data-page-node-id="VizdfDnhInYYHMuAHA35XI"/>
+          <ellipse cx="18" cy="35" rx="3" ry="6" data-page-node-id="pGb8gsM2G1UHzQknX0leba"/><ellipse cx="27" cy="38" rx="3" ry="6" data-page-node-id="6mTGai6fUWBwIa8oMtkKnh"/>
+          <ellipse cx="18" cy="50" rx="3" ry="6" data-page-node-id="t0wptIFsyvW8pcouXa6QAF"/><ellipse cx="27" cy="53" rx="3" ry="6" data-page-node-id="ZgFw5HeJ2PpvIp9zdtCIsH"/>
+          <ellipse cx="18" cy="65" rx="3" ry="6" data-page-node-id="qU0IdyAk4mgUOWfhHhP28O"/><ellipse cx="27" cy="68" rx="3" ry="6" data-page-node-id="l1R9WUuJ63nqweBMtdqeRv"/>
+          <path d="M 90 110 Q 90 70 95 40" data-page-node-id="sxN0YVQE82rjxq6Q3EArP8"/>
+          <ellipse cx="88" cy="45" rx="3" ry="6" data-page-node-id="MIXnnl7TONNHkXiaSctHI7"/><ellipse cx="97" cy="48" rx="3" ry="6" data-page-node-id="82gC8CyklTC1DpTajvh80s"/>
+          <ellipse cx="88" cy="60" rx="3" ry="6" data-page-node-id="m6qJGZhO9QTjGTT2v9Luoq"/><ellipse cx="97" cy="63" rx="3" ry="6" data-page-node-id="dLn22JoTbDgiTOGV4kK1rc"/>
+        </g>
+      </pattern>
+      <pattern id="cloud" x="0" y="0" width="200" height="100" patternUnits="userSpaceOnUse" data-page-node-id="EqCcr3ZeBOrfcILR0jveIj">
+        <g stroke="var(--cyan)" stroke-width="0.6" fill="none" data-page-node-id="yz7oPZaX8K4F1gV5ascA92">
+          <path d="M 20 50 Q 30 30 50 40 Q 70 25 90 45 Q 110 35 120 55 Q 100 65 80 55 Q 60 65 40 60 Z" data-page-node-id="s1wmCTACsMmJqcRVdved8k"/>
+          <path d="M 140 30 Q 150 20 165 30 Q 180 25 185 40 Q 170 45 155 40 Z" data-page-node-id="qYvLNFAxvAxNAWSRsXnVHu"/>
+        </g>
+      </pattern>
+      <linearGradient id="fieldGlow" x1="0" y1="0" x2="0" y2="1" data-page-node-id="JyOF1qCDu111cRmjB2uOjd">
+        <stop offset="0%" stop-color="var(--green)" stop-opacity="0" data-page-node-id="upPcHoIym8Wt4E7x56RO9a"/>
+        <stop offset="100%" stop-color="var(--green)" stop-opacity="0.15" data-page-node-id="CgU5npTKspDkN6VVBqZtVj"/>
+      </linearGradient>
+    </defs>
+    <rect width="1920" height="1080" fill="url(#rice)" style="opacity:var(--pat-op)" data-page-node-id="uewlazkvBV1I7JMPew7leP"/>
+    <rect width="1920" height="400" fill="url(#cloud)" style="opacity:calc(var(--pat-op)*0.8)" data-page-node-id="lvlJk3t52Hqlc5t8pNMaxE"/>
+    <rect y="800" width="1920" height="280" fill="url(#fieldGlow)" data-page-node-id="FAc4zETs8gqW7AFM1eksIh"/>
+    <!-- 远山剪影 -->
+    <path d="M 0 1080 L 0 920 Q 80 870 160 895 Q 240 830 320 870 Q 400 810 480 855 Q 560 790 640 840 Q 720 800 800 830 Q 880 770 960 815 Q 1040 780 1120 820 Q 1200 760 1280 810 Q 1360 780 1440 820 Q 1520 770 1600 815 Q 1680 790 1760 830 Q 1840 800 1920 850 L 1920 1080 Z" fill="var(--bg-deep)" opacity="0.6" data-page-node-id="eV23yYGgWJFyWhvb2F707F"/>
+    <path d="M 0 1080 L 0 970 Q 100 940 200 965 Q 300 920 400 955 Q 500 925 600 960 Q 700 935 800 960 Q 900 930 1000 958 Q 1100 935 1200 965 Q 1300 940 1400 970 Q 1500 950 1600 975 Q 1700 955 1800 985 Q 1860 970 1920 990 L 1920 1080 Z" fill="var(--bg-edge)" opacity="0.8" data-page-node-id="RJhYNRZ4DJ5RKvyJN1aSte"/>
+    <!-- 马头墙剪影 -->
+    <g style="opacity:calc(var(--pat-op)*1.3)" fill="var(--cyan)" data-page-node-id="VxLARUPeqmtv3RNGiC7kq2">
+      <path d="M 30 1000 L 30 940 L 45 925 L 45 910 L 60 895 L 60 940 L 80 940 L 80 920 L 100 900 L 100 880 L 120 865 L 120 900 L 140 900 L 140 1000 Z" data-page-node-id="AVQPRZs3EW0kszfn9Z3AyJ"/>
+      <path d="M 1780 1010 L 1780 950 L 1795 935 L 1795 920 L 1810 905 L 1810 950 L 1830 950 L 1830 930 L 1850 910 L 1850 890 L 1870 875 L 1870 910 L 1890 910 L 1890 1010 Z" data-page-node-id="ePI5flrddbPv7tyCYZaLcU"/>
+    </g>
+  </svg>
+  <div class="grid-lines" data-page-node-id="3nBTBg03uV72Y3xvjlFNhB"></div>
+
+  <!-- 标题栏 -->
+  <div style="position:absolute;top:0;left:0;right:0;height:95px;background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--cyan) 22%,transparent) 30%,color-mix(in srgb,var(--green) 22%,transparent) 70%,transparent)" data-page-node-id="ANpjB32JSzoqyJGi4ABQ0G"></div>
+  <div style="position:absolute;top:20px;left:0;right:0;text-align:center" data-page-node-id="jWVVAhDVtujuCrS7OZ0Ee1">
+    <div style="font-size:34px;font-weight:bold;letter-spacing:6px" class="glow" data-page-node-id="G48zC6ZYOEic7MtanrWP8U">
+      <span style="color:var(--cyan)" data-page-node-id="iXUKAXBLhNkWOPJ9rOV1Gc">数 字 田 野</span><span style="color:var(--text-2)" data-page-node-id="slAqyGHEBbFQJnIUmyrkpr"> · </span><span style="color:var(--green)" data-page-node-id="9LPE5cZR0eDAoypzRTWozI">乡 智 文 旅</span><span style="color:var(--text-2)" data-page-node-id="46hCfGYWWkjZ1VsFCbfByi"> 决 策 大 屏</span>
+    </div>
+    <div style="font-size:13px;letter-spacing:3px;color:var(--text-3);opacity:.85;margin-top:4px" data-page-node-id="2HtDtoKF5Bxv5XFI58AGzc">DIGITAL FIELDS · RURAL CULTURAL TOURISM INTELLIGENCE PLATFORM</div>
+  </div>
+  <div style="position:absolute;top:22px;left:80px" data-page-node-id="YXFMFy3oTixeKwZqAul3Sk">
+    <div style="font-size:22px;font-weight:bold;color:var(--yellow)" class="glow" data-page-node-id="NFqB6Vi5G1cv8ifEWm3DkS">11:05:36</div>
+    <div style="font-size:12px;color:var(--text-3);opacity:.85;margin-top:4px" data-page-node-id="ZCioiNPGtFACzT646M5eCK">2026-09-05 星期六 · 农历七月廿四</div>
+  </div>
+  <div style="position:absolute;top:22px;right:80px;text-align:right" data-page-node-id="WbQdDoFLUXKClSnmjj0XoH">
+    <div style="font-size:20px;font-weight:bold;color:var(--green)" class="glow" data-page-node-id="PHfeozQmfoXuBVjPAZOhoW">☀ 26°C · AQI 42 优</div>
+    <div style="font-size:12px;color:var(--text-3);opacity:.85;margin-top:4px" data-page-node-id="oFFJHTDIyrMme2QgfApgku">安徽 · 黄山市 · 黟县</div>
+  </div>
+  <div style="position:absolute;top:86px;left:200px;right:200px;height:1px;background:var(--cyan);opacity:.4" data-page-node-id="pblRYrqDmEF4Y8Plxh86IH"></div>
+  <div class="corner" style="top:18px;left:18px;border-right:none;border-bottom:none" data-page-node-id="83yPfA7Xjd6HIyS1vU9Y2A"></div>
+  <div class="corner" style="top:18px;right:18px;border-left:none;border-bottom:none" data-page-node-id="xw0I04KKHXODVdsHRXS9DU"></div>
+  <div class="corner" style="bottom:18px;left:18px;border-right:none;border-top:none" data-page-node-id="mgug0FIugvJ9td37aAvFKO"></div>
+  <div class="corner" style="bottom:18px;right:18px;border-left:none;border-top:none" data-page-node-id="XxVx6jD1aP8xkQagAqvCnw"></div>
+
+  <!-- KPI 卡片区 -->
+  <div class="kpi" style="left:30px;top:110px;width:290px;border-color:var(--cyan)" data-page-node-id="IevzUexHVKPaUTdgdTtCAv">
+    <div class="k-label" style="color:var(--cyan)" data-page-node-id="0lUE7mN28HK0ItVt7kj38y">📈 今日游客总数</div>
+    <span class="k-num" data-page-node-id="BX7JKTeISoycjVVmyLJLZh">12,580</span><span class="k-sub" style="color:var(--grow);font-weight:bold" data-page-node-id="i3OhRo5azIoNCpCZ0XsoJY">↑ 18.6%</span>
+  </div>
+  <div class="kpi" style="left:335px;top:110px;width:290px;border-color:var(--yellow)" data-page-node-id="AMGvbfR664eyYgeYTVT0F7">
+    <div class="k-label" style="color:var(--yellow)" data-page-node-id="PfY1AtBiNJg5WfYrME5QHW">💰 今日总营收 (元)</div>
+    <span class="k-num" data-page-node-id="mNiSzSAtb2lSv1Hby96uQy">856,320</span><span class="k-sub" style="color:var(--grow);font-weight:bold" data-page-node-id="7exTUz0RSw8DQL2RzQIrJL">↑ 12.3%</span>
+  </div>
+  <div class="kpi" style="left:640px;top:110px;width:290px;border-color:var(--green)" data-page-node-id="nuj2SitxzDZHnlHr2IRH0d">
+    <div class="k-label" style="color:var(--green)" data-page-node-id="IGBiVMtvkWDsGkvUggGmff">🎯 推荐转化率</div>
+    <span class="k-num" data-page-node-id="TUyun14pC6vGH68oyHLbWc">18.62%</span><span class="k-sub" style="color:var(--grow);font-weight:bold" data-page-node-id="4wizyr1k55puwsJfZNkEqP">↑ 3.2%</span>
+  </div>
+  <div class="kpi" style="left:945px;top:110px;width:290px;border-color:var(--cyan)" data-page-node-id="EprAtBBzmnXcp9DUKue2SB">
+    <div class="k-label" style="color:var(--cyan)" data-page-node-id="faWmKxgBOT1turDJYIwqB2">👥 当前在园人数</div>
+    <span class="k-num" data-page-node-id="mmU66G9bkBxu14f9oagiLy">3,247</span><span class="k-sub" style="color:var(--orange);font-weight:bold" data-page-node-id="gqSvXH7hGElrm1gyT5kEC7">饱和度 68%</span>
+  </div>
+  <div class="kpi" style="left:1250px;top:110px;width:290px;border-color:var(--green)" data-page-node-id="WUcV4oHGASerCAo3EGLGCA">
+    <div class="k-label" style="color:var(--green)" data-page-node-id="SjTsXXAOZbmKZRhnl3Cfcl">🧠 KG 实体总数</div>
+    <span class="k-num" data-page-node-id="2zte5M0ybGwkF7rxLHMJw0">58,426</span><span class="k-sub" style="color:var(--cyan)" data-page-node-id="8F4BWMl0hF11rLJANDYfDp">边 216,308</span>
+  </div>
+  <div class="kpi" style="left:1555px;top:110px;width:335px;border-color:var(--red);border-width:1.5px" data-page-node-id="C9zAwh3Hn6cxjU7lz5YLEu">
+    <div class="k-label" style="color:var(--red)" data-page-node-id="W5kR5d9K3w6FBqfmpogwBO">⚠️ 实时告警</div>
+    <span class="k-num glow" style="color:var(--red);font-size:34px" data-page-node-id="JpKFULqBnJxYGoTSvULlnc">3</span>
+    <span class="k-sub" style="color:var(--text-3)" data-page-node-id="AMiXxvAAXRaIvPtuAC1IOZ">客流超载 1 · 天气 1 · 设备 1</span>
+  </div>
+
+  <!-- 左栏 1：客流趋势 -->
+  <div class="panel" style="left:30px;top:210px;width:420px;height:265px" data-page-node-id="A3VhP4GKvkng3nqRhxyOpq">
+    <div class="p-head" style="background:color-mix(in srgb,var(--cyan) 12%,transparent);color:var(--cyan)" data-page-node-id="4jk0Cxz1tl3TlfwgnFpCnD">
+      <span data-page-node-id="p5enWRwkvTuBiMTYHTvAhz">📊 近 7 日客流趋势 · 同环比</span><span style="font-size:10px;color:var(--text-3);opacity:.7" data-page-node-id="OTCUcOUydaIbPKw4p0RjWL">单位: 人</span>
+    </div>
+    <svg width="420" height="230" viewBox="0 0 420 230" data-page-node-id="kNJpfoX1lcDQPWfoXV48By">
+      <g stroke="var(--text-3)" stroke-width="0.5" opacity="0.15" data-page-node-id="fyCI8y5DnuGt6uEJ0t0yRt">
+        <line x1="30" y1="30" x2="400" y2="30" data-page-node-id="VIIwEjOPvk8hg9q7LWwPFb"/><line x1="30" y1="70" x2="400" y2="70" data-page-node-id="W0YEZUbRT5WX4776W2qEHz"/>
+        <line x1="30" y1="110" x2="400" y2="110" data-page-node-id="guTwcO110bITA2CdHJgUdG"/><line x1="30" y1="150" x2="400" y2="150" data-page-node-id="vFLBO8rB8I2w8Sia4vVXX6"/><line x1="30" y1="190" x2="400" y2="190" data-page-node-id="UidZAitbmCWGWIjoP4wJKp"/>
+      </g>
+      <path d="M 30 180 L 80 150 L 130 165 L 180 120 L 230 100 L 280 130 L 330 80 L 380 60 L 380 205 L 30 205 Z" fill="var(--cyan)" opacity="0.15" data-page-node-id="iR4fotViokIR59vjFvXfS0"/>
+      <polyline points="30,180 80,150 130,165 180,120 230,100 280,130 330,80 380,60" stroke="var(--cyan)" stroke-width="2.5" fill="none" class="glow" data-page-node-id="DaT7QytTE70EorLrNU08sU"/>
+      <polyline points="30,195 80,180 130,185 180,160 230,145 280,165 330,130 380,115" stroke="var(--green)" stroke-width="1.8" fill="none" stroke-dasharray="4,3" opacity="0.85" data-page-node-id="Vf5mB3mlEIrf1CTP7gxe4u"/>
+      <g fill="var(--cyan)" data-page-node-id="VFdDW2rk9fI4vdpdu5jvuV"><circle cx="30" cy="180" r="3" data-page-node-id="eVZO7dNCHN6VtYeMfsHiYS"/><circle cx="80" cy="150" r="3" data-page-node-id="Je0sxpM5mu9jKLAkml4TKq"/><circle cx="130" cy="165" r="3" data-page-node-id="L2KW12vMLjlpWqIAsnWINb"/><circle cx="180" cy="120" r="3" data-page-node-id="IpJPD8Zb9zX9znbYCoBIWY"/><circle cx="230" cy="100" r="3" data-page-node-id="Dwix3RjZigBs2Ah5dtIhsg"/><circle cx="280" cy="130" r="3" data-page-node-id="v06SSilQpWNTzCkqUzESSA"/><circle cx="330" cy="80" r="3" data-page-node-id="XhB830TYhz7c5J5XFzF2kF"/><circle cx="380" cy="60" r="5" data-page-node-id="MDPB5KQWNE6SM1rBzO6QXy"/></g>
+      <g fill="var(--text-3)" font-size="10" opacity="0.75" data-page-node-id="0Bz7SDFXporEM7DrN8O3CT">
+        <text x="30" y="222" data-page-node-id="m5h8Ikm2jZzTvI0KrLA5B6">08-30</text><text x="130" y="222" data-page-node-id="B9qDBHq2DBqNCIPPZH5w0W">09-01</text><text x="230" y="222" data-page-node-id="XgwSDt1qIqGGZBlCeDHUTq">09-03</text><text x="330" y="222" data-page-node-id="HDLzSFiP8jMtA2nVf3Aosm">09-05</text>
+      </g>
+      <g font-size="10" fill="var(--text-3)" data-page-node-id="T6CzWR5tppC69yiGWRH47s">
+        <rect x="300" y="12" width="10" height="2" fill="var(--cyan)" data-page-node-id="JUQITs7bJTuL94cyVHeag9"/><text x="315" y="16" data-page-node-id="3adC5qJCHXFC5kg1XpIteA">本期</text>
+        <rect x="355" y="12" width="10" height="2" fill="var(--green)" data-page-node-id="xxCYKUHPrjSWkSLu3LIn7G"/><text x="370" y="16" data-page-node-id="RBixiKAz0kpk56AWzvNCal">上期</text>
+      </g>
+    </svg>
+  </div>
+
+  <!-- 左栏 2：来源 TOP10 -->
+  <div class="panel" style="left:30px;top:490px;width:420px;height:290px;border-color:var(--green)" data-page-node-id="EkedINYOP12GGPAjlrnHVE">
+    <div class="p-head" style="background:color-mix(in srgb,var(--green) 12%,transparent);color:var(--green)" data-page-node-id="Fh466MbyPKWrXtkbKTkQ8M"><span data-page-node-id="Vke27ktwHQBwBJhyUVAwCa">🌏 游客来源地 TOP10 · 省份</span></div>
+    <svg width="420" height="255" viewBox="0 0 420 255" data-page-node-id="4HBqiOFYYeIiSpxUEZMP2a">
+      <g font-size="11" fill="var(--text-2)" data-page-node-id="PUGYHCvDQfijAMAmt9u3da">
+        <text x="15" y="32" fill="var(--text-1)" data-page-node-id="dyg3GpYm4xEMkzCVGxasvT">1. 江苏</text><rect x="90" y="22" width="290" height="12" rx="2" fill="var(--bg-mid)" data-page-node-id="sLpohjwCDxOW4Ck2lHRjg2"/><rect x="90" y="22" width="290" height="12" rx="2" fill="var(--green)" opacity="0.9" data-page-node-id="2xsrExhbUF8GSOW8ALpGwQ"/><text x="400" y="32" text-anchor="end" fill="var(--yellow)" font-weight="bold" data-page-node-id="BuPr0VwTA7Vg2b9rofnHeW">2,856</text>
+        <text x="15" y="57" data-page-node-id="e6fn8RvhRmLtqzX3dgMKWO">2. 浙江</text><rect x="90" y="47" width="290" height="12" rx="2" fill="var(--bg-mid)" data-page-node-id="di2DzImWrUrxBD2lXMMQn8"/><rect x="90" y="47" width="260" height="12" rx="2" fill="var(--green)" opacity="0.8" data-page-node-id="wQEiFPP2cBFcMPKnQ1y7ln"/><text x="400" y="57" text-anchor="end" fill="var(--yellow)" font-weight="bold" data-page-node-id="Gi10fqaIeN3dwkhIKbRLjs">2,430</text>
+        <text x="15" y="82" data-page-node-id="mQ1Z4QxxJWUclA7J8KmVxP">3. 上海</text><rect x="90" y="72" width="290" height="12" rx="2" fill="var(--bg-mid)" data-page-node-id="ThnCnJH577c2jI6CGxHn9p"/><rect x="90" y="72" width="230" height="12" rx="2" fill="var(--cyan)" opacity="0.75" data-page-node-id="QZJ0r4XTMpxcSlFvwhVL84"/><text x="400" y="82" text-anchor="end" data-page-node-id="myRBPDByHniDN8TANEw0RU">2,105</text>
+        <text x="15" y="107" data-page-node-id="2tyQasEWoFCuuzYpugJQsH">4. 安徽本省</text><rect x="90" y="97" width="290" height="12" rx="2" fill="var(--bg-mid)" data-page-node-id="JWVglnszPctIywx3b3hCOX"/><rect x="90" y="97" width="200" height="12" rx="2" fill="var(--cyan)" opacity="0.7" data-page-node-id="reDHLXBB0Aqs7afQbvLAoZ"/><text x="400" y="107" text-anchor="end" data-page-node-id="tXbjF5bdN7VEnWEONdqH4Q">1,876</text>
+        <text x="15" y="132" data-page-node-id="StiBOQSfBzKbIImrt05Ms1">5. 北京</text><rect x="90" y="122" width="290" height="12" rx="2" fill="var(--bg-mid)" data-page-node-id="BxfPbMwMthP5sbq7a8B09g"/><rect x="90" y="122" width="150" height="12" rx="2" fill="var(--cyan)" opacity="0.65" data-page-node-id="syJ9PXXTi8HRPXgw2xObht"/><text x="400" y="132" text-anchor="end" data-page-node-id="r3xwAubxHkOvBesyONfyjc">1,432</text>
+        <text x="15" y="157" data-page-node-id="4L7rx4Dn0KFBzsJDMLh3v3">6. 广东</text><rect x="90" y="147" width="290" height="12" rx="2" fill="var(--bg-mid)" data-page-node-id="5ewJzmGf59NxPAHYKmwc7P"/><rect x="90" y="147" width="120" height="12" rx="2" fill="var(--cyan)" opacity="0.6" data-page-node-id="v6JlOD6TIBKaaPVhwZycDB"/><text x="400" y="157" text-anchor="end" data-page-node-id="nY0ykFxAzaPWVw1Ta26V8K">1,105</text>
+        <text x="15" y="182" data-page-node-id="oAkSuKLkiGJhsXzUogObAK">7. 山东</text><rect x="90" y="172" width="290" height="12" rx="2" fill="var(--bg-mid)" data-page-node-id="y6ulEW5GhiKu2QWx67ODYz"/><rect x="90" y="172" width="100" height="12" rx="2" fill="var(--cyan)" opacity="0.55" data-page-node-id="4Kg0SnPYBuxuvrY0f5FHXP"/><text x="400" y="182" text-anchor="end" data-page-node-id="iNNYmMq6GKCygiQ32EMG1n">926</text>
+        <text x="15" y="207" data-page-node-id="A5OYqfCm5hemV4AJ9WHlWM">8. 河南</text><rect x="90" y="197" width="290" height="12" rx="2" fill="var(--bg-mid)" data-page-node-id="vFqRvFF3pbqiesUy1CsSwG"/><rect x="90" y="197" width="80" height="12" rx="2" fill="var(--cyan)" opacity="0.5" data-page-node-id="AMASf7FZ5Do950pDNT5uvP"/><text x="400" y="207" text-anchor="end" data-page-node-id="v7VhYwjv7xFVCXaEgUaxQ7">743</text>
+        <text x="15" y="232" data-page-node-id="QjiH3Zf4OZ4lLZAfP5D4Ld">9. 湖北</text><rect x="90" y="222" width="290" height="12" rx="2" fill="var(--bg-mid)" data-page-node-id="bEEu8Dx4MuYH8UHgo471AY"/><rect x="90" y="222" width="65" height="12" rx="2" fill="var(--cyan)" opacity="0.45" data-page-node-id="GLhTYcNiPCwMHjljrcFn4R"/><text x="400" y="232" text-anchor="end" data-page-node-id="48uHGy6w2AAI2M4OgxxSeW">612</text>
+      </g>
+    </svg>
+  </div>
+
+  <!-- 左栏 3：游客画像 -->
+  <div class="panel" style="left:30px;top:795px;width:420px;height:255px;border-color:var(--yellow)" data-page-node-id="KuZJJB12lSOKIxw4WFhDCa">
+    <div class="p-head" style="background:color-mix(in srgb,var(--yellow) 12%,transparent);color:var(--yellow)" data-page-node-id="Y5imRSM5EfhNCVmtwC3kSc"><span data-page-node-id="Y5FBgtYOXUeU0iEIXEAp04">👤 游客画像分析 · Profile</span></div>
+    <svg width="420" height="220" viewBox="0 0 420 220" data-page-node-id="rTC0czhLDBkTcEiFltzmRu">
+      <g transform="translate(115,115)" data-page-node-id="JFAKjQL8hISXyyP9WBL50u">
+        <polygon points="0,-85 74,-42 74,42 0,85 -74,42 -74,-42" fill="none" stroke="var(--cyan)" stroke-width="0.5" opacity="0.25" data-page-node-id="4u4PQZwVCvrmlkAVDk0xB6"/>
+        <polygon points="0,-55 48,-27 48,27 0,55 -48,27 -48,-27" fill="none" stroke="var(--cyan)" stroke-width="0.5" opacity="0.25" data-page-node-id="7CmMcIsVQevhu21RZWZI7o"/>
+        <polygon points="0,-28 24,-14 24,14 0,28 -24,14 -24,-14" fill="none" stroke="var(--cyan)" stroke-width="0.5" opacity="0.25" data-page-node-id="gXnBHAwXcAISg5KHhJ9uS1"/>
+        <polygon points="0,-75 58,-27 66,34 0,58 -53,30 -64,-32" fill="var(--green)" fill-opacity="0.35" stroke="var(--green)" stroke-width="1.8" data-page-node-id="Usa3CD2eKRxChI7Ah7shSB"/>
+        <g fill="var(--text-3)" font-size="10" opacity="0.85" data-page-node-id="rPWGiqrNvW6OqrOILGftPI">
+          <text x="-8" y="-95" data-page-node-id="pgYWf1mgySwhAoqa0NvHyB">亲子</text><text x="78" y="-45" data-page-node-id="oPlSdcxwyK3eIcUMZqD0Ne">情侣</text><text x="78" y="52" data-page-node-id="vdT26gStFH9ENlVGXbiFqE">摄影</text>
+          <text x="-8" y="102" data-page-node-id="T6QrBN8WkhZxpwwB5zH02a">研学</text><text x="-98" y="52" data-page-node-id="dquvfiAjipDgiBCjxPCVHF">徒步</text><text x="-98" y="-45" data-page-node-id="zPLCIVAFwYAQrPHHo286Er">银发</text>
+        </g>
+      </g>
+      <g transform="translate(320,100)" data-page-node-id="JSOPnwTd7BaHlNY1qRsq7F">
+        <circle r="55" fill="none" stroke="var(--bg-mid)" stroke-width="22" data-page-node-id="NehYugnfwOw17Nv85Vta39"/>
+        <circle r="55" fill="none" stroke="var(--cyan)" stroke-width="22" stroke-dasharray="121 346" transform="rotate(-90)" data-page-node-id="sHDySvDJFcb4Egk5bltY0s"/>
+        <circle r="55" fill="none" stroke="var(--green)" stroke-width="22" stroke-dasharray="90 346" stroke-dashoffset="-121" transform="rotate(-90)" data-page-node-id="QIUqnPjNcMGczWsAZud8fs"/>
+        <circle r="55" fill="none" stroke="var(--yellow)" stroke-width="22" stroke-dasharray="69 346" stroke-dashoffset="-211" transform="rotate(-90)" data-page-node-id="XLp7wJxSJl47AyYjST8VxT"/>
+        <circle r="55" fill="none" stroke="var(--orange)" stroke-width="22" stroke-dasharray="66 346" stroke-dashoffset="-280" transform="rotate(-90)" data-page-node-id="W4JiHgC2EZEwTSJKSSruqL"/>
+        <text y="-3" text-anchor="middle" fill="var(--text-1)" font-size="15" font-weight="bold" data-page-node-id="Xq9B4hzT3GZDIZBH7raSIn">年龄</text>
+        <text y="15" text-anchor="middle" fill="var(--text-3)" font-size="10" opacity="0.8" data-page-node-id="MdAZnOcfgDMBdqurOrJvul">分布</text>
+      </g>
+      <g font-size="10" fill="var(--text-3)" opacity="0.9" data-page-node-id="4PhQq6AGFoLAXnMkhk9GFi">
+        <rect x="255" y="180" width="10" height="10" rx="2" fill="var(--cyan)" data-page-node-id="OInJbfxKAzoylCFhHExWMN"/><text x="270" y="189" data-page-node-id="D4giNlJcGrf73Du6aupCMN">18-25 · 35%</text>
+        <rect x="345" y="180" width="10" height="10" rx="2" fill="var(--green)" data-page-node-id="ruFdaD7AZuaI4UHfkKuMYm"/><text x="360" y="189" data-page-node-id="GoM4Hpo1uS1R2zj2CW9UCf">26-35 · 26%</text>
+        <rect x="255" y="198" width="10" height="10" rx="2" fill="var(--yellow)" data-page-node-id="hFoCF7CfmD1OEd0YFhjgD5"/><text x="270" y="207" data-page-node-id="buXYnsckNFoheySR7tI7Tq">36-50 · 20%</text>
+        <rect x="345" y="198" width="10" height="10" rx="2" fill="var(--orange)" data-page-node-id="rLyACt3TYrzOMmvK0gQP6X"/><text x="360" y="207" data-page-node-id="KRMkHE03Hz67gRLuumBQxc">50+ · 19%</text>
+      </g>
+    </svg>
+  </div>
+
+  <!-- 中央地图 -->
+  <div class="panel" style="left:465px;top:210px;width:990px;height:840px;background:color-mix(in srgb,var(--bg-edge) 70%,transparent);border-width:1.5px" data-page-node-id="pHcbhFBylaScDwsA26trXX">
+    <div class="p-head" style="height:35px;background:color-mix(in srgb,var(--cyan) 15%,transparent);color:var(--cyan)" data-page-node-id="3YzzlVyWXK6sX09csAx93U">
+      <span data-page-node-id="mETjpnbLDCFuCtRUrZfkr1">🗺️ Cesium 3D 数字孪生县域地图 · 黟县实时态势</span>
+      <span style="font-size:10px;color:var(--text-3);opacity:.75" data-page-node-id="IGuetyHT9ZicdWawIhlsdu">🖱️ 左键旋转 · 右键平移 · 滚轮缩放 · 双击下钻</span>
+    </div>
+    <svg width="990" height="800" viewBox="0 0 990 800" data-page-node-id="9rRRtRKSytdMOm91BRoLGF">
+      <ellipse cx="495" cy="420" rx="450" ry="340" fill="var(--cyan)" opacity="0.06" data-page-node-id="ciFQbEK9RJHxGrdhzlB1AC"/>
+      <ellipse cx="495" cy="420" rx="300" ry="220" fill="var(--green)" opacity="0.05" data-page-node-id="LnClwENa5hW8THg0g9mD5z"/>
+      <path d="M 35 570 Q 135 440 235 510 T 415 380 T 585 450 T 755 330 T 955 520 L 955 740 L 35 740 Z" fill="var(--bg-mid)" fill-opacity="0.65" stroke="var(--cyan)" stroke-width="1" opacity="0.85" data-page-node-id="KouYBsAENyuHLGlhUPa3pZ"/>
+      <path d="M 35 620 Q 185 540 335 590 T 615 510 T 955 600 L 955 740 L 35 740 Z" fill="var(--bg-deep)" fill-opacity="0.85" stroke="var(--green)" stroke-width="0.8" opacity="0.75" data-page-node-id="czmXa3u6wKY5lzRqNCNFeH"/>
+      <g stroke="var(--green)" stroke-width="0.5" fill="none" opacity="0.25" data-page-node-id="h4m3eOI6jwWxXAJuG8jfsU">
+        <path d="M 85 660 Q 235 620 385 650 T 685 620 T 935 660" data-page-node-id="dXz6YMkFpxKTr1ixVUxySg"/>
+        <path d="M 85 685 Q 235 645 385 675 T 685 645 T 935 685" data-page-node-id="GGSR2kgdTZSm06Z8juzP39"/>
+        <path d="M 85 710 Q 235 670 385 700 T 685 670 T 935 710" data-page-node-id="CNUUdDXJC5E6l1fKr6Qymk"/>
+      </g>
+      <!-- 热力斑 -->
+      <ellipse cx="435" cy="500" rx="65" ry="32" fill="var(--cyan)" opacity="0.2" data-page-node-id="4242kBxVGVI9kyBQ3QxYua"/>
+      <ellipse cx="255" cy="540" rx="55" ry="27" fill="var(--yellow)" opacity="0.2" data-page-node-id="nk15hGzeFXrHr06LWpssKf"/>
+      <ellipse cx="615" cy="540" rx="48" ry="24" fill="var(--green)" opacity="0.18" data-page-node-id="DBhA40tzTptJpAmFmcsk3E"/>
+      <!-- POI 光柱 -->
+      <g data-page-node-id="HH9nNIHaBFUFvxJr3QgbkZ">
+        <line x1="255" y1="540" x2="255" y2="430" stroke="var(--yellow)" stroke-width="3" opacity="0.85" data-page-node-id="NAWa3PwBsa9g02clxDtUZx"/>
+        <ellipse cx="255" cy="540" rx="18" ry="6" fill="var(--yellow)" opacity="0.3" data-page-node-id="GvQ3YJtfYUWvFb48KBSkDd"/>
+        <circle cx="255" cy="540" r="8" fill="var(--yellow)" class="glow" data-page-node-id="Q5XC7nA25LleYNF2kCkMdG"/>
+        <text x="270" y="535" fill="var(--yellow)" font-size="12" font-weight="bold" data-page-node-id="KI3EeGKwxk6GooXLFPg3VT">查济古村</text>
+        <text x="270" y="550" fill="var(--text-3)" font-size="10" opacity="0.8" data-page-node-id="zcQsLi0uRjZ6ouCpQAQCxD">9,856 人 · ★★★★★</text>
+
+        <line x1="435" y1="500" x2="435" y2="390" stroke="var(--cyan)" stroke-width="3.5" opacity="0.9" data-page-node-id="256ElGN4AC2qXzFXmBRzpz"/>
+        <ellipse cx="435" cy="500" rx="22" ry="7" fill="var(--cyan)" opacity="0.35" data-page-node-id="bujQN0x03blD4iHjoQTRuQ"/>
+        <circle cx="435" cy="500" r="11" fill="var(--cyan)" class="glow" data-page-node-id="prZSw5F2qVvIaYDkYPdG7W"/>
+        <text x="455" y="495" fill="var(--cyan)" font-size="14" font-weight="bold" data-page-node-id="6k8FRKLlTGRBIRQ8y4WNUB">宏村</text>
+        <text x="455" y="512" fill="var(--text-3)" font-size="10" opacity="0.85" data-page-node-id="ozDGAvBYoP31SHqGSj5ESy">8,432 人 · 5A · 世遗</text>
+
+        <line x1="615" y1="540" x2="615" y2="430" stroke="var(--green)" stroke-width="3" opacity="0.85" data-page-node-id="cEUTMOJtSAom7RHO0CsQdH"/>
+        <ellipse cx="615" cy="540" rx="18" ry="6" fill="var(--green)" opacity="0.3" data-page-node-id="m5D7psCKOErpErvOyxkXxK"/>
+        <circle cx="615" cy="540" r="9" fill="var(--green)" class="glow" data-page-node-id="RRQcCTIDwBJSXhhzehJMjE"/>
+        <text x="633" y="535" fill="var(--green)" font-size="12" font-weight="bold" data-page-node-id="pMuC3WZqXCSgYssjjGwP70">西递</text>
+        <text x="633" y="550" fill="var(--text-3)" font-size="10" opacity="0.8" data-page-node-id="nT2bMDYvrZbWpJm0L61bV9">7,215 人 · 世遗</text>
+
+        <line x1="785" y1="500" x2="785" y2="410" stroke="var(--orange)" stroke-width="2.5" opacity="0.85" data-page-node-id="6bmgmsV825J2P0haMamqzO"/>
+        <ellipse cx="785" cy="500" rx="15" ry="5" fill="var(--orange)" opacity="0.3" data-page-node-id="aLDaGC6RMpiy332GjSxBxu"/>
+        <circle cx="785" cy="500" r="7" fill="var(--orange)" class="glow" data-page-node-id="CC1xZ2RZ85lpScW79FY1nu"/>
+        <text x="800" y="498" fill="var(--orange)" font-size="11" font-weight="bold" data-page-node-id="zxIycMiEYctVaiZ1E7YVWK">呈坎八卦村</text>
+        <text x="800" y="513" fill="var(--text-3)" font-size="9" opacity="0.75" data-page-node-id="z0hB2qo6Y2Z8c1IiigiB9e">6,109 人</text>
+      </g>
+      <g font-size="10" fill="var(--text-3)" opacity="0.85" data-page-node-id="D1UDxZfljRKYwK84hjzEhI">
+        <circle cx="155" cy="640" r="5" fill="var(--cyan)" opacity="0.7" data-page-node-id="jw9WBH04BdnSi63jfbFwcF"/><text x="167" y="643" data-page-node-id="JlWIhcX3sxZTTeGRbS86vt">唐模水口</text>
+        <circle cx="355" cy="670" r="5" fill="var(--cyan)" opacity="0.7" data-page-node-id="aaAB9GHQEUXMifab2afKH1"/><text x="367" y="673" data-page-node-id="PgZ02mCV2CPaNtaQic8OIs">江村</text>
+        <circle cx="715" cy="640" r="5" fill="var(--cyan)" opacity="0.7" data-page-node-id="F1w0IYpXYeq6WwnAtenDSv"/><text x="727" y="643" data-page-node-id="x0EBAkGRp75DPNqbyXOEW6">龙川</text>
+        <circle cx="865" cy="670" r="5" fill="var(--cyan)" opacity="0.7" data-page-node-id="netBRO7xdYhWDmus8wHQUZ"/><text x="877" y="673" data-page-node-id="C1zNQP0O5nLXz0nskMw9eb">上庄</text>
+        <circle cx="115" cy="490" r="5" fill="var(--green)" opacity="0.7" data-page-node-id="ML4T0waueS8z8BCzITEKo1"/><text x="127" y="493" data-page-node-id="L4Dgd0SMl2xzzFDRNwIjYc">屏山</text>
+        <circle cx="915" cy="570" r="5" fill="var(--green)" opacity="0.7" data-page-node-id="5zOCRxkCJMhe9ypidUVu8t"/><text x="927" y="573" data-page-node-id="cilyUFWdnOXdcNlwc9DxaU">南屏</text>
+      </g>
+      <!-- 飞线 -->
+      <g fill="none" stroke-width="1.5" opacity="0.7" data-page-node-id="YaqxMT0dDLgZ3TLdBdRFw6">
+        <path d="M 0 130 Q 220 180 435 500" stroke="var(--yellow)" stroke-dasharray="4,4" data-page-node-id="wTO3RdLVWpvFJY9SzD1QTg"/>
+        <path d="M 0 210 Q 240 260 435 500" stroke="var(--yellow)" stroke-dasharray="4,4" data-page-node-id="WRTsLQ4l5H1wWiQr2uJBtH"/>
+        <path d="M 990 140 Q 720 230 435 500" stroke="var(--yellow)" stroke-dasharray="4,4" data-page-node-id="YT7XQlKL2n6NZEuBlpEzFO"/>
+        <path d="M 990 230 Q 740 320 435 500" stroke="var(--yellow)" stroke-dasharray="4,4" data-page-node-id="PFKeCo8vAXnDCns6WxWMtn"/>
+      </g>
+      <g fill="var(--yellow)" font-size="10" font-weight="bold" data-page-node-id="6RJcjmEZYL3LWBjdI1UCf7">
+        <circle cx="6" cy="130" r="5" data-page-node-id="ejmET8gCi4r1UrwGcxLM6B"/><text x="18" y="126" data-page-node-id="C9Hksaz7cQ0GAjAiu8XK8N">北京</text>
+        <circle cx="6" cy="210" r="5" data-page-node-id="L7QMpgWpedYG8VqeKsuSnC"/><text x="18" y="206" data-page-node-id="WpaVznwGAsGDGzVyz7ltNo">上海</text>
+        <circle cx="984" cy="140" r="5" data-page-node-id="orVHUlM6xZmpM5GwbjB1xu"/><text x="972" y="136" text-anchor="end" data-page-node-id="gRVdVHTVr0W04RWWzRtqmf">广州</text>
+        <circle cx="984" cy="230" r="5" data-page-node-id="aZEaY2UgRNDpNvsFNAb0Lc"/><text x="972" y="226" text-anchor="end" data-page-node-id="EyLkg3WBxrKE1tSjf7F3iA">杭州</text>
+      </g>
+      <!-- AI 推荐路线 -->
+      <path d="M 255 540 L 435 500 L 615 540 L 785 500" stroke="var(--green)" stroke-width="3" fill="none" stroke-dasharray="10,5" opacity="0.95" data-page-node-id="LjALo0GTRLPsXMPYmbswE0"/>
+      <g fill="var(--green)" data-page-node-id="YQiijEfOpS2VRVLqMCWqIR"><circle cx="255" cy="540" r="4" data-page-node-id="W8TjRScRFbc1E0n98s5Mc2"/><circle cx="435" cy="500" r="4" data-page-node-id="nw7fxx07aiv7No5NEQYodo"/><circle cx="615" cy="540" r="4" data-page-node-id="l7pwlJdgQ9H1JehYV9ERkw"/><circle cx="785" cy="500" r="4" data-page-node-id="3TGLJSuKHwzHlrsn2U2gQe"/></g>
+      <rect x="385" y="410" width="230" height="30" rx="15" fill="var(--bg-deep)" stroke="var(--green)" opacity="0.95" data-page-node-id="7oD0pXkhcOCXNGybKXoz8n"/>
+      <text x="500" y="430" text-anchor="middle" fill="var(--green)" font-size="12" font-weight="bold" data-page-node-id="oMXDbY2Yt4HT4HOmsw4aY4">🎯 AI 推荐路线：徽文化 2 日游</text>
+      <!-- 图层控制 -->
+      <rect x="785" y="670" width="195" height="120" rx="4" fill="var(--bg-deep)" stroke="var(--cyan)" opacity="0.95" data-page-node-id="H535m2ZGz9SislnsqvhhWm"/>
+      <rect x="785" y="670" width="195" height="26" rx="4" fill="var(--cyan)" fill-opacity="0.15" data-page-node-id="5dbg0SBEhS4ZJjfGsJGX9D"/>
+      <text x="800" y="688" fill="var(--cyan)" font-size="11" font-weight="bold" data-page-node-id="8zMEIpnraGQWvQbyr9syKP">🎛️ 图层控制</text>
+      <g font-size="10" fill="var(--text-2)" data-page-node-id="ULQe5jVFySM8noYMwOxL5n">
+        <text x="800" y="711" fill="var(--green)" data-page-node-id="eWTiJOE8GHJwwC296PVOjB">☑</text><text x="817" y="711" data-page-node-id="uDjc6Lp7fvMxbYHkq8ydic">景点 POI / 客流热力</text>
+        <text x="800" y="731" fill="var(--green)" data-page-node-id="eORcotVniRGrjQfKrjjL1w">☑</text><text x="817" y="731" data-page-node-id="ukkbnj88HEWd5tZMuSWL8r">来源飞线 / 推荐路线</text>
+        <text x="800" y="751" fill="var(--text-3)" opacity="0.5" data-page-node-id="58ZsNJuutXAvpAsQrzRO26">☐</text><text x="817" y="751" opacity="0.7" data-page-node-id="Wp4Y48KBhbOArsJhfBOQ6P">交通路网 / 天气叠加</text>
+      </g>
+      <!-- 时间轴 -->
+      <rect x="15" y="725" width="750" height="55" rx="4" fill="var(--bg-deep)" stroke="var(--yellow)" opacity="0.95" data-page-node-id="LuqtzFo1SZQyJCjm8G4TH5"/>
+      <text x="30" y="747" fill="var(--yellow)" font-size="11" font-weight="bold" data-page-node-id="PwFZ7raUKA3jWfBJ5ZXmej">⏱️ 时间轴回放 · 30 天历史演化</text>
+      <line x1="30" y1="765" x2="750" y2="765" stroke="var(--bg-mid)" stroke-width="4" stroke-linecap="round" data-page-node-id="ipFhyCNVw9Z4ttgr9Qh8os"/>
+      <line x1="30" y1="765" x2="455" y2="765" stroke="var(--yellow)" stroke-width="4" stroke-linecap="round" data-page-node-id="iIDIGCvAwghFOBCWXb9DnB"/>
+      <circle cx="455" cy="765" r="8" fill="var(--yellow)" class="glow" data-page-node-id="5S7M9KrwpN3z93U4LE9F9F"/>
+      <g fill="var(--text-3)" font-size="9" opacity="0.75" data-page-node-id="Cu5ylCDNCUfFTefyMv0kMu">
+        <text x="30" y="778" data-page-node-id="HXaYxJnO9SsF5sEcOJ71ic">08-06</text><text x="385" y="778" data-page-node-id="jVPX1vsKmM6EDweWvs0T2G">08-21</text><text x="715" y="778" data-page-node-id="XQQS1qpKnqKGr4pd6Cdp2T">09-05</text>
+      </g>
+    </svg>
+  </div>
+
+  <!-- 右栏 1：知识图谱 -->
+  <div class="panel" style="left:1470px;top:210px;width:420px;height:265px;border-color:var(--green)" data-page-node-id="UFogxgrAK2rsAKufCS7pTM">
+    <div class="p-head" style="background:color-mix(in srgb,var(--green) 12%,transparent);color:var(--green)" data-page-node-id="YHpUfYln0qMCqSXHJTx7J7">
+      <span data-page-node-id="f0crUuEiTkb43N0Yh2Qf02">🕸️ 文旅知识图谱 · 实时探索</span><span style="font-size:10px;color:var(--text-3);opacity:.7" data-page-node-id="syHGm2pEmJwLd9xqyxCoez">Neo4j</span>
+    </div>
+    <svg width="420" height="230" viewBox="0 0 420 230" data-page-node-id="9zVy9fn1sw8FXUzD6rGRqL">
+      <circle cx="210" cy="120" r="16" fill="var(--cyan)" class="glow" data-page-node-id="vAwOKKUlAc8iTHt1s5ton5"/>
+      <text x="210" y="125" text-anchor="middle" fill="var(--bg-deep)" font-size="11" font-weight="bold" data-page-node-id="zGlQ7eGioWn5g2BuipaeFt">宏村</text>
+      <g stroke="var(--green)" stroke-width="1.2" opacity="0.7" data-page-node-id="RxrL7s9sgiXvhhvKtZ4VID">
+        <line x1="210" y1="120" x2="90" y2="65" data-page-node-id="YEEB67yH1RrWCpHJ20EMmo"/><line x1="210" y1="120" x2="330" y2="65" data-page-node-id="yCQpiZPVGZm7Lz4V2pOaDZ"/>
+        <line x1="210" y1="120" x2="50" y2="170" data-page-node-id="vekFlIzRBwcRUfvu69Akft"/><line x1="210" y1="120" x2="370" y2="170" data-page-node-id="3l3HIHCwEmHRX59MYG5iKC"/>
+        <line x1="210" y1="120" x2="150" y2="215" data-page-node-id="n5qwafz4rEzIFu7sCufP0E"/><line x1="210" y1="120" x2="270" y2="215" data-page-node-id="kWCFgyrATBH0fBn5sS14yh"/>
+      </g>
+      <circle cx="90" cy="65" r="10" fill="var(--yellow)" data-page-node-id="ZLNEcapt3KDelWQKa0Rsl5"/><text x="90" y="53" text-anchor="middle" fill="var(--yellow)" font-size="10" data-page-node-id="YKsCHO7DuQyNhtwoQtGvHg">徽派建筑</text>
+      <circle cx="330" cy="65" r="10" fill="var(--yellow)" data-page-node-id="r1Oeeke5AwxBSMceDZeTNo"/><text x="330" y="53" text-anchor="middle" fill="var(--yellow)" font-size="10" data-page-node-id="WuBZrpabwbJ03DKWaGOGkm">世界遗产</text>
+      <circle cx="50" cy="170" r="10" fill="var(--green)" data-page-node-id="XFCCOsEL2HQx3Ck1CAcHzc"/><text x="50" y="190" text-anchor="middle" fill="var(--green)" font-size="10" data-page-node-id="tFIglJI6xacPV7EsAdHn0g">徽州三雕</text>
+      <circle cx="370" cy="170" r="10" fill="var(--green)" data-page-node-id="VoWKZVS3sdQUZP0jJwTSxM"/><text x="370" y="190" text-anchor="middle" fill="var(--green)" font-size="10" data-page-node-id="LvPvHHRHZsMZBWn9VUWAfE">汪氏宗祠</text>
+      <circle cx="150" cy="215" r="9" fill="var(--orange)" data-page-node-id="VTkEOL5CnhaQYpKwpPLnKD"/><text x="150" y="200" text-anchor="middle" fill="var(--orange)" font-size="10" data-page-node-id="fJwUWyoeHW1fDPCRJOidsB">写生基地</text>
+      <circle cx="270" cy="215" r="9" fill="var(--orange)" data-page-node-id="jHhBuSwVKfjsTBDMuzEl5O"/><text x="270" y="200" text-anchor="middle" fill="var(--orange)" font-size="10" data-page-node-id="sB9oKAzyeqDEUBJRCacUJG">月沼</text>
+    </svg>
+  </div>
+
+  <!-- 右栏 2：LLM Agent -->
+  <div class="panel" style="left:1470px;top:490px;width:420px;height:290px;border-color:var(--yellow)" data-page-node-id="6HEiqKNd8rbKNkjdBm1Uy2">
+    <div class="p-head" style="background:color-mix(in srgb,var(--yellow) 12%,transparent);color:var(--yellow)" data-page-node-id="JoAVDvb3B5OfsRVv0I9rOr"><span data-page-node-id="CmGkkfFnQuLn02NQnGAOXy">🤖 AI 智能行程规划师 · Agent</span></div>
+    <div style="padding:12px 15px;display:flex;flex-direction:column;gap:9px" data-page-node-id="63uDHVncuT7JGkfxiCpYtq">
+      <div style="background:var(--bg-mid);border:0.8px solid var(--cyan);border-radius:6px;padding:8px 12px" data-page-node-id="sSd3hoZbrOtRw2ZffGhLl3">
+        <div style="font-size:10px;font-weight:bold;color:var(--cyan)" data-page-node-id="GF4n0vCfkE5dA3kItfHtBO">👤 User</div>
+        <div style="font-size:11px;color:var(--text-2);margin-top:3px" data-page-node-id="sN81uZnfKyCUrx98cvTTyb">带父母周末去徽派古村两日游，预算 1500</div>
+      </div>
+      <div style="background:color-mix(in srgb,var(--yellow) 8%,transparent);border:0.8px solid var(--yellow);border-radius:6px;padding:8px 12px" data-page-node-id="1AOaUIQ0gSpdtwDgkC1m9d">
+        <div style="font-size:10px;font-weight:bold;color:var(--yellow)" data-page-node-id="nYcp48aPiAFWSTQ0Al8OLN">🧠 Agent ReAct</div>
+        <div style="font-size:10px;color:var(--text-3);margin-top:4px;line-height:1.7" data-page-node-id="ANVGbypbZ1hCuQxOdnuvh6">
+          ✓ Thought: 需要适老景点 + 民宿 + 天气<br data-page-node-id="RVrdOMGNlkKBF51stUEzgx">
+          ✓ Action: search_KG("适老·徽派·4A+")<br data-page-node-id="abmiy74hHj0aBvdMXqtDjX">
+          ✓ Action: get_weather(2026-09-05~06)<br data-page-node-id="ivDl8UTDi8e7YKxBgzGuhv">
+          <span style="color:var(--cyan)" data-page-node-id="EKqnO7SjY6mBd5Ru52wFWL">⟳ Action: plan_route(budget=1500)</span>
+        </div>
+      </div>
+      <div style="background:color-mix(in srgb,var(--green) 10%,transparent);border:0.8px solid var(--green);border-radius:6px;padding:8px 12px" data-page-node-id="4619Tw7LArHiQWAwhMrohM">
+        <div style="font-size:10px;font-weight:bold;color:var(--green)" data-page-node-id="hWpi4eELgGj1pK0SyC98oX">📋 生成行程</div>
+        <div style="font-size:10px;color:var(--text-2);margin-top:4px;line-height:1.7" data-page-node-id="D4xhIfbQjNRrzM1PGmINkm">
+          Day1: 宏村 → 塔川 → 民宿「南湖人家」<br data-page-node-id="3V4VHxGJERt57Fo63fuTG4">
+          Day2: 西递 → 桃花源 → 返程<br data-page-node-id="DIYibQ83BNJ8PnrQ1M2iQI">
+          <b style="color:var(--yellow)" data-page-node-id="606N8Rp5fZ3FkaTd7ze0R7">💰 1,420 元 · 🚗 32km · ☀ 晴</b>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 右栏 3：舆情 -->
+  <div class="panel" style="left:1470px;top:795px;width:420px;height:255px;border-color:var(--orange)" data-page-node-id="2pw2o29jWiOnXDuCrk39Pq">
+    <div class="p-head" style="background:color-mix(in srgb,var(--orange) 12%,transparent);color:var(--orange)" data-page-node-id="0i0CGUj8vEknCe9JyZkb4Q"><span data-page-node-id="DNibylTt8BmQ2ubwAtxROL">💬 全网多模态舆情 · 实时监测</span></div>
+    <div style="padding:14px 18px" data-page-node-id="0Qk7cuYyF6uYnUZmgmwFhu">
+      <div style="line-height:1.9;font-weight:bold" data-page-node-id="aIB6nHmQInzxiustCtAhOC">
+        <span style="color:var(--yellow);font-size:20px" data-page-node-id="2uGFPpVtjJRWOP9MMEjmxl">徽派建筑</span>
+        <span style="color:var(--green);font-size:15px;margin-left:12px" data-page-node-id="PeM9xsBvpy8MVDoWDTgU8s">非遗</span>
+        <span style="color:var(--cyan);font-size:17px;margin-left:12px" data-page-node-id="BquBS9m5s7y8SGAZ4VbIHu">民宿</span>
+        <span style="color:var(--orange);font-size:13px;margin-left:12px" data-page-node-id="mHE6CVwLNwXcRew9wegO70">美食</span><br data-page-node-id="xi0lFrifc7xbBPxaObo0Cn">
+        <span style="color:var(--text-3);font-size:13px" data-page-node-id="ZC1oaMnR24xxtqge0ryMZg">写生</span>
+        <span style="color:var(--orange);font-size:19px;margin-left:12px" data-page-node-id="TtWQ3NLehw981dY7kkpVZG">古村落</span>
+        <span style="color:var(--yellow);font-size:14px;margin-left:12px" data-page-node-id="AY0mbzp7swyiah9lW1iupB">摄影</span>
+        <span style="color:var(--green);font-size:12px;margin-left:12px" data-page-node-id="rCEVcfn1hjx8o3g1UgAi5y">徒步</span><br data-page-node-id="C8EHUG1f7nQ159S7XQwX7n">
+        <span style="color:var(--cyan);font-size:15px" data-page-node-id="ZvuVAT1G68WgMzKUp0AANA">亲子</span>
+        <span style="color:var(--yellow);font-size:12px;margin-left:12px" data-page-node-id="M1r4Bfxf9vwmNRBF2BbWIP">文创</span>
+        <span style="color:var(--green);font-size:17px;margin-left:12px" data-page-node-id="lf7idvZyKvzmtEjNsxCXLw">慢生活</span>
+        <span style="color:var(--text-3);font-size:11px;margin-left:12px" data-page-node-id="NfRK24FzMSlQGHTjsnIeri">研学</span>
+      </div>
+      <div style="font-size:10px;color:var(--text-3);margin-top:10px" data-page-node-id="NRaVzsV17EFCnMZALsm8nI">情感分布</div>
+      <div style="display:flex;height:14px;border-radius:7px;overflow:hidden;margin-top:5px;background:var(--bg-mid)" data-page-node-id="qNYwgEfIGCLnuz9ZVRUq4a">
+        <div style="width:76.3%;background:var(--green)" data-page-node-id="09z8ZGQof51aTKUDQU2NAg"></div>
+        <div style="width:15.8%;background:var(--yellow)" data-page-node-id="8PxdhcNv7UOW0jcU9xzExG"></div>
+        <div style="width:7.9%;background:var(--red)" data-page-node-id="zDvbmJ5Ii7fi07LfZAepLH"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text-3);margin-top:8px" data-page-node-id="ddc16XX32twc7VuU5DTTZJ">
+        <span data-page-node-id="MDX82lnEd1h5K1SHVFQYwU">😊 正面 76.3%</span><span data-page-node-id="OuBpiT0ecpiIXofSG7IybI">😐 中性 15.8%</span><span data-page-node-id="V5mQkvCFTsLmvvqfFTYbAg">😞 负面 7.9%</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text-3);margin-top:6px" data-page-node-id="9EUSBFS3GYkIHOtJkGKQ9J">
+        <span data-page-node-id="n1MchmVRiC5S1H48sDUC27">📱 小红书 42%</span><span data-page-node-id="Jzq1iELkxeZfC2DR2mVRU2">🎵 抖音 31%</span><span data-page-node-id="4abDQZNVbn0sZFzMc987c3">✈ 马蜂窝 15%</span><span data-page-node-id="EzweEcF112sABim0yKEcH9">🔵 微博 12%</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<div class="note" data-page-node-id="D89uxBMzEmVHqBewRvMQAP">💡 <b data-page-node-id="RkOkviTKks6BXkPbHwHRlo">调参提示</b>：顶部调参台改动会<b data-page-node-id="UrCBdtHgZgyLwYz0kQEve2">同时作用</b>于主屏与全部副屏。底纹透明度建议 5%–10%；若展厅较亮，可把「渐变心」调浅一档并降低底纹到 5%。调好后点 <code data-page-node-id="DzUPljNyE7EeaSX1H2UHr4">📋 复制 CSS 变量</code>，直接粘贴到大屏 <code data-page-node-id="COE8Z6gWCBY9ouDVrExDKF">bigscreen.css</code> 的 <code data-page-node-id="bwmuJzP2JwCHpZAuagRZ30">:root</code> 即可换肤。</div>
+
+<h2 class="sec" data-page-node-id="HW00v7jcoun595LkfoH4Te">📊 副屏 × 5 · 点击任意缩略图放大查看</h2>
+<p class="sec-desc" data-page-node-id="OB3JkaAZoLkeE2YWEp9sAm">副屏主题色分工：①图谱→禾苗绿 ②推荐→数字青 ③舆情→暖阳橙 ④Agent→麦田黄 ⑤振兴→数字青</p>
+
+<div class="thumb-grid" data-page-node-id="299nnrXDGEMPtHqi2tGwYN">
+
+<!-- 副屏 1：知识图谱 -->
+<div class="thumb" onclick="openModal(this)" data-page-node-id="tfatzwf8V9zyJzg9KqsTEt">
+<div class="viewport" data-stage data-page-node-id="HPI6m8XOWJfjVeA5DM7GQu">
+<div class="stage bg-radial" data-page-node-id="u1RjHwlwQQdcnq7wHOMUqb">
+  <svg class="bg-layer" width="1920" height="1080" data-page-node-id="hGrnWYzQlGpkmkJfrqsW58"><rect width="1920" height="1080" fill="url(#rice)" style="opacity:var(--pat-op)" data-page-node-id="uqkCeowBnsxG3sWugh3zAM"/></svg>
+  <div class="grid-lines" data-page-node-id="2BoY42JEWAvcuxG9BaMyQ1"></div>
+  <div style="position:absolute;top:0;left:0;right:0;height:80px;display:flex;align-items:center;justify-content:center;background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--green) 18%,transparent),transparent)" data-page-node-id="oCLiTUnPwPD4lzrCuRR1L0">
+    <span style="font-size:28px;font-weight:bold;letter-spacing:5px;color:var(--green)" class="glow" data-page-node-id="1dnFg3ov9j3W7CGE7QdMzA">副屏 ① · 文旅知识图谱探索</span>
+  </div>
+  <div style="position:absolute;top:60px;left:50%;transform:translateX(-50%);font-size:12px;color:var(--text-3);letter-spacing:2px" data-page-node-id="zd0xSoo1rSRqCaMBe9D1jc">KNOWLEDGE GRAPH EXPLORER · 58,426 实体 / 216,308 关系</div>
+  <!-- 搜索栏 -->
+  <div style="position:absolute;top:110px;left:60px;right:60px;height:46px;background:var(--bg-mid);border:1px solid var(--cyan);border-radius:23px;display:flex;align-items:center;padding:0 24px;font-size:14px;color:var(--text-3)" data-page-node-id="wNDiBimxFtGm41EmIm4QHL">
+    🔍 搜索实体：景点 / 非遗 / 人物 / 特产 / 典故...
+    <span style="margin-left:auto;background:var(--cyan);color:var(--bg-deep);border-radius:14px;padding:4px 22px;font-weight:bold;color:var(--bg-deep)" data-page-node-id="GMVFjrVEWeAfXzfD1vzsxr">搜索</span>
+  </div>
+  <!-- 图谱区 -->
+  <svg style="position:absolute;top:170px;left:60px" width="1300" height="740" viewBox="0 0 1300 740" data-page-node-id="xO27I6VvHpBcuzl6qxbcne">
+    <g transform="translate(560,370)" data-page-node-id="93JltCZb4TDhuDZsz0Oohm">
+      <g stroke="var(--green)" stroke-width="1.6" opacity="0.75" data-page-node-id="F78obMZn6a4EsIWPO9Ra5K">
+        <line x1="0" y1="0" x2="-260" y2="-150" data-page-node-id="nBNMeSPXFpvTqm88Uw1aDV"/><line x1="0" y1="0" x2="260" y2="-150" data-page-node-id="vDewwfJaUzBy4Duuvne8O8"/>
+        <line x1="0" y1="0" x2="-290" y2="110" data-page-node-id="7C2l1BxkQoBNoMc45Xyf8a"/><line x1="0" y1="0" x2="290" y2="110" data-page-node-id="HWRdv4TB9oJqCX8vHCiQxm"/>
+        <line x1="0" y1="0" x2="-150" y2="250" data-page-node-id="TGQJYKjmKV2P3CWRBozrEI"/><line x1="0" y1="0" x2="150" y2="250" data-page-node-id="tQhUL9DDDN8aohLSg7usex"/>
+        <line x1="0" y1="0" x2="0" y2="-270" data-page-node-id="zmcr4QlfUSjoIcBC1rybrc"/>
+      </g>
+      <g stroke="var(--text-3)" stroke-width="0.8" opacity="0.4" data-page-node-id="d1sRSuBz147aic1S0gmvBO">
+        <line x1="-260" y1="-150" x2="-400" y2="-230" data-page-node-id="BDf8kpKig3DzHmBTT4wnsZ"/><line x1="-260" y1="-150" x2="-160" y2="-280" data-page-node-id="INOxiUKHfNZghfEBPhKuB8"/>
+        <line x1="260" y1="-150" x2="400" y2="-230" data-page-node-id="RlvjQ9w3D1S5nh5hECS8mS"/><line x1="-290" y1="110" x2="-440" y2="210" data-page-node-id="g9BIeiAV7w2OkSVjDtmzgG"/>
+        <line x1="-290" y1="110" x2="-440" y2="20" data-page-node-id="LWjgr56emcvb2teczZDROE"/><line x1="290" y1="110" x2="440" y2="210" data-page-node-id="LmlDZZLlvuUb4qbNx3fZO0"/>
+      </g>
+      <g opacity="0.7" data-page-node-id="JFBmD6LKvjinqXvSYCvHWh">
+        <circle cx="-400" cy="-230" r="12" fill="var(--yellow)" fill-opacity="0.6" data-page-node-id="siDaFkGSvdwv4FPhkjksLF"/><text x="-400" y="-248" text-anchor="middle" fill="var(--text-3)" font-size="11" data-page-node-id="69XkLsCBDBvtkiiP80SBBC">马头墙</text>
+        <circle cx="-160" cy="-280" r="12" fill="var(--yellow)" fill-opacity="0.6" data-page-node-id="R4W8ahfHHZMHRSzsRGfn82"/><text x="-160" y="-298" text-anchor="middle" fill="var(--text-3)" font-size="11" data-page-node-id="gswpG1HMqCtEYswBBDE9nJ">粉墙黛瓦</text>
+        <circle cx="400" cy="-230" r="12" fill="var(--yellow)" fill-opacity="0.6" data-page-node-id="MNDaytN7mIuiqbkJhSHff0"/><text x="400" y="-248" text-anchor="middle" fill="var(--text-3)" font-size="11" data-page-node-id="5aZ1JJdg4emk9upgKmLZie">世遗 2000</text>
+        <circle cx="-440" cy="210" r="12" fill="var(--green)" fill-opacity="0.6" data-page-node-id="yI6RX27nmmxCHdH3x1XAt3"/><text x="-440" y="232" text-anchor="middle" fill="var(--text-3)" font-size="11" data-page-node-id="wtxXoH1zKnTvXYm2yDtAYF">砖雕</text>
+        <circle cx="-440" cy="20" r="12" fill="var(--green)" fill-opacity="0.6" data-page-node-id="KKL7dt3lWpplLIAb9Qu9xk"/><text x="-440" y="14" text-anchor="middle" fill="var(--text-3)" font-size="11" data-page-node-id="6LSbyRdSmcj3cDHqdyuUY4">木雕</text>
+        <circle cx="440" cy="210" r="12" fill="var(--green)" fill-opacity="0.6" data-page-node-id="J6hhUDcN4W4o08vRYyaxbE"/><text x="440" y="232" text-anchor="middle" fill="var(--text-3)" font-size="11" data-page-node-id="wpV0kYBt3meCZi2OP15HKE">石雕</text>
+      </g>
+      <circle cx="-260" cy="-150" r="32" fill="var(--yellow)" data-page-node-id="pP4xen0wn6i7jq51TFR0Yi"/><text x="-260" y="-144" text-anchor="middle" fill="var(--bg-deep)" font-size="13" font-weight="bold" data-page-node-id="ibcrgXKykHmiC5y0TNAezs">徽派建筑</text>
+      <circle cx="260" cy="-150" r="32" fill="var(--yellow)" data-page-node-id="8UNd5VO7QoelhmSDi0C4DP"/><text x="260" y="-144" text-anchor="middle" fill="var(--bg-deep)" font-size="13" font-weight="bold" data-page-node-id="t0sKK8zeQk3smyFVaK71k6">世界遗产</text>
+      <circle cx="-290" cy="110" r="32" fill="var(--green)" data-page-node-id="5VjCxz31bbBY79CpT7FdTD"/><text x="-290" y="116" text-anchor="middle" fill="var(--bg-deep)" font-size="13" font-weight="bold" data-page-node-id="T4T8EVcpM8wqJItUhukpBc">徽州三雕</text>
+      <circle cx="290" cy="110" r="32" fill="var(--green)" data-page-node-id="soDGBc12zNBX8mu8zje5ue"/><text x="290" y="116" text-anchor="middle" fill="var(--bg-deep)" font-size="13" font-weight="bold" data-page-node-id="6NcJGAbsmBVlZHF5t3BTF2">汪氏宗祠</text>
+      <circle cx="-150" cy="250" r="28" fill="var(--orange)" data-page-node-id="YFFK8ZrWPSSw0XPRgSZG3o"/><text x="-150" y="256" text-anchor="middle" fill="var(--bg-deep)" font-size="12" font-weight="bold" data-page-node-id="9WFKX2I7y1xXYxo2lFB1S6">月沼</text>
+      <circle cx="150" cy="250" r="28" fill="var(--orange)" data-page-node-id="7o1kb8bDPe4WY8TwyVkQzb"/><text x="150" y="256" text-anchor="middle" fill="var(--bg-deep)" font-size="12" font-weight="bold" data-page-node-id="E7RKmdGASIjJSVdoHHV4la">南湖</text>
+      <circle cx="0" cy="-270" r="28" fill="var(--cyan)" data-page-node-id="3gSHY95rdasFzejC02nugb"/><text x="0" y="-264" text-anchor="middle" fill="var(--bg-deep)" font-size="12" font-weight="bold" data-page-node-id="lQ4dSp4BIjVfyYMDbWKw33">写生基地</text>
+      <circle cx="0" cy="0" r="54" fill="var(--cyan)" opacity="0.35" data-page-node-id="wtjmFm8GaVUIpRFa1BUoDs"/><circle cx="0" cy="0" r="44" fill="var(--cyan)" class="glow" data-page-node-id="TumdyCLnpnsiID1HTIH3HC"/>
+      <text x="0" y="8" text-anchor="middle" fill="var(--bg-deep)" font-size="19" font-weight="bold" data-page-node-id="A2VqoIibS7BoCPDRdeh2UN">宏村</text>
+    </g>
+  </svg>
+  <!-- 实体详情 -->
+  <div style="position:absolute;top:170px;right:60px;width:330px;height:640px;background:var(--bg-mid);border:1px solid var(--green);border-radius:6px;padding:18px 20px" data-page-node-id="YdYIyEdZlWHwVRJ9Df6lpt">
+    <div style="text-align:center;color:var(--green);font-weight:bold;font-size:15px;margin-bottom:14px" data-page-node-id="FWTolPRGJgqB8MBLcY1mIK">实体详情</div>
+    <div style="font-size:13px;color:var(--text-3);line-height:2.1" data-page-node-id="8OFnwG6IASSbkIbQCinp9U">
+      名称: <b style="color:var(--text-1);font-size:15px" data-page-node-id="9CelzNxecKzbsfDzCWwLJU">宏村</b><br data-page-node-id="vHKof5GH6GdGoBpzP8waVv">
+      类型: 古村落 · 等级: 5A<br data-page-node-id="FLgT8p2ooDP9BaWyVgOBmN">
+      坐标: 117.98°E 29.92°N<br data-page-node-id="Vf2X6FMLx5F5ZhgiFjY7wi">
+      <span style="color:var(--green);font-weight:bold" data-page-node-id="ACFv51gdLz2ViZ5CB0mAWM">关联实体:</span><br data-page-node-id="uqGSo6B5A9VVucsxn760Co">
+      • 徽州三雕　• 汪氏宗祠<br data-page-node-id="L93qqk7isa4vGAtVFwVZWq">• 徽派建筑　• 世界遗产<br data-page-node-id="F16W3HR8VMvkGK153PhVaH">
+      <span style="color:var(--yellow);font-weight:bold" data-page-node-id="4egDmZBSrqDfNkSVMtZ089">推荐指数:</span><br data-page-node-id="b9D9NDfU3B2LN8oiJNwJ9A">
+      <span style="color:var(--yellow);font-size:17px;font-weight:bold" data-page-node-id="HnHkaZxtLedMnhFA0nmKLq">★★★★★</span><br data-page-node-id="IyrQaC8kTYHNgrl1YUb5In">
+      <span style="color:var(--cyan);font-weight:bold" data-page-node-id="OqLlLtscSgr82ffORsP39Y">今日客流:</span><br data-page-node-id="iuRhtUiYl1DJUgQI9iEsSQ">
+      <span style="color:var(--cyan);font-size:17px;font-weight:bold" data-page-node-id="D7RRDh6AI3ZH3cY4AxPOmy">8,432 人</span><br data-page-node-id="N4tWb4qmAdt9J8FClIUkeT">
+      <span style="color:var(--orange);font-weight:bold" data-page-node-id="lE6zAeoTIUvDdV3YAXBJNe">典故:</span> 卧虎藏龙取景地
+    </div>
+  </div>
+  <!-- 底部统计条 -->
+  <div style="position:absolute;bottom:60px;left:60px;right:420px;height:56px;background:var(--bg-mid);border:1px solid var(--green);border-radius:6px;display:flex;align-items:center;gap:60px;padding:0 28px;font-size:14px;color:var(--text-3)" data-page-node-id="w3M19PHLKWgEfzVNPsBV4J">
+    <span data-page-node-id="nFJ1DQBnDUcCfXMquYrAoK">实体总数: <b style="color:var(--green)" data-page-node-id="SF0wcRcrsG4cNjdAxy5zvv">58,426</b></span>
+    <span data-page-node-id="1kNCsdo1Bb9yDoEbKA3Y1G">关系总数: <b style="color:var(--green)" data-page-node-id="ox2QV20CeYThiAxjG54C9I">216,308</b></span>
+    <span data-page-node-id="IvddpyuwnQCS84NSE0onSw">今日新增: <b style="color:var(--yellow)" data-page-node-id="BpX281KlO2Tm3FePk6rvYe">+128</b></span>
+    <span data-page-node-id="gNLktP6WMzUerohPrzBI6f">查询 QPS: <b style="color:var(--cyan)" data-page-node-id="4GXwweuXF6DpjVOwVEL5eV">256</b></span>
+  </div>
+</div>
+</div>
+<div class="t-title" data-page-node-id="qVIJ1WWTXMWzSuFmNc7FEw"><b data-page-node-id="CIwP7JZVZP4g76mD6rEkKL">副屏 ①</b> · 知识图谱探索（禾苗绿主题）</div>
+</div>
+
+<!-- 副屏 2：推荐算法 -->
+<div class="thumb" onclick="openModal(this)" data-page-node-id="TewVBFBtJyh8rLQZZYuOjN">
+<div class="viewport" data-stage data-page-node-id="Ww15LMZDbCAY9Rb2y2QCjb">
+<div class="stage bg-radial" data-page-node-id="R1VOEjGVU3BKOOqhqvAyCl">
+  <svg class="bg-layer" width="1920" height="1080" data-page-node-id="kyrUD5RhOadfppb0Ys0Alc"><rect width="1920" height="1080" fill="url(#rice)" style="opacity:var(--pat-op)" data-page-node-id="BnArdaqWRYlo7li0VD5OTC"/></svg>
+  <div class="grid-lines" data-page-node-id="uAldN7EFqlBAji4rUvuBBa"></div>
+  <div style="position:absolute;top:0;left:0;right:0;height:80px;display:flex;align-items:center;justify-content:center;background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--cyan) 18%,transparent),transparent)" data-page-node-id="2z5490amXRT6cCH2nwouVv">
+    <span style="font-size:28px;font-weight:bold;letter-spacing:5px;color:var(--cyan)" class="glow" data-page-node-id="tnssbHDXfHhcXCJCQoYd8N">副屏 ② · 推荐算法效果监测</span>
+  </div>
+  <div style="position:absolute;top:60px;left:50%;transform:translateX(-50%);font-size:12px;color:var(--text-3);letter-spacing:2px" data-page-node-id="Ch2z4zpsY1B5ES5PTInJjo">KGNN + RL · A/B TESTING · REAL-TIME</div>
+  <!-- 4 指标卡 -->
+  <div class="kpi" style="left:60px;top:110px;width:430px;height:80px;border-color:var(--cyan)" data-page-node-id="umnGCJnusFiLIN7nyyO8Xp"><div class="k-label" style="color:var(--cyan)" data-page-node-id="vW0fuAlR3JkN6WKg7YUy1U">CTR 点击率</div><span class="k-num" style="font-size:26px" data-page-node-id="1PAKfdFCQ1sS2PVJaJZU5x">25.06%</span><span class="k-sub" style="color:var(--grow);font-weight:bold" data-page-node-id="PmkDcE3JqAqMIDT6lZzNDL">↑ 2.1%</span></div>
+  <div class="kpi" style="left:510px;top:110px;width:430px;height:80px;border-color:var(--cyan)" data-page-node-id="ZCuWR2BaT00z1fgOTpBX8A"><div class="k-label" style="color:var(--cyan)" data-page-node-id="mCYdf8rg1UPSkSCgU97eOB">CVR 转化率</div><span class="k-num" style="font-size:26px" data-page-node-id="hegljeVOLcFUepL2D1FpDD">8.42%</span><span class="k-sub" style="color:var(--grow);font-weight:bold" data-page-node-id="etX3LTj8ET263ZdCVgKywE">↑ 0.8%</span></div>
+  <div class="kpi" style="left:960px;top:110px;width:430px;height:80px;border-color:var(--green)" data-page-node-id="NT574iRLvOPs7rppTR8JtZ"><div class="k-label" style="color:var(--green)" data-page-node-id="UVl3kGGYPk7MHxbBLTpl8E">NDCG@10</div><span class="k-num" style="font-size:26px" data-page-node-id="g0tpYd15MUdGoBa6F1K46I">0.734</span><span class="k-sub" style="color:var(--grow);font-weight:bold" data-page-node-id="Nd0rroWJOJBTEmSGIynj14">↑ 0.02</span></div>
+  <div class="kpi" style="left:1410px;top:110px;width:450px;height:80px;border-color:var(--yellow)" data-page-node-id="BJNjkwpBD46itq9W3VhhGJ"><div class="k-label" style="color:var(--yellow)" data-page-node-id="fIUHiFCAWSfPws5zVcyiMW">Diversity 多样性</div><span class="k-num" style="font-size:26px" data-page-node-id="f2GP3YjksIeirQnllqBI7P">0.682</span><span class="k-sub" style="color:var(--text-3)" data-page-node-id="fqW5A8tsUy57bJ5k90N5IB">目标 0.70</span></div>
+  <!-- 漏斗 -->
+  <div class="panel" style="left:60px;top:220px;width:520px;height:420px" data-page-node-id="2c0dxBKcGyR9AsvtFrQF7t">
+    <div class="p-head" style="background:color-mix(in srgb,var(--cyan) 12%,transparent);color:var(--cyan)" data-page-node-id="vhfVWgV2Z8Gt4C1JEs5Y46"><span data-page-node-id="TsmreWd7k4JHLLfr8EmQ8u">🔻 推荐转化漏斗</span></div>
+    <svg width="520" height="380" viewBox="0 0 520 380" data-page-node-id="8nDK7tG3anOrzvg4E0a3iq">
+      <polygon points="60,30 460,30 420,110 100,110" fill="var(--cyan)" fill-opacity="0.75" data-page-node-id="HzxGgEQYRWTBwgPkhKrcWG"/>
+      <polygon points="100,120 420,120 385,200 135,200" fill="var(--cyan)" fill-opacity="0.55" data-page-node-id="lCkWKyQHN2x6pDFmlwOC1B"/>
+      <polygon points="135,210 385,210 355,290 165,290" fill="var(--green)" fill-opacity="0.5" data-page-node-id="al9DgAk7Qjel6orDq7cfrX"/>
+      <polygon points="165,300 355,300 330,365 190,365" fill="var(--yellow)" fill-opacity="0.65" data-page-node-id="BiTrOYTOvKSxBUnXSoRuRB"/>
+      <g font-size="15" fill="var(--bg-deep)" text-anchor="middle" font-weight="bold" data-page-node-id="91rirzgbu01IhkEZnm9iPF">
+        <text x="260" y="78" data-page-node-id="dfZcxXotVvqv3PNVJUqyXi">曝光 128,450</text><text x="260" y="168" data-page-node-id="cB4iVwMDrOlEwJxv0L2wzl">点击 32,180</text>
+        <text x="260" y="258" data-page-node-id="kaeUOJpIF1mCLFAGk4GMSi">收藏 8,920</text><text x="260" y="340" data-page-node-id="1PG4XtjLXzMkY2ssRWqeC9">转化 3,145</text>
+      </g>
+    </svg>
+  </div>
+  <!-- A/B 对比 -->
+  <div class="panel" style="left:610px;top:220px;width:700px;height:420px" data-page-node-id="VXbLbwvoDcnx5ulMcdSCt4">
+    <div class="p-head" style="background:color-mix(in srgb,var(--cyan) 12%,transparent);color:var(--cyan)" data-page-node-id="G2iiHKBSXYAmcVODFAnwE2"><span data-page-node-id="akz22QiOypezRl7brsSEUb">📈 算法版本 A/B 对比 (CTR)</span></div>
+    <svg width="700" height="380" viewBox="0 0 700 380" data-page-node-id="yBxTpJOTl1G6hTucfwt1ng">
+      <g stroke="var(--text-3)" stroke-width="0.4" opacity="0.15" data-page-node-id="G8ob1kZMWkHTw2rTFpHH5A">
+        <line x1="40" y1="60" x2="680" y2="60" data-page-node-id="SjHd4oXuafQoTHEzverkUB"/><line x1="40" y1="140" x2="680" y2="140" data-page-node-id="QsvYtHv7bwbXnn4vYos62U"/>
+        <line x1="40" y1="220" x2="680" y2="220" data-page-node-id="z95D8RaVud7J95LoGoyL3E"/><line x1="40" y1="300" x2="680" y2="300" data-page-node-id="4Qoc6Sdv5ELccatjXMbIxJ"/>
+      </g>
+      <polyline points="40,280 130,240 220,250 310,200 400,160 490,130 580,95 670,70" stroke="var(--cyan)" stroke-width="3" fill="none" class="glow" data-page-node-id="USbNmk1n6JjRRSPADXPAOX"/>
+      <polyline points="40,310 130,290 220,295 310,275 400,265 490,245 580,230 670,220" stroke="var(--green)" stroke-width="2.2" fill="none" data-page-node-id="dGVpoJy2OrZFj3N3Bzf1tX"/>
+      <polyline points="40,330 130,322 220,326 310,318 400,322 490,312 580,310 670,305" stroke="var(--orange)" stroke-width="1.8" fill="none" stroke-dasharray="4,3" data-page-node-id="2q0Eyqc6LJEWpIro7qHGnt"/>
+      <g font-size="12" fill="var(--text-3)" data-page-node-id="for9hLhwPRelzI4qGwL2mX">
+        <text x="50" y="40" fill="var(--cyan)" data-page-node-id="IhvXgJQHbxhyvcFOa6eVq3">— v3.0 KGNN+RL (最新)</text>
+        <text x="300" y="40" fill="var(--green)" data-page-node-id="tBMJNDTgAfBaU0Ce6CDpvL">— v2.0 KGNN</text>
+        <text x="470" y="40" fill="var(--orange)" data-page-node-id="Sqqj7Tcg6KoZvOSCIoFxIz">--- v1.0 CF (对照)</text>
+      </g>
+    </svg>
+  </div>
+  <!-- SHAP 可解释性 -->
+  <div class="panel" style="left:1340px;top:220px;width:520px;height:420px;border-color:var(--green)" data-page-node-id="rFW8xNYc8nCIQVbSSS1rmk">
+    <div class="p-head" style="background:color-mix(in srgb,var(--green) 12%,transparent);color:var(--green)" data-page-node-id="BmtEvmDZ3CQjfL5T8JCKwV"><span data-page-node-id="dNBixrbYBPS3c0Bflp7g7F">🔍 推荐可解释性 (SHAP)</span></div>
+    <div style="padding:18px 22px;font-size:14px;color:var(--text-2);line-height:2.2" data-page-node-id="7C2tnkeBFsZW9VFvxnWlcW">
+      用户: U_102580<br data-page-node-id="6IoEOsUvJxGTyCv6cKhnh8">推荐: <b style="color:var(--yellow)" data-page-node-id="QmksxftH8Y7fK79xgnFktQ">查济古村</b><br data-page-node-id="N5urLnoHWqMxKWbQ6MBxLZ">
+      <b style="color:var(--cyan)" data-page-node-id="yE7Zy0KwpiFeDxntCsa8ED">归因分析:</b><br data-page-node-id="bCuKX4VdbXV2ctbI8ZkDQB">
+      • 喜欢徽派建筑 <span style="color:var(--green)" data-page-node-id="fYSK9LRK0u8gBGC6hUmJB9">+0.32</span><br data-page-node-id="9kJCHcPYE73ggcxtu2kesf">
+      • 浏览过宏村 <span style="color:var(--green)" data-page-node-id="4TbLzDaEaseAdoO4A7OrWJ">+0.28</span><br data-page-node-id="cEOW8zGYcSiWT78O37FWZP">
+      • 摄影爱好 <span style="color:var(--green)" data-page-node-id="K70uPa2gEPg5rbhwSATWG0">+0.18</span><br data-page-node-id="a8ygSASBDY5KyVh8riYLY1">
+      • 冷门扶持 <span style="color:var(--yellow)" data-page-node-id="Y7p8UFas1kNCvZvvzpPxwW">+0.15</span><br data-page-node-id="34e4JllwHvyJOveA4drnAm">
+      • 距离近 <span style="color:var(--text-3)" data-page-node-id="BP5PQJ2eBSsPRXF6cMInfG">+0.07</span>
+    </div>
+  </div>
+  <!-- 冷启动扶持 -->
+  <div class="panel" style="left:60px;top:670px;width:1250px;height:340px;border-color:var(--yellow)" data-page-node-id="wAx6xdLpfoshUfsRT7Q9Tf">
+    <div class="p-head" style="background:color-mix(in srgb,var(--yellow) 12%,transparent);color:var(--yellow)" data-page-node-id="jKMyUrRdsbWsFATpICMDwa"><span data-page-node-id="BQy4BurXf06bKLZq7yTdgD">🌱 冷启动景点扶持效果 (乡村振兴指标)</span></div>
+    <svg width="1250" height="300" viewBox="0 0 1250 300" data-page-node-id="pp90aGecyPZmz6C1WS0wk9">
+      <g font-size="15" fill="var(--text-2)" data-page-node-id="xFWNbRGew8fsnDtdkWYi6H">
+        <text x="30" y="60" data-page-node-id="5lkUt1nkFG0vZbS3Tf1rA7">冯村</text><rect x="180" y="42" width="900" height="22" rx="4" fill="var(--bg-deep)" data-page-node-id="Elzp3B5PAQHAYXHsnraMb4"/><rect x="180" y="42" width="540" height="22" rx="4" fill="var(--green)" data-page-node-id="pei2h9amsvHl0A6fBSyoDf"/><text x="1200" y="60" text-anchor="end" fill="var(--green)" font-weight="bold" data-page-node-id="SkOFfGDuycOGZsNqBsIBMQ">+60% 曝光</text>
+        <text x="30" y="125" data-page-node-id="sUw3715R8pQqYkQTldAsZR">上庄</text><rect x="180" y="107" width="900" height="22" rx="4" fill="var(--bg-deep)" data-page-node-id="kvs2vtQQKshctO3xXyXYrh"/><rect x="180" y="107" width="405" height="22" rx="4" fill="var(--green)" data-page-node-id="riGmC9fWJXjKWJY2xlJfVN"/><text x="1200" y="125" text-anchor="end" fill="var(--green)" font-weight="bold" data-page-node-id="R11BupFdKsn1DR3md9FWFF">+45% 曝光</text>
+        <text x="30" y="190" data-page-node-id="d2hiVhILyx9kXcOJxlpFvG">障山大峡谷</text><rect x="180" y="172" width="900" height="22" rx="4" fill="var(--bg-deep)" data-page-node-id="p7mpuAMNhZuBJzIkRwqUlv"/><rect x="180" y="172" width="270" height="22" rx="4" fill="var(--yellow)" data-page-node-id="2frvttCEevUUC8uE1ISEdO"/><text x="1200" y="190" text-anchor="end" fill="var(--yellow)" font-weight="bold" data-page-node-id="fCyCqRdRhFyIJPewS3Dj3T">+30% 曝光</text>
+        <text x="30" y="255" data-page-node-id="M1eG0F6fsznJO1IAP1eBus">唐模水口</text><rect x="180" y="237" width="900" height="22" rx="4" fill="var(--bg-deep)" data-page-node-id="xtHHnn6uC7Xh2EhJMbNO9f"/><rect x="180" y="237" width="225" height="22" rx="4" fill="var(--yellow)" data-page-node-id="FEtC995Dbyo35PJZy7NIBj"/><text x="1200" y="255" text-anchor="end" fill="var(--yellow)" font-weight="bold" data-page-node-id="KECYbRBZ7HwvPyvfdO3ceV">+25% 曝光</text>
+      </g>
+    </svg>
+  </div>
+  <!-- 多目标雷达 -->
+  <div class="panel" style="left:1340px;top:670px;width:520px;height:340px;border-color:var(--cyan)" data-page-node-id="h82YdEBWkkUoeFBDlyqNoq">
+    <div class="p-head" style="background:color-mix(in srgb,var(--cyan) 12%,transparent);color:var(--cyan)" data-page-node-id="rBEKGD4mZUsgwy82mz43kB"><span data-page-node-id="8M5Y5Hh004ztUebRrgXnhR">🎯 多目标优化雷达</span></div>
+    <svg width="520" height="300" viewBox="0 0 520 300" data-page-node-id="hKelEORCfGnezTMrDKqUcy">
+      <g transform="translate(260,155)" data-page-node-id="FTmHncVXQQetpektK4TA50">
+        <polygon points="0,-110 95,-55 95,55 0,110 -95,55 -95,-55" fill="none" stroke="var(--cyan)" stroke-width="0.6" opacity="0.4" data-page-node-id="Hb8Fy58fxBRpYu2ONwB6Fs"/>
+        <polygon points="0,-70 61,-35 61,35 0,70 -61,35 -61,-35" fill="none" stroke="var(--cyan)" stroke-width="0.6" opacity="0.4" data-page-node-id="mfghoTGkwg9PTUd66n873D"/>
+        <polygon points="0,-95 80,-38 85,48 0,80 -72,42 -84,-46" fill="var(--green)" fill-opacity="0.4" stroke="var(--green)" stroke-width="2" data-page-node-id="hTlGbH1fJMlAyuqUvRCR8Y"/>
+        <g font-size="12" fill="var(--text-3)" data-page-node-id="v2SV2kvGNM4JBN9VENsQeU">
+          <text x="-14" y="-122" data-page-node-id="IT0lTx1BA9Tlz50vl7v8Iu">CTR</text><text x="100" y="-55" data-page-node-id="XFhA6hGNByxYd1hEMg9jp4">满意度</text><text x="100" y="62" data-page-node-id="iinfBcpQqfdyelViyzwkui">多样性</text>
+          <text x="-18" y="132" data-page-node-id="kg5eOSBT5p8Ezhn2TEeGFf">覆盖率</text><text x="-130" y="62" data-page-node-id="rhtbvGB7hwbvfEswVBmsoD">新颖性</text><text x="-130" y="-55" data-page-node-id="mNwkghHVolbwgDOtGAAzAt">带动力</text>
+        </g>
+      </g>
+    </svg>
+  </div>
+</div>
+</div>
+<div class="t-title" data-page-node-id="23gOQMHaXtgGDQEN0np9J9"><b data-page-node-id="G51AT9cOfLEe8kwCYgm5UO">副屏 ②</b> · 推荐算法效果（数字青主题）</div>
+</div>
+
+<!-- 副屏 3：舆情 -->
+<div class="thumb" onclick="openModal(this)" data-page-node-id="jUtUGEO3EdWz0ksEbDAtPB">
+<div class="viewport" data-stage data-page-node-id="8hEDHnCC4E9TfB2lHuGPmp">
+<div class="stage bg-radial" data-page-node-id="4KdCUUMgqvWBtUH8zyso8o">
+  <svg class="bg-layer" width="1920" height="1080" data-page-node-id="bOVPYhTnQhnMSpe1GyJ8bB"><rect width="1920" height="1080" fill="url(#rice)" style="opacity:var(--pat-op)" data-page-node-id="e9kTcUvps9grYsjgxTUo9X"/></svg>
+  <div class="grid-lines" data-page-node-id="3JBbblXDJ6WwohdZ4XVi2t"></div>
+  <div style="position:absolute;top:0;left:0;right:0;height:80px;display:flex;align-items:center;justify-content:center;background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--orange) 18%,transparent),transparent)" data-page-node-id="SwMuPiiHlNpt4cCNEWF2Pg">
+    <span style="font-size:28px;font-weight:bold;letter-spacing:5px;color:var(--orange)" class="glow" data-page-node-id="HPuyFgHvd63hiNFkvSvTSk">副屏 ③ · 多模态舆情监测</span>
+  </div>
+  <div style="position:absolute;top:60px;left:50%;transform:translateX(-50%);font-size:12px;color:var(--text-3);letter-spacing:2px" data-page-node-id="vrMxLY9RmULqJ8zAQz7b1R">MULTI-MODAL UGC SENTIMENT · 24H</div>
+  <!-- 平台提及量 -->
+  <div class="panel" style="left:60px;top:110px;width:1800px;height:110px;border-color:var(--orange)" data-page-node-id="6bqKqdEtqkIOs6SQI00EFA">
+    <div class="p-head" style="background:color-mix(in srgb,var(--orange) 12%,transparent);color:var(--orange)" data-page-node-id="NWJiZ91fyIStpEITw0v1fk"><span data-page-node-id="HmDK2xuVAgfAKLU9TRztgo">📊 全网 24h 提及量 · 总计 59,000+</span></div>
+    <div style="display:flex;justify-content:space-around;align-items:center;height:70px;font-size:15px;color:var(--text-3)" data-page-node-id="zVkkS043cP6hGgBBBrByrF">
+      <span data-page-node-id="ILtY7ZqFzhZgN6MgVe7hA2">小红书 <b style="color:var(--yellow);font-size:20px" data-page-node-id="Pmm26IzmQcoiwS3xM0AWuk">12,856</b></span>
+      <span data-page-node-id="DypFXKJIxkLV5h95uUwFnG">抖音 <b style="color:var(--yellow);font-size:20px" data-page-node-id="lTu5UxtTaD78PNRzxEjeKG">28,430</b></span>
+      <span data-page-node-id="ESXTs4iJVJaDiomELR2WL9">微博 <b style="color:var(--yellow);font-size:20px" data-page-node-id="dZ4HMAh45atXlFHxsYAo03">5,208</b></span>
+      <span data-page-node-id="OOqvZN0Gn86UJFHB4H7IT1">马蜂窝 <b style="color:var(--yellow);font-size:20px" data-page-node-id="ya2XUUHd3bMl4GTg8Yjuib">3,105</b></span>
+      <span data-page-node-id="BUn7lzNXaUJJ5qcqZDKESQ">B站 <b style="color:var(--yellow);font-size:20px" data-page-node-id="qz0HSacJLN3a9sTvONZDzn">1,876</b></span>
+      <span data-page-node-id="7ZFH87W2CcxqF1vXNutAXJ">携程 <b style="color:var(--yellow);font-size:20px" data-page-node-id="ShFCUcAAiQAbgunelVu0fd">4,532</b></span>
+      <span data-page-node-id="RsHqOn8YendTOILaqLivjh">点评 <b style="color:var(--yellow);font-size:20px" data-page-node-id="sbS38V53dtUKJd236szAh1">2,987</b></span>
+    </div>
+  </div>
+  <!-- 词云 -->
+  <div class="panel" style="left:60px;top:250px;width:880px;height:480px;border-color:var(--orange)" data-page-node-id="daqxho12avhS8LJYckvdhx">
+    <div class="p-head" style="background:color-mix(in srgb,var(--orange) 12%,transparent);color:var(--orange)" data-page-node-id="FNWSUndxPSfjE8muM0I0Tz"><span data-page-node-id="LtyJj4bHNW2cHJnoerfQvE">🌩️ 热门关键词云</span></div>
+    <div style="padding:40px 50px;line-height:2.2;font-weight:bold;text-align:center" data-page-node-id="nMUzxSA0fBhlmSauS6Knhn">
+      <span style="color:var(--yellow);font-size:46px" data-page-node-id="CyNpJYL4BS1xYctRIBI5q2">徽派建筑</span>
+      <span style="color:var(--green);font-size:30px;margin:0 20px" data-page-node-id="iFKOwyySVOOL1N0hMnjyyv">非遗</span>
+      <span style="color:var(--cyan);font-size:34px" data-page-node-id="8tpucn4pcqG38mnfwQHVoP">民宿</span><br data-page-node-id="5HixHBs4JRMO12L6h6nULB">
+      <span style="color:var(--orange);font-size:38px" data-page-node-id="khLDD4M0FBAyISjgnF9tDb">古村落</span>
+      <span style="color:var(--text-3);font-size:24px;margin:0 20px" data-page-node-id="DmsOIYrD5p2ZEln6iq8ZAH">写生</span>
+      <span style="color:var(--orange);font-size:26px" data-page-node-id="E4btumizwHvGejXEhpEBpL">美食</span>
+      <span style="color:var(--green);font-size:28px;margin-left:20px" data-page-node-id="xV8ebouwUhBFyDLZRXVZ5D">慢生活</span><br data-page-node-id="2uaXn2BzzYg5kjFNTk1Civ">
+      <span style="color:var(--cyan);font-size:26px" data-page-node-id="TJhOcKPMcvel0XvpsWwyoL">亲子</span>
+      <span style="color:var(--yellow);font-size:24px;margin:0 20px" data-page-node-id="uW5uAyHO2DtUgT9IDE635z">摄影</span>
+      <span style="color:var(--green);font-size:22px" data-page-node-id="VWBZBSdHjQ54f9VtmBV9wy">徒步</span>
+      <span style="color:var(--yellow);font-size:20px;margin:0 20px" data-page-node-id="KQwKFEhxeSqYd1NjYUBGdA">文创</span>
+      <span style="color:var(--cyan);font-size:22px" data-page-node-id="ENU0zHZ2qFbPAgAIST7R6F">研学</span>
+      <span style="color:var(--text-3);font-size:18px;margin-left:20px" data-page-node-id="SlsOGwUFDfLqJlLG8M5kqv">夜色</span>
+    </div>
+  </div>
+  <!-- 情感环 -->
+  <div class="panel" style="left:970px;top:250px;width:890px;height:480px;border-color:var(--orange)" data-page-node-id="LlHumCyN0JWSdC1hVoSzPl">
+    <div class="p-head" style="background:color-mix(in srgb,var(--orange) 12%,transparent);color:var(--orange)" data-page-node-id="Qf39otRXsIWBYYjci4oXqU"><span data-page-node-id="Ch9xyE1NKW9V3sY0pfjo5W">💗 情感分布与趋势</span></div>
+    <svg width="890" height="430" viewBox="0 0 890 430" data-page-node-id="ln5QpprzIwFQP1BAZVV6TL">
+      <g transform="translate(220,215)" data-page-node-id="6NhbXhNCTwwKRwUMQ6g9eb">
+        <circle r="130" fill="none" stroke="var(--bg-mid)" stroke-width="46" data-page-node-id="iD0CE92hVDFmkofwqSVoAb"/>
+        <circle r="130" fill="none" stroke="var(--green)" stroke-width="46" stroke-dasharray="623 817" transform="rotate(-90)" data-page-node-id="hF7AVdcAm8EIjMnfkd7Trm"/>
+        <circle r="130" fill="none" stroke="var(--yellow)" stroke-width="46" stroke-dasharray="129 817" stroke-dashoffset="-623" transform="rotate(-90)" data-page-node-id="0s4lbVHFJ51i673o8QUIJq"/>
+        <circle r="130" fill="none" stroke="var(--red)" stroke-width="46" stroke-dasharray="65 817" stroke-dashoffset="-752" transform="rotate(-90)" data-page-node-id="ZgZwihBIMOPqkpCdn45GzW"/>
+        <text y="-8" text-anchor="middle" fill="var(--text-1)" font-size="42" font-weight="bold" data-page-node-id="sAt0OA0FsISVnIbypPSQnz">76.3%</text>
+        <text y="28" text-anchor="middle" fill="var(--text-3)" font-size="16" opacity="0.8" data-page-node-id="JkiGKP8ZGQb3v5LShIXA4p">正面情感占比</text>
+      </g>
+      <g font-size="16" fill="var(--text-3)" data-page-node-id="r9uv1A2f3WtrA8WdlfW7Ke">
+        <rect x="480" y="120" width="18" height="18" rx="3" fill="var(--green)" data-page-node-id="gjutF8slBuYBUZAhAd1vAI"/><text x="510" y="136" fill="var(--text-2)" data-page-node-id="E1d8BiTdjQBtQ1s2YfIEaH">😊 正面 76.3% · 45,017 条</text>
+        <rect x="480" y="170" width="18" height="18" rx="3" fill="var(--yellow)" data-page-node-id="ZTHzWAjfhFPmld7GHlg3He"/><text x="510" y="186" fill="var(--text-2)" data-page-node-id="hwkTkGZRG3X3yUuvxDhfEA">😐 中性 15.8% · 9,322 条</text>
+        <rect x="480" y="220" width="18" height="18" rx="3" fill="var(--red)" data-page-node-id="XhQyq13sHrJDHuqi2Qt0UF"/><text x="510" y="236" fill="var(--text-2)" data-page-node-id="UmdVppoZcXAWsLTQzUYQZe">😞 负面 7.9% · 4,661 条</text>
+        <text x="480" y="300" fill="var(--orange)" data-page-node-id="kDPbXshQa7A6zrpkDcqLXU">⚠️ 负面热点: 民宿价格 (占比 41%)</text>
+        <text x="480" y="340" data-page-node-id="jkPFNONDhujjipQAKGgR0M">已自动推送至运营工单系统</text>
+      </g>
+    </svg>
+  </div>
+  <!-- 评论流 -->
+  <div class="panel" style="left:60px;top:760px;width:1800px;height:270px;border-color:var(--orange)" data-page-node-id="UjST2cWG50NG8w9GOosCFh">
+    <div class="p-head" style="background:color-mix(in srgb,var(--orange) 12%,transparent);color:var(--orange)" data-page-node-id="iCSzGm1XXGgOZKngXKUl4s"><span data-page-node-id="MDx3ouiMXYpEslHcYimhxG">💬 实时评论流</span></div>
+    <div style="padding:14px 26px;font-size:14px;line-height:2.3;color:var(--text-2)" data-page-node-id="p81MGYig4FsLhLmFU8XyNs">
+      <div data-page-node-id="4yVCUGZumGqtsVbcJaUsOp"><span style="color:var(--green)" data-page-node-id="viKE8Oult9aWBOaLaqHYpy">😊 @小红薯用户 · 小红书 · 2 分钟前</span>　<span style="color:var(--text-3)" data-page-node-id="HT1ZXi26FfTQoWGGZ0ZEci">"宏村的清晨太美了，雾气朦胧仿佛水墨画！"</span></div>
+      <div data-page-node-id="qO9vq9G51RRy3OoS8PhcaI"><span style="color:var(--green)" data-page-node-id="0OJCCITZhRNpRDaXLrGWSs">😊 @旅行日记 · 抖音 · 5 分钟前</span>　<span style="color:var(--text-3)" data-page-node-id="J8uLljnUoEZearFxW1LnUD">"查济古村人少景美，强烈推荐避开节假日"</span></div>
+      <div data-page-node-id="EPsX47eMLi1blCUslWb1Mi"><span style="color:var(--yellow)" data-page-node-id="HyAQfFdfAuhoWDoAFHSZ9j">😐 @背包客Leo · 马蜂窝 · 8 分钟前</span>　<span style="color:var(--text-3)" data-page-node-id="Ep26i2vetYZHkDXZ4AJdKB">"民宿性价比一般，但风景没得说"</span></div>
+      <div data-page-node-id="uTZ2uambDSxtvWjrRsCzck"><span style="color:var(--green)" data-page-node-id="fmDq9ku2yMse7r2xhvZE9v">😊 @摄影师阿明 · 微博 · 12 分钟前</span>　<span style="color:var(--text-3)" data-page-node-id="zCcSdEqV8rx2gMUO9iEyhk">"西递的秋色绝了，出片率 100%！"</span></div>
+    </div>
+  </div>
+</div>
+</div>
+<div class="t-title" data-page-node-id="IBbGzcT7MXpak73vyEzCzR"><b data-page-node-id="h7g0cBOQh5xp9US3sUIj4N">副屏 ③</b> · 多模态舆情（暖阳橙主题）</div>
+</div>
+
+<!-- 副屏 4：LLM Agent -->
+<div class="thumb" onclick="openModal(this)" data-page-node-id="AOyYXECJh78ucogkulRwEA">
+<div class="viewport" data-stage data-page-node-id="mcSvs3T4AI7K6vzLVJEB57">
+<div class="stage bg-radial" data-page-node-id="Dk62M4ACvNEy0BaR3PzpfQ">
+  <svg class="bg-layer" width="1920" height="1080" data-page-node-id="6q63IZEYfw2tZoGcsd6G0h"><rect width="1920" height="1080" fill="url(#rice)" style="opacity:var(--pat-op)" data-page-node-id="6h2PYCf1LP3EyUdW1rYCcJ"/></svg>
+  <div class="grid-lines" data-page-node-id="wwoAXQsBjCAeEheSEDnmZr"></div>
+  <div style="position:absolute;top:0;left:0;right:0;height:80px;display:flex;align-items:center;justify-content:center;background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--yellow) 18%,transparent),transparent)" data-page-node-id="1Sqoy9NohVXWlNsNjwZE5I">
+    <span style="font-size:28px;font-weight:bold;letter-spacing:5px;color:var(--yellow)" class="glow" data-page-node-id="vZdMV5Vj6tosMii9PJIM9u">副屏 ④ · LLM Agent 对话</span>
+  </div>
+  <div style="position:absolute;top:60px;left:50%;transform:translateX(-50%);font-size:12px;color:var(--text-3);letter-spacing:2px" data-page-node-id="V0Wi5c3LjLODnSdxtnLldT">ReAct THOUGHT CHAIN · STREAMING</div>
+  <!-- Agent 头像与状态 -->
+  <div class="panel" style="left:60px;top:110px;width:560px;height:920px;border-color:var(--yellow)" data-page-node-id="OArZqE5ZtrHAa1Syd0bnsB">
+    <div class="p-head" style="background:color-mix(in srgb,var(--yellow) 12%,transparent);color:var(--yellow)" data-page-node-id="PCxfo2FaFGpBKE6nfBCbw6"><span data-page-node-id="WTKjG4Hi1oPdqKL71YZGGQ">🤖 小徽 · AI 导游</span></div>
+    <div style="text-align:center;margin-top:60px" data-page-node-id="RwuFYVvwLyEvC84J5H9QHH">
+      <div style="width:150px;height:150px;margin:0 auto;border-radius:50%;border:3px solid var(--yellow);background:color-mix(in srgb,var(--yellow) 20%,transparent);display:flex;align-items:center;justify-content:center;font-size:70px" class="glow" data-page-node-id="o9BpzkcM2H5jpZV91qGqn4">🤖</div>
+      <div style="color:var(--yellow);font-weight:bold;font-size:18px;margin-top:18px" data-page-node-id="LUkxyXWWCNRGwLHsWg10Y6">小徽 · AI 导游</div>
+      <div style="color:var(--text-3);font-size:13px;margin-top:6px" data-page-node-id="s2gmCMUV94x9mU3iRaecVL">DeepSeek / Qwen · vLLM</div>
+    </div>
+    <div style="margin:50px 40px 0;background:var(--bg-mid);border:1px solid var(--yellow);border-radius:6px;padding:20px 24px;font-size:15px;color:var(--text-3);line-height:2.4" data-page-node-id="eVRhaa8IzK0cwnSXd2vexe">
+      <b style="color:var(--yellow)" data-page-node-id="Vfl3YrJ7bhQwlZKflg67cn">🧠 Agent 状态</b><br data-page-node-id="FjCJpn4OiNFM01hLL9j9PD">
+      推理延迟: <b style="color:var(--green)" data-page-node-id="pevutEpa76prbrzzHxionh">128 ms</b><br data-page-node-id="lHhH8TKsRkB2jukURHUHQv">
+      Tokens/s: <b style="color:var(--green)" data-page-node-id="IJvPj5yAJp3wViWZxBJIwY">86</b><br data-page-node-id="acK4E1PN27YjfmGL0Of4mb">
+      今日对话: <b style="color:var(--yellow)" data-page-node-id="r9y3BDyMpWmr9nEOOtRLLs">2,856</b> 轮<br data-page-node-id="349XQjVn4i0MT9mZP19EO3">
+      工具调用: <b style="color:var(--yellow)" data-page-node-id="tbUgYE9bAitri7T8dkq5Aa">15,432</b> 次<br data-page-node-id="d4yAjT7VdtkIYkOf5zfuW6">
+      用户满意度: <b style="color:var(--green)" data-page-node-id="U9yGizbsLjat6XyYqJFTyT">4.7 / 5.0</b>
+    </div>
+  </div>
+  <!-- 对话日志 -->
+  <div class="panel" style="left:660px;top:110px;width:1200px;height:920px;border-color:var(--yellow)" data-page-node-id="BC4DCzCZFhSdtAatoFoXbC">
+    <div class="p-head" style="background:color-mix(in srgb,var(--yellow) 12%,transparent);color:var(--yellow)" data-page-node-id="Uvmnc0zvS3w001i8ZNPSjW"><span data-page-node-id="hwc0NPXhORkeEsojLzoT1F">💬 实时对话日志 (ReAct 思考链)</span></div>
+    <div style="padding:26px 32px;display:flex;flex-direction:column;gap:20px" data-page-node-id="XQBz6of8MZ0AM3jAztlBZd">
+      <div style="background:var(--bg-mid);border:1px solid var(--cyan);border-radius:10px;padding:16px 22px" data-page-node-id="49Q4DyxLNBAKqAbGgkNdJK">
+        <div style="font-size:13px;font-weight:bold;color:var(--cyan)" data-page-node-id="AFyvGa8sm2PijTigyoAIaV">👤 User · 11:02:18</div>
+        <div style="font-size:16px;color:var(--text-2);margin-top:6px" data-page-node-id="9v0WxK9Va2EApKScTqdgGj">"帮我规划带父母的周末两日游，预算 1500"</div>
+      </div>
+      <div style="background:color-mix(in srgb,var(--yellow) 8%,transparent);border:1px solid var(--yellow);border-radius:10px;padding:16px 22px" data-page-node-id="YFto4jRwQlUvq50ojE8hSp">
+        <div style="font-size:13px;font-weight:bold;color:var(--yellow)" data-page-node-id="DurUTgHUowbu9IopFUrpai">🧠 Agent · ReAct 思考链</div>
+        <div style="font-size:14px;color:var(--text-3);margin-top:8px;line-height:2.1" data-page-node-id="9SpLRkiCUNpfPkFpwJYv2j">
+          <span style="color:var(--green)" data-page-node-id="qpwqBWBRalH19XmkY7boJa">✓</span> Thought: 需要适老景点，预算有限，两日游<br data-page-node-id="fABhPP0vL4cFF3d42RnZbt">
+          <span style="color:var(--green)" data-page-node-id="PronrNYgKiemvQgw1eVgQH">✓</span> Action: search_KG(tag=["适老","徽派","4A+"])<br data-page-node-id="Ens0NJC2InvEBlO0e0O1js">
+          <span style="color:var(--green)" data-page-node-id="dCDdDvmUw6bUnfYXZFOF4W">✓</span> Observation: [宏村, 西递, 唐模, 呈坎]<br data-page-node-id="eteoDf43OHlv1O0WblxdKJ">
+          <span style="color:var(--green)" data-page-node-id="UrdsiApQeJyqIo9kp7kczo">✓</span> Action: get_weather(date="2026-09-05~06") → 晴<br data-page-node-id="5PMkMgUYCCsHThcTKeNOcO">
+          <span style="color:var(--cyan)" data-page-node-id="YtGf71ZBudSa0Gn7G5kiAY">⟳</span> Action: plan_route(budget=1500, elderly=True)
+        </div>
+      </div>
+      <div style="background:color-mix(in srgb,var(--green) 10%,transparent);border:1px solid var(--green);border-radius:10px;padding:16px 22px" data-page-node-id="rtzKm1j6CdmGhGFrMXO9TR">
+        <div style="font-size:13px;font-weight:bold;color:var(--green)" data-page-node-id="wDCwaBdMGrAn1HfiFjETZD">📋 生成行程</div>
+        <div style="font-size:15px;color:var(--text-2);margin-top:8px;line-height:2.1" data-page-node-id="EcZGHaGNAUL95l5GvXu5Gn">
+          Day1: 09:00 出发 → 宏村 (2h) → 塔川午餐 → 民宿「南湖人家」<br data-page-node-id="1ZnSSFfTUXD3nEAxkUDukq">
+          Day2: 08:00 西递 → 桃花源 → 12:00 返程<br data-page-node-id="BnUkFDcDGkJyBss3lDPYle">
+          <b style="color:var(--yellow)" data-page-node-id="8L4UeUhNFof4XSlSVKVxiO">💰 1,420 元 · 🚗 32km · ☀ 晴朗适宜出行</b>
+        </div>
+      </div>
+      <div style="font-size:14px;line-height:2.2;padding:0 8px" data-page-node-id="HUOsjF7a3htinlEDJ0oMN4">
+        <div style="color:var(--green)" data-page-node-id="phXSkFLIhbWDIOtgPx5rwn">✓ 已同步至主屏 3D 地图，路线已绘制</div>
+        <div style="color:var(--green)" data-page-node-id="HkM7ZKE9iYJBnB5ORqkPdo">✓ 已推送至用户小程序</div>
+        <div style="color:var(--cyan)" data-page-node-id="xkDaIT1KH1RBQ7eaHWfdMO">🎯 预期带动消费: 1,420 元 · 振兴指数 +0.8</div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<div class="t-title" data-page-node-id="1rEYT1S2GaZ5bDzHiJdQ34"><b data-page-node-id="reAUpg5q2rXyXm8MzWzMnk">副屏 ④</b> · LLM Agent 对话（麦田黄主题）</div>
+</div>
+
+<!-- 副屏 5：乡村振兴 -->
+<div class="thumb" onclick="openModal(this)" data-page-node-id="iCDC4aY5HnVvwJAOVah6zf">
+<div class="viewport" data-stage data-page-node-id="oclUmZjflVKSMeCNbn9zHG">
+<div class="stage bg-radial" data-page-node-id="yoA1Z4K6BQwREmZwCjAHRZ">
+  <svg class="bg-layer" width="1920" height="1080" data-page-node-id="ZAzMkEKOXqTqDijPKKMWVy"><rect width="1920" height="1080" fill="url(#rice)" style="opacity:var(--pat-op)" data-page-node-id="Hiw8sqFTFczFXIBv0D7JSj"/></svg>
+  <div class="grid-lines" data-page-node-id="lfnByega7gyqAaGH0dgzOx"></div>
+  <div style="position:absolute;top:0;left:0;right:0;height:80px;display:flex;align-items:center;justify-content:center;background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--cyan) 18%,transparent),transparent)" data-page-node-id="xyOdQ8sqJnkU3MnP9M63Hq">
+    <span style="font-size:28px;font-weight:bold;letter-spacing:5px;color:var(--cyan)" class="glow" data-page-node-id="smYybmSxHB7GSd50DhHy7z">副屏 ⑤ · 乡村振兴成效</span>
+  </div>
+  <div style="position:absolute;top:60px;left:50%;transform:translateX(-50%);font-size:12px;color:var(--text-3);letter-spacing:2px" data-page-node-id="hqslkI8X9Pbx1K04dNW1oQ">AHP-TOPSIS EVALUATION · RURAL REVITALIZATION</div>
+  <!-- 综合指数仪表盘 -->
+  <div class="panel" style="left:60px;top:110px;width:880px;height:480px" data-page-node-id="TYR9CwADaogBngxHqxAUpn">
+    <div class="p-head" style="background:color-mix(in srgb,var(--cyan) 12%,transparent);color:var(--cyan)" data-page-node-id="l3LtGBCyKp0J2CtcMZ6B7p"><span data-page-node-id="xPxkfiwuxPGkn7bkauHA9P">🏅 综合振兴指数 (AHP-TOPSIS)</span></div>
+    <svg width="880" height="430" viewBox="0 0 880 430" data-page-node-id="kSVduj9HasbzZDm0Oul6Bo">
+      <g transform="translate(440,300)" data-page-node-id="6M66HDOnLCeNB9e94aYAU1">
+        <path d="M -200 0 A 200 200 0 0 1 200 0" fill="none" stroke="var(--bg-mid)" stroke-width="42" data-page-node-id="cF4WpJCc7vHT6r1fUQbGTe"/>
+        <path d="M -200 0 A 200 200 0 0 1 156 -125" fill="none" stroke="var(--cyan)" stroke-width="42" stroke-linecap="round" class="glow" data-page-node-id="sgWebjXddp6xZ5ptUmgH6x"/>
+        <text x="0" y="-40" text-anchor="middle" fill="var(--cyan)" font-size="88" font-weight="bold" class="glow" data-page-node-id="Fad1UizwExw550cXbdzn1M">87.5</text>
+        <text x="0" y="10" text-anchor="middle" fill="var(--text-3)" font-size="20" opacity="0.85" data-page-node-id="l9DRQ7EoCabyvcg7PUXwan">综合振兴指数 · 排名 3 / 128</text>
+        <text x="0" y="48" text-anchor="middle" fill="var(--green)" font-size="18" font-weight="bold" data-page-node-id="GOqltE8Snl5Yxvv3B1whFa">↑ 较去年 +12.3</text>
+      </g>
+    </svg>
+  </div>
+  <!-- 4 成效卡 -->
+  <div class="kpi" style="left:970px;top:110px;width:430px;height:110px;border-color:var(--cyan)" data-page-node-id="4pgkTXyrS3hlzjHC9n2lc5"><div class="k-label" style="color:var(--cyan)" data-page-node-id="GRgqn6ZgjAEXMHv0E6pKmK">💼 带动就业</div><span class="k-num" style="font-size:34px" data-page-node-id="arNzl9uIlM8aEr44dCY383">2,856 人</span><span class="k-sub" style="color:var(--grow);font-weight:bold" data-page-node-id="aBgVslP6IOYqlmNHhFLClX">↑ 18%</span></div>
+  <div class="kpi" style="left:1430px;top:110px;width:430px;height:110px;border-color:var(--yellow)" data-page-node-id="rUpdIsGr1HahAPgOrRMR88"><div class="k-label" style="color:var(--yellow)" data-page-node-id="0APvnjPaaEHDhW7MGj2GyE">💰 村民人均增收</div><span class="k-num" style="font-size:34px" data-page-node-id="MYTekQJb38yy3L4LyfRKqI">¥ 8,432</span><span class="k-sub" style="color:var(--grow);font-weight:bold" data-page-node-id="dNRat8z4OZeGzx6AZYDBD0">↑ 22%</span></div>
+  <div class="kpi" style="left:970px;top:250px;width:430px;height:110px;border-color:var(--green)" data-page-node-id="qs8550SuKjBebpqr3qEWgu"><div class="k-label" style="color:var(--green)" data-page-node-id="ckKziUcPSw1xvzKb48uQZx">🏛️ 非遗活化</div><span class="k-num" style="font-size:34px" data-page-node-id="5jJr6dha6M5D1ILnDNT37Y">32 项</span><span class="k-sub" style="color:var(--grow);font-weight:bold" data-page-node-id="ftKmxPULxr1XzN7qBI9FWU">↑ 6</span></div>
+  <div class="kpi" style="left:1430px;top:250px;width:430px;height:110px;border-color:var(--orange)" data-page-node-id="bRge7ZtahXWkY6PynLI4u9"><div class="k-label" style="color:var(--orange)" data-page-node-id="XAiRbPEI0OTaAFq7CX62pa">🌾 农产品销售</div><span class="k-num" style="font-size:34px" data-page-node-id="pQphXXUjCOJvytz4uB42R2">¥ 156 万</span><span class="k-sub" style="color:var(--grow);font-weight:bold" data-page-node-id="5K1A2VQqfFdBaZFqsdQstA">↑ 35%</span></div>
+  <!-- 八维雷达 -->
+  <div class="panel" style="left:970px;top:390px;width:430px;height:640px" data-page-node-id="7gt473XH2BWm0HfptIo8k2">
+    <div class="p-head" style="background:color-mix(in srgb,var(--cyan) 12%,transparent);color:var(--cyan)" data-page-node-id="oCvoKLf1DyiQbcV08Jtk9Q"><span data-page-node-id="WlBqu9gCFJmQfwZfHRIpGc">📡 多维指标雷达</span></div>
+    <svg width="430" height="600" viewBox="0 0 430 600" data-page-node-id="FCteMwX69BjlOCOP7tiEF7">
+      <g transform="translate(215,300)" data-page-node-id="VHfjpa7RvRf9ioEC2EV7RC">
+        <polygon points="0,-200 141,-141 200,0 141,141 0,200 -141,141 -200,0 -141,-141" fill="none" stroke="var(--cyan)" stroke-width="0.7" opacity="0.4" data-page-node-id="w0JDKqhJE3e1WD7A7WAMHI"/>
+        <polygon points="0,-130 92,-92 130,0 92,92 0,130 -92,92 -130,0 -92,-92" fill="none" stroke="var(--cyan)" stroke-width="0.7" opacity="0.4" data-page-node-id="RQ2gXAtBA8n3k1ntxEV9Jy"/>
+        <polygon points="0,-175 128,-110 182,18 116,118 0,165 -128,110 -175,-18 -110,-118" fill="var(--green)" fill-opacity="0.4" stroke="var(--green)" stroke-width="2.4" data-page-node-id="oBYdzlnqIDb8JhsjeAoGAw"/>
+        <g font-size="15" fill="var(--text-3)" data-page-node-id="cTENHvTuI1hRRzfB5ZhqGE">
+          <text x="-14" y="-218" data-page-node-id="z9zozAn3koU0hIWGfCLFF9">产业</text><text x="150" y="-150" data-page-node-id="DilJk9Y7jawH0CsEIX7uTu">人才</text><text x="215" y="5" data-page-node-id="aDFGgBsPFOPbmUo5c8ZioH">文化</text>
+          <text x="150" y="165" data-page-node-id="RgRRgj07VsXJJmEczWrCIK">生态</text><text x="-14" y="235" data-page-node-id="VzCVvnNWVmPmTWZvsg1SOy">组织</text><text x="-185" y="165" data-page-node-id="Sh843IoJ9ilfXxTjqErNow">民生</text>
+          <text x="-230" y="5" data-page-node-id="W0fCDGFwKtsOEfd1dU63Zv">治理</text><text x="-185" y="-150" data-page-node-id="IAkJQmhJgj6CX8xk6oWTi0">创新</text>
+        </g>
+      </g>
+    </svg>
+  </div>
+  <!-- TOPSIS 排名 -->
+  <div class="panel" style="left:1430px;top:390px;width:430px;height:640px;border-color:var(--yellow)" data-page-node-id="GXZQNnWK1Qs6GpLd6Qg0tj">
+    <div class="p-head" style="background:color-mix(in srgb,var(--yellow) 12%,transparent);color:var(--yellow)" data-page-node-id="6l66YgKVlkwsJOPEL45PmR"><span data-page-node-id="qLGsBUAg9lGcIvfoSIsDtO">🏆 村落 TOPSIS 排名</span></div>
+    <div style="padding:20px 26px;font-size:16px;color:var(--text-2);line-height:2.6" data-page-node-id="uJ6FDodigfBQC0wtnm8wmd">
+      <div data-page-node-id="FQZjCW8tek5xOFyGPSD9UR">🥇 宏村 <span style="float:right;color:var(--yellow);font-weight:bold" data-page-node-id="jtDKkvH7EhBZq7apVr01E8">0.923</span></div>
+      <div data-page-node-id="MlpqQv4xZa2tGOabA5pd3X">🥈 西递 <span style="float:right;color:var(--yellow);font-weight:bold" data-page-node-id="A8DALxeYMWM9fHkMOSekT3">0.887</span></div>
+      <div data-page-node-id="uELBLz1274TNHK1FFu95NL">🥉 查济古村 <span style="float:right;color:var(--text-3);font-weight:bold" data-page-node-id="4GwQpglOdTTo5ONk3i5ufC">0.842</span></div>
+      <div data-page-node-id="LFMjJVrv7P5JrFkoDxqCs7">4. 呈坎 <span style="float:right;color:var(--text-3)" data-page-node-id="ZHfxGpNYMrgnx9XH6dG4VJ">0.798</span></div>
+      <div data-page-node-id="GOcB3K8oVYfU1QJn1uBhyr">5. 唐模 <span style="float:right;color:var(--text-3);opacity:.8" data-page-node-id="7HVVXnyEOlWmtOoipBQ3uy">0.756</span></div>
+      <div data-page-node-id="K3fLw8buNANM6eSyUIyzOJ">6. 江村 <span style="float:right;color:var(--text-3);opacity:.8" data-page-node-id="2KOOoXOdIUY6m83CS4M56x">0.712</span></div>
+      <div data-page-node-id="BYE4PWyefE7MJA3N9RVdMP">7. 龙川 <span style="float:right;color:var(--text-3);opacity:.7" data-page-node-id="Zi3eHPUPAlYFtnm8v4DcRL">0.685</span></div>
+      <div data-page-node-id="SMac24dmvDoYFbL17cIJjX">8. 上庄 <span style="float:right;color:var(--text-3);opacity:.7" data-page-node-id="HH1CV5Byq0ax709zswnWsZ">0.654</span></div>
+    </div>
+  </div>
+  <!-- 底部指标条 -->
+  <div style="position:absolute;bottom:50px;left:60px;width:880px;height:130px;background:var(--bg-mid);border:1px solid var(--cyan);border-radius:6px;display:flex;align-items:center;justify-content:space-around;font-size:14px;color:var(--text-3)" data-page-node-id="I3qz5GIGH8loIYSSzKGtJe">
+    <span data-page-node-id="YJiOLhAKTS4Z4WY7IR6pJm">民宿入住率<br data-page-node-id="AkA0zE7hLlHYaFbfhbHlF4"><b style="color:var(--cyan);font-size:24px" data-page-node-id="LZeeABhVH1oY3w26631MYY">82%</b></span>
+    <span data-page-node-id="KlOKtO8CFkqrdC3d4edCwC">返乡创业<br data-page-node-id="yCqx1gK7aNAQfoyRringDG"><b style="color:var(--green);font-size:24px" data-page-node-id="aJytRYvh8XP7ORyuGsuY9F">156 人</b></span>
+    <span data-page-node-id="6Y93EzuUfJ8ihgQJlbtvWR">研学团队<br data-page-node-id="ZzZt0uRlscq63VsfCgicc1"><b style="color:var(--yellow);font-size:24px" data-page-node-id="edtCPcJKh9gJ6rgRtOpNPy">48 批</b></span>
+    <span data-page-node-id="K0NOUBdt77xSnorl9Pgkoz">电商直播<br data-page-node-id="8yzBkuQMIUtnItCkIDfT3g"><b style="color:var(--orange);font-size:24px" data-page-node-id="IfcGAA9E5AUq0oxlcICnbf">216 场</b></span>
+    <span data-page-node-id="Yl979fE3iFpZVJKlJTjMw1">游客满意度<br data-page-node-id="2kY73Ug90DXZ8AUIfyatDq"><b style="color:var(--grow);font-size:24px" data-page-node-id="CYplmlJVfc6lxy5nOuHmI2">96%</b></span>
+  </div>
+</div>
+</div>
+<div class="t-title" data-page-node-id="E8RW8vO4ICYLt6olMmPUNb"><b data-page-node-id="w57cRKXCLAKex6bDMQeqx2">副屏 ⑤</b> · 乡村振兴成效（数字青主题）</div>
+</div>
+
+</div>
+
+<div class="note" data-page-node-id="kF2sueFcfjHs4h4GooRdbw">🌾 <b data-page-node-id="0GTuahR2jWbhx9PzQSZzZ5">申报书话术</b>：配色方案「数字田野」呼应数字乡村振兴战略——深田野蓝（<code data-page-node-id="AKPcb7v1GxVQ8CYu54gsdk">#0a1628</code>）承载数字底座，数字青（<code data-page-node-id="OC0xEKLbcLkWJCrReko80y">#22d3ee</code>）代表科技赋能，禾苗绿（<code data-page-node-id="qpyLCaUJxjZUH0Zenk4tbZ">#84cc16</code>）与麦田黄（<code data-page-node-id="RuBFGOaGSrBeOgVK27Hj6s">#eab308</code>）守住农业本色；背景叠加稻穗、云纹、马头墙等徽派文化符号底纹（透明度 5–10%），体现"科技 + 田园"融合设计理念。</div>
+
+</div>
+
+<!-- 放大模态 -->
+<div class="modal" id="modal" data-page-node-id="KECEV3RgaI83JZNRyBG9ov"></div>
+<button class="modal-close" id="modalClose" onclick="closeModal()" data-page-node-id="uwkA30cQDTiGlMuw5FNhe2">✕ 关闭 (Esc)</button>
+<div class="toast" id="toast" data-page-node-id="8yEySlB5hV5bUXdKf1viJj">✓ 已复制 CSS 变量</div>
+
+<script>
+const root = document.documentElement;
+const DEFAULTS = {'--bg-deep':'#0a1628','--bg-mid':'#142850','--bg-light':'#1e3a5f','--cyan':'#22d3ee','--green':'#84cc16','--yellow':'#eab308','--orange':'#f97316','--text-1':'#f5f0e8','--text-2':'#e6f1ff','--pat-op':'0.08'};
+
+// 取色器绑定
+document.querySelectorAll('input[type=color][data-var]').forEach(el=>{
+  el.addEventListener('input',()=>root.style.setProperty(el.dataset.var, el.value));
+});
+// 底纹透明度
+const patOp = document.getElementById('patOp'), patOpVal = document.getElementById('patOpVal');
+patOp.addEventListener('input',()=>{
+  root.style.setProperty('--pat-op',(patOp.value/100).toFixed(2));
+  patOpVal.textContent = patOp.value+'%';
+});
+// 背景模式
+document.getElementById('bgMode').addEventListener('change',e=>{
+  document.querySelectorAll('.stage').forEach(s=>{
+    s.classList.remove('bg-radial','bg-linear','bg-split');
+    s.classList.add('bg-'+e.target.value);
+  });
+});
+// 舞台缩放
+function fitStages(){
+  document.querySelectorAll('.viewport').forEach(vp=>{
+    const stage = vp.querySelector(':scope > .stage');
+    if(!stage) return;
+    const scale = vp.clientWidth / 1920;
+    stage.style.transform = 'scale('+scale+')';
+    vp.style.height = (1080*scale)+'px';
+  });
+}
+window.addEventListener('resize',fitStages);
+fitStages();
+// 模态放大
+function openModal(thumb){
+  const modal = document.getElementById('modal');
+  modal.innerHTML = '';
+  const vp = thumb.querySelector('.viewport').cloneNode(true);
+  vp.style.width = Math.min(window.innerWidth-60, 1760)+'px';
+  vp.style.margin = '0 auto';
+  modal.appendChild(vp);
+  modal.classList.add('open');
+  document.getElementById('modalClose').style.display='block';
+  fitStages();
+}
+function closeModal(){
+  document.getElementById('modal').classList.remove('open');
+  document.getElementById('modalClose').style.display='none';
+}
+document.getElementById('modal').addEventListener('click',e=>{ if(e.target.id==='modal') closeModal(); });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeModal(); });
+// 复制 CSS 变量
+function copyVars(){
+  const cs = getComputedStyle(root);
+  const names = ['--bg-deep','--bg-mid','--bg-light','--bg-edge','--cyan','--green','--yellow','--orange','--red','--grow','--text-1','--text-2','--text-3','--pat-op'];
+  const bodyMode = document.getElementById('bgMode').value;
+  let out = '/* 「数字田野」主题 · 背景模式: '+bodyMode+' */\n:root{\n';
+  names.forEach(n=>{ out += '  '+n+': '+cs.getPropertyValue(n).trim()+';\n'; });
+  out += '}';
+  navigator.clipboard.writeText(out).then(()=>{
+    const t = document.getElementById('toast');
+    t.style.display='block';
+    setTimeout(()=>t.style.display='none',1800);
+  });
+}
+// 重置
+function resetTheme(){
+  Object.entries(DEFAULTS).forEach(([k,v])=>root.style.setProperty(k,v));
+  document.querySelectorAll('input[type=color][data-var]').forEach(el=>{ if(DEFAULTS[el.dataset.var]) el.value = DEFAULTS[el.dataset.var]; });
+  patOp.value = 8; patOpVal.textContent = '8%';
+  document.getElementById('bgMode').value = 'radial';
+  document.getElementById('bgMode').dispatchEvent(new Event('change'));
+}
+</script>
+</body>
+</html>
