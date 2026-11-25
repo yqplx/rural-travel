@@ -2,6 +2,9 @@
 
 面向新组员：解压后按本文操作，无需在电脑上安装 JDK / MySQL / Node / Maven，全部运行时已随包携带。
 
+> **线上访问**：http://xiangyezhiyou.cn ｜ 备用 IP 直连：http://101.200.168.106
+> （域名备案通过前 80 端口可能被拦截，此时改用 IP 地址，功能完全一致）
+
 ---
 
 ## 0. 先决条件（最重要，违反必失败）
@@ -48,15 +51,19 @@ rural-travel/
    [OK] Frontend 5174 is up.
    ALL READY.
    ```
-3. 出现 `ALL READY` 后打开浏览器：
+3. 服务就绪后，打开浏览器访问已部署的线上站点：
 
-| 用途 | 地址 |
-|---|---|
-| 游客端 | http://localhost:5174 |
-| 数据大屏 | http://localhost:5174/bigscreen |
-| 后端 API | http://localhost:8091/api |
+| 用途 | 地址（域名） | 备用（IP 直连） |
+|---|---|---|
+| 游客端 | http://xiangyezhiyou.cn | http://101.200.168.106 |
+| 数据大屏 | http://xiangyezhiyou.cn/bigscreen | http://101.200.168.106/bigscreen |
+| 后端 API | http://xiangyezhiyou.cn/api | http://101.200.168.106/api |
 
-默认账号（见项目 README）：管理员 `admin / admin123`，普通用户 `test / 123456`。
+> 域名 ICP 备案通过前，80 端口访问可能被云厂商拦截（返回提示页）。遇到这种情况用右侧 **IP 直连**地址，功能完全一致。备案完成后域名正式启用，并自动跳转 HTTPS。
+
+默认账号（本地分发包）：管理员 `admin / admin123`，普通用户 `test / 123456`。
+
+> ⚠️ 以上是**本地分发包**首次建库时的默认口令。线上环境的管理员口令已单独修改，与此不同，不在此文档公开。
 
 **看到 `ALL READY` 之前不要打开浏览器**，否则会看到 `ECONNREFUSED`（后端还没起来）——这是时序问题，不是故障。
 
@@ -116,7 +123,9 @@ netstat -ano | findstr ":5174 " | findstr LISTENING
 
 Spring Boot 3.2.5（内嵌 Tomcat 10）/ Vue 3 + Vite 5 / MySQL 8.0.28（便携版）/ JDK 17 / MyBatis-Plus / JWT / ECharts + G6 + Cesium。
 
-端口：MySQL 3307、后端 8091、前端 5174。三服务全部本机进程，**不需要独立服务器**；多人共用同一地址时才需要一台常开主机。
+端口：本地分发包用 MySQL 3307、后端 8091、前端 5174，三服务全部为本机进程，跑通不需要独立服务器。
+
+线上环境另有一台 2 核 2 GiB 云服务器（Ubuntu 24.04）：MySQL 3306、后端 8091 只监听 127.0.0.1，对外仅由 Nginx 暴露 80/443 并反代 `/api`，systemd 托管、每日自动备份。部署细节见 `deploy/README.md`。
 
 ---
 
@@ -137,3 +146,30 @@ Spring Boot 3.2.5（内嵌 Tomcat 10）/ Vue 3 + Vite 5 / MySQL 8.0.28（便携�
 | 前端代理 `5174/api/categories` | **HTTP 200**（代理链路一致） |
 
 结论：从分发目录、用包内 JDK/MySQL/Node 启动，全部接口通过；组员只需解压到纯英文路径后双击 `start.bat`。
+
+---
+
+## 9. 线上部署实测记录（2026-11-25）
+
+| 项 | 内容 |
+|---|---|
+| 服务器 | 2 vCPU / 2 GiB / 40 GiB，Ubuntu 24.04，华北2（北京） |
+| 运行时 | OpenJDK 17.0.21 / MySQL 8.0.46 / Nginx 1.24 |
+| 访问结构 | Nginx 托管前端 `dist` 静态资源，`/api` 反代到 `127.0.0.1:8091`，同域无跨域 |
+| 数据库 | 24 张表；业务账号 `rural` 仅有 SELECT / INSERT / UPDATE / DELETE |
+| 运维 | systemd 托管（`-Xmx512m` + 2G swap）、每日 03:30 自动备份、`deploy/` 内含回滚脚本 |
+
+外网实测（地址见文首）：
+
+| 检查项 | 结果 |
+|---|---|
+| `/` | HTTP 200 |
+| `/bigscreen` | HTTP 200（history 路由回退生效） |
+| `/api/categories` | HTTP 200，返回真实数据 |
+| `/images/cover-7.jpg` | HTTP 200 |
+| `/scenic/7` | HTTP 200 |
+| 管理员登录 | 返回 JWT，含 ADMIN 角色 |
+| 识景哈希预热 | 100/100 成功 |
+| 后端日志 | 0 条 ERROR |
+
+部署手册与脚本见 `deploy/`：`prepare-domain.sh`（域名配置）、`check-domain.sh`（状态自检）、`enable-https.sh`（HTTPS）、`deploy.sh` / `rollback.sh`（发布与回滚）、`backup-db.sh`（备份）。
