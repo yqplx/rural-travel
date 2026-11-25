@@ -1,0 +1,59 @@
+# ============================================================================
+# systemd 服务单元 · 乡野智游后端
+# 放置：/etc/systemd/system/rural-travel.service
+# 生效：sudo systemctl daemon-reload && sudo systemctl enable --now rural-travel
+#
+# 前提：
+#  1) JDK 17 已安装在 /usr/bin/java（systemd 不读 PATH 里的版本管理器）
+#  2) /opt/rural-travel/.env 存在且权限 600、属主 rural
+#  3) /opt/rural-travel/app.jar 是有效 jar（由 deploy.sh 维护的软链）
+# ============================================================================
+
+[Unit]
+Description=Rural Travel Backend (Spring Boot)
+Documentation=file:/opt/rural-travel/DEPLOY.md
+After=network-online.target mysql.service
+Wants=network-online.target
+# 连续启动失败 5 次后停止重试，避免无意义刷屏
+StartLimitIntervalSec=120
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=rural
+Group=rural
+WorkingDirectory=/opt/rural-travel
+
+# 所有口令/密钥都从这里注入，单元文件里不出现任何明文
+EnvironmentFile=/opt/rural-travel/.env
+
+# 固定 JVM 参数，不依赖 Environment 里的空格拆分（systemd 不做 shell 词分割）
+ExecStart=/usr/bin/java -Xms512m -Xmx1g -XX:+UseG1GC -XX:MaxGCPauseMillis=200 \
+          -Duser.timezone=Asia/Shanghai -Dfile.encoding=UTF-8 \
+          -jar /opt/rural-travel/app.jar
+
+# 143 = SIGTERM（优雅停机），视为正常退出
+SuccessExitStatus=143
+Restart=always
+RestartSec=5
+TimeoutStopSec=30
+LimitNOFILE=65535
+
+# ---- 安全加固 ----
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+# ProtectSystem=strict 会把整个文件系统设为只读，这里显式放出可写目录
+ReadWritePaths=/var/log/rural-travel
+
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=rural-travel
+
+[Install]
+WantedBy=multi-user.target

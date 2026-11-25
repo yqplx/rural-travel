@@ -1,0 +1,97 @@
+# ============================================================================
+# 生产环境配置（profile: prod）
+# 用法：SPRING_PROFILES_ACTIVE=prod
+#       SPRING_CONFIG_ADDITIONAL_LOCATION=file:/opt/rural-travel/config/
+#
+# 说明：本文件是「外置配置」，放在服务器上，不打包进 jar，
+#       因此无需为了改配置而重新打包后端，也不影响本地开发用的 application.yml。
+# 敏感值一律走环境变量（见 deploy/env.prod.example），本文件不含任何口令。
+# ============================================================================
+
+server:
+  # 只监听本机回环，公网访问一律经 Nginx 反代，避免绕过 443 直连 8091
+  address: 127.0.0.1
+  port: ${BACKEND_PORT:8091}
+  # 收到 SIGTERM 后先处理完在途请求再退出，避免回滚/重启时丢请求
+  shutdown: graceful
+  # 位于 Nginx 之后，让日志里的客户端 IP 与协议正确
+  forward-headers-strategy: native
+  tomcat:
+    threads:
+      max: 200
+      min-spare: 20
+    max-connections: 2000
+    accesslog:
+      enabled: true
+      directory: /var/log/rural-travel
+      prefix: access
+      suffix: .log
+      file-date-format: .yyyy-MM-dd
+      pattern: '%h %l %u %t "%r" %s %b %D "%{Referer}i" "%{User-Agent}i"'
+
+spring:
+  lifecycle:
+    timeout-per-shutdown-phase: 20s
+
+  datasource:
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${DB_USER}
+    password: ${DB_PASS}
+    hikari:
+      maximum-pool-size: 15
+      minimum-idle: 5
+      connection-timeout: 10000
+      idle-timeout: 600000
+      max-lifetime: 1200000
+      pool-name: rural-pool
+
+  sql:
+    init:
+      # 生产绝不允许启动时自动跑 schema：结构变更一律走人工迁移脚本
+      mode: never
+
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Shanghai
+
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+
+rural:
+  jwt:
+    # 必须显式提供，不设默认值：缺失则启动失败，避免带着源码里的公开串上线
+    secret: ${JWT_SECRET}
+    expire-hours: ${JWT_EXPIRE_HOURS:12}
+  site:
+    # 识景功能按此地址抓取图片算 pHash，必须是公网可访问的前端地址
+    base-url: ${SITE_BASE_URL}
+  ai:
+    # 警告：更换此值会导致库中已加密的用户 AI Key 全部无法解密，需用户重新填写
+    crypto-secret: ${AI_CRYPTO_SECRET}
+    api-key: ${AI_API_KEY:}
+    base-url: ${AI_BASE_URL:https://api.deepseek.com/v1}
+    chat-model: ${AI_CHAT_MODEL:deepseek-chat}
+    vision-model: ${AI_VISION_MODEL:}
+    timeout-seconds: 20
+    max-knowledge-context: 5
+
+logging:
+  file:
+    name: /var/log/rural-travel/app.log
+  level:
+    root: INFO
+    com.rural.travel: INFO
+    org.springframework.web: WARN
+  logback:
+    rollingpolicy:
+      max-file-size: 50MB
+      max-history: 14
+      total-size-cap: 1GB
+  pattern:
+    console: '%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{36} - %msg%n'
